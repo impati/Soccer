@@ -250,6 +250,56 @@
                     </div>
                 </div>
 
+
+                <div class="col-sm-12 col-xl-6 align-items-center">
+                    <div class="bg-light rounded h-100 p-4 text-sm-center">
+                        <h6 class="mb-4">탑 플레이어</h6>
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th scope="col" th:text="${teamAResult.name}"></th>
+                                <th scope="col" th:text="|득점|"></th>
+                                <th scope="col" th:text="|도움|"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="player: ${teamATopPlayer}">
+                                <td th:text="${player.name}">John</td>
+                                <td th:text="${player.goal}"></td>
+                                <td th:text="${player.assist}"></td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-xl-6 align-items-center">
+                    <div class="bg-light rounded h-100 p-4 text-sm-center">
+                        <h6 class="mb-4">탑 플레이어</h6>
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th scope="col" th:text="${teamBResult.name}"></th>
+                                <th scope="col" th:text="|득점|"></th>
+                                <th scope="col" th:text="|도움|"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="player: ${teamBTopPlayer}">
+                                <td th:text="${player.name}">John</td>
+                                <td th:text="${player.goal}"></td>
+                                <td th:text="${player.assist}"></td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
             </div>
         </div>
 

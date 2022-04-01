@@ -20,5 +20,5 @@ public interface RoundService {
     List<DataTransferObject> seasonTeamGameResultWithStrategy(Long roundId);
     List<DataTransferObject> leagueSeasonResult(int season,int roundSt,Long leagueId);
     List<DataTransferObject> RecentShowDownWithStrategy(Long roundId);
-    List<DataTransferObject> seasonTopPlayerWithStrategy(Long roundId);
+    List<DataTransferObject> seasonTopPlayerWithStrategy(Long roundId,String HomeAndAway);
 }

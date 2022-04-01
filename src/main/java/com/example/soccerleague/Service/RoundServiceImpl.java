@@ -2,6 +2,7 @@ package com.example.soccerleague.Service;
 
 import com.example.soccerleague.Repository.*;
 import com.example.soccerleague.Web.dto.Cmp.LeagueRoundSeasonResultCmpByRank;
+import com.example.soccerleague.Web.dto.Cmp.LeagueRoundTopPlayerCmpByAttackPoint;
 import com.example.soccerleague.Web.dto.League.*;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
@@ -27,6 +28,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class RoundServiceImpl implements RoundService {
+
+
     private final RoundRepository roundRepository;
     private final TeamRepository teamRepository;
     private final LeagueRepository leagueRepository;
@@ -666,6 +669,42 @@ public class RoundServiceImpl implements RoundService {
             if(count == 5)break;
         }
 
+        return ret;
+    }
+
+    /**
+     *  전력페이지에 season 일때 , roundst보다 적은 playerLeageuRecord 정보를 가져와서
+     *  공격포인순으로 정렬 후 올려줌.
+     * @param roundId
+     * @return
+     */
+    @Override
+    public List<DataTransferObject> seasonTopPlayerWithStrategy(Long roundId,String HomeOrAway) {
+        Round round = roundRepository.findById(roundId);
+
+        Team teamA = teamRepository.findById(round.getHomeTeamId());
+        Team teamB = teamRepository.findById(round.getAwayTeamId());
+        List<DataTransferObject> ret = new ArrayList<>();
+        List<Object[]> objects = null;
+        if(HomeOrAway.equals("home") || HomeOrAway.equals("A") || HomeOrAway.equals("Home")  || HomeOrAway.equals("HOME") || HomeOrAway.equals("a")){
+            objects = playerLeagueRecordRepository.TopPlayerSeasonAndRoundStWithStrategy(round, teamA);
+        }
+        else{
+            objects = playerLeagueRecordRepository.TopPlayerSeasonAndRoundStWithStrategy(round, teamB);
+        }
+        List<LeagueRoundTopPlayer> temp =  new ArrayList<>();
+
+        for(var ele : objects){
+            String name = (String)ele[0];
+            int goal = Integer.valueOf(String.valueOf(ele[1]));
+            int assist =Integer.valueOf(String.valueOf(ele[2]));
+            LeagueRoundTopPlayer leagueRoundTopPlayer = new LeagueRoundTopPlayer(name,goal,assist);
+            temp.add(leagueRoundTopPlayer);
+        }
+        temp.sort(new LeagueRoundTopPlayerCmpByAttackPoint());
+        for(int i =0;i<5;i++){
+            ret.add(temp.get(i));
+        }
         return ret;
     }
 

@@ -231,11 +231,27 @@ public class LeagueController {
             recentShowDown.add((RecentShowDown)ele);
         }
 
+        List<DataTransferObject> A = roundService.seasonTopPlayerWithStrategy(roundId, "A");
+        List<LeagueRoundTopPlayer> teamATopPlayer = new ArrayList<>();
+        for(var ele : A){
+            teamATopPlayer.add((LeagueRoundTopPlayer) ele);
+        }
+
+        List<DataTransferObject> B = roundService.seasonTopPlayerWithStrategy(roundId, "B");
+        List<LeagueRoundTopPlayer> teamBTopPlayer = new ArrayList<>();
+        for(var ele : B){
+            teamBTopPlayer.add((LeagueRoundTopPlayer) ele);
+        }
+
+
+
 
         model.addAttribute("round",roundId);
         model.addAttribute("teamAResult",teamAResult);
         model.addAttribute("teamBResult",teamBResult);
         model.addAttribute("recentShowDown",recentShowDown);
+        model.addAttribute("teamATopPlayer",teamATopPlayer);
+        model.addAttribute("teamBTopPlayer",teamBTopPlayer);
         return "league/strategy";
     }
 

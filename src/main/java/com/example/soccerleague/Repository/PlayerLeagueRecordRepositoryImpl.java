@@ -2,6 +2,8 @@ package com.example.soccerleague.Repository;
 
 
 import com.example.soccerleague.domain.Player.Player;
+import com.example.soccerleague.domain.Round.Round;
+import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,5 +62,29 @@ public class PlayerLeagueRecordRepositoryImpl implements PlayerLeagueRecordRepos
     public List<PlayerLeagueRecord> findByRoundId(Long roundId) {
         return em.createQuery("select plr from PlayerLeagueRecord plr where plr.leagueRound.id = :roundId order by plr.id")
                 .setParameter("roundId",roundId).getResultList();
+    }
+
+    /**
+     *  넘어오는 시즌 그리고 이전의 라운드 ,team에 속한 선수의 경기결과를 name,goal,assist 내려준다.
+     * @param round
+     * @param team
+     * @return
+     */
+    @Override
+    public List<Object[]> TopPlayerSeasonAndRoundStWithStrategy(Round round, Team team) {
+        StringBuilder s = new StringBuilder(" select p.name , sum(plr.goal) , sum(plr.assist) from player_league_record plr ");
+        s.append(" join player p on p.player_id =  plr.player_id ");
+        s.append(" join team t on t.team_id =  p.team_id ");
+        s.append(" join round r on r.round_id = plr.round_id ");
+        s.append(" where plr.season = ? and r.round_st < ? and p.team_id = ?");
+        s.append(" group by p.name ");
+
+        String sql = String.valueOf(s);
+
+        Query nativeQuery = em.createNativeQuery(sql);
+        nativeQuery.setParameter(1,round.getSeason());
+        nativeQuery.setParameter(2,round.getRoundSt());
+        nativeQuery.setParameter(3,team.getId());
+        return nativeQuery.getResultList();
     }
 }
