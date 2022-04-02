@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,11 @@ public class LeagueServiceImpl implements LeagueService{
     @Override
     public List<League> searchAll() {
         return leagueRepository.findAll();
+    }
+
+    @Override
+    public Optional<League> searchLeague(Long id) {
+        return leagueRepository.findById(id);
     }
 
     @Override

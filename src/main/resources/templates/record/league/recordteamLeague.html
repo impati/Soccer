@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -174,133 +174,80 @@
         <!-- Navbar End -->
 
         <nav>
+            <div class="nav nav-tabs" id="nav-tab1" role="tablist">
+                <button class="nav-link  btn btn-outline-primary m-2" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
+                        aria-selected="true" th:onclick="|location.href='@{/record/team/league}'|"><i class="fa fa-home me-2"></i>팀 순위</button>
+                <button class="nav-link  btn btn-outline-primary m-2" id="nav-profile-tab1" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
+                        aria-selected="true" th:onclick="|location.href='@{/record/player/league}'|"><i class="fa fa-home me-2"></i>선수 순위</button>
+            </div>
 
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link btn btn-lg btn-secondary m-2" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/strategy(roundId=${round})}'|" >전력</button>
-                <button class="nav-link  btn btn-lg btn-secondary m-2" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
-                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/line-up(roundId=${round})}'|">라인업</button>
-                <button class="nav-link btn btn-lg btn-secondary m-2" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
-                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/game(roundId=${round})}'|">경기 기록</button>
+
+            <div class="nav nav-tabs" id="nav-tab2" role="tablist">
+                <button class="nav-link btn btn-secondary rounded-pill m-2" id="nav-home-tab2" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                        aria-selected="true" th:onclick="|location.href='@{/record/team/league/1(season=${season})}'|" >분데스리가</button>
+                <button class="nav-link  btn btn-success rounded-pill m-2" id="nav-profile-tab2" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
+                        aria-selected="true" th:onclick="|location.href='@{/record/team/league/2(season=${season})}'|">라리가</button>
+                <button class="nav-link btn btn-danger rounded-pill m-2" id="nav-contact-tab2" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
+                        aria-selected="true" th:onclick="|location.href='@{/record/team/league/3(season=${season})}'|">EPL</button>
+                <button class="nav-link btn btn-warning rounded-pill m-2" id="nav-contact-tab3" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
+                        aria-selected="true" th:onclick="|location.href='@{/record/team/league/4(season=${season})}'|">세리에</button>
             </div>
         </nav>
 
-        <!-- 컨텐츠 시작 -->
-        <div class="container-fluid pt-xxl-5 px-xxl-5" >
-            <form  class="form-inline" method="post"  disabled>
-                <div class="row g-4">
+        <!---/TODO:url주소 지정하기. -->
+        <div>
+                <span   th:each ="n : ${#numbers.sequence(0,Seasons)}">
+                <button type="button" class="btn btn-outline-info m-2" th:text="|Season  ${n}|" th:onclick="|location.href='@{/record/team/league/{leagueId}(leagueId=${leagueId},season=${n})}'|"></button>
+                </span>
+        </div>
 
-                    <div class="col-xl-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4 align-items-center">
-                            <input type="text" th:placeholder="${teamADto.name}" disabled class="col-xl-4"/>
-                            <input type="text" th:placeholder="_" disabled class="col-sm-3"/>
-                            <input type="text"  th:placeholder="${teamBDto.name}" disabled class="col-xl-4"/>
+        <!--내용 -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="col-xl-12">
+                <div class="bg-light rounded h-100 p-4">
+                    <h6 class="mb-4"th:text="|${league.name} ${season} 시즌|"></h6>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>팀</th>
+                                <th>경기수</th>
+                                <th>승점</th>
+                                <th>승</th>
+                                <th>무</th>
+                                <th>패</th>
+                                <th>득점</th>
+                                <th>실점</th>
+                                <th>득실차</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="ele : ${recordTeamLeagueDto}">
+                                <td th:text="${ele.rank}"></td>
+                                <td th:text="${ele.name}"></td>
+                                <td th:text="${ele.game}"></td>
+                                <td th:text="${ele.point}"></td>
+                                <td th:text="${ele.win}"></td>
+                                <td th:text="${ele.draw}"></td>
+                                <td th:text="${ele.lose}"></td>
+                                <td th:text="${ele.gain}"></td>
+                                <td th:text="${ele.lost}"></td>
+                                <td th:text="${ele.diff}"></td>
 
-                            <input type="number"   th:placeholder="${teamADto.score}"  disabled class="col-xxl-4"/>
-                            <input type="text" th:placeholder="스코어" disabled class="col-sm-3"/>
-                            <input type="number"   th:placeholder="${teamBDto.score}"  disabled class="col-xxl-4"/>
-
-                            <input type="number"   th:placeholder="${teamADto.share}"  disabled class="col-xxl-4"/>
-                            <input type="text" th:placeholder="점유율" disabled class="col-sm-3"/>
-                            <input type="number"   th:placeholder="${teamBDto.share}"  disabled class="col-xxl-4"/>
-
-
-                            <input type="number"   th:placeholder="${teamADto.cornerKick}"  disabled class="col-xxl-4"/>
-                            <input type="text" th:placeholder="코너킥" disabled class="col-sm-3"/>
-                            <input type="number"   th:placeholder="${teamBDto.cornerKick}"  disabled class="col-xxl-4"/>
-
-                            <input type="number"   th:placeholder="${teamADto.freeKick}"  disabled class="col-xxl-4"/>
-                            <input type="text" th:placeholder="프리킥" disabled class="col-sm-3"/>
-                            <input type="number"   th:placeholder="${teamBDto.freeKick}"  disabled class="col-xxl-4"/>
-
-                        </div>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-
-
-                    <div class="col-xl-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4" >
-                            <span th:text="${teamADto.name}"></span>
-                            <br>
-                            <div th:each="player,i: ${playerADto}">
-                                <div th:if="${i.index == 0}">
-                                    <input type="text" th:placeholder="선수명" disabled class="col-2"/>
-                                    <input type="text" th:placeholder="포지션" disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="득점" disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="도움" disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="패스" disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="슈팅" disabled class="col-1"/>
-                                    <input type="number" th:placeholder="|유효 슈팅|" disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="파울" disabled class="col-1"/>
-                                    <input type="number"th:placeholder="차단" disabled class="col-1"/>
-                                    <input type="number"th:placeholder="평점" disabled class="col-1"/>
-                                </div>
-                                <div>
-                                    <input type="number" th:placeholder="${player.name}" disabled  class="col-2"/>
-                                    <input type="number" th:placeholder="${player.position}" disabled  class="col-1"/>
-                                    <input type="number"   th:placeholder="${player.goal}" disabled class="col-1"/>
-                                    <input type="number"   th:placeholder="${player.assist}"   disabled class="col-1"/>
-                                    <input type="number" th:placeholder="${player.pass}"  disabled class="col-1"/>
-                                    <input type="number"   th:placeholder="${player.shooting}"  disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="${player.validShooting}"  disabled  class="col-1"/>
-                                    <input type="number"   th:placeholder="${player.foul}"  disabled class="col-1"/>
-                                    <input type="number" th:placeholder="${player.goodDefense}" disabled class="col-1"/>
-                                    <input type="number" th:placeholder="${player.grade}"  disabled class="col-1"/>
-                                </div>
-                            </div>
-
-
-
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="col-xl-12 col-xl-6">
-                        <div class="bg-light rounded h-100 p-4" >
-                            <span th:text="${teamBDto.name}"></span>
-                            <br>
-                            <div th:each="player,i: ${playerBDto}">
-                                <div th:if="${i.index == 0}">
-                                    <input type="text" th:placeholder="선수명" disabled class="col-2"/>
-                                    <input type="text" th:placeholder="포지션" disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="득점" disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="도움" disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="패스" disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="슈팅" disabled class="col-1"/>
-                                    <input type="number" th:placeholder="|유효 슈팅|" disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="파울" disabled class="col-1"/>
-                                    <input type="number"th:placeholder="차단" disabled class="col-1"/>
-                                    <input type="number"th:placeholder="평점" disabled class="col-1"/>
-                                </div>
-                                <div>
-                                    <input type="number" th:placeholder="${player.name}" disabled  class="col-2"/>
-                                    <input type="number" th:placeholder="${player.position}" disabled  class="col-1"/>
-                                    <input type="number"   th:placeholder="${player.goal}" disabled class="col-1"/>
-                                    <input type="number"   th:placeholder="${player.assist}"   disabled class="col-1"/>
-                                    <input type="number" th:placeholder="${player.pass}"  disabled class="col-1"/>
-                                    <input type="number"   th:placeholder="${player.shooting}"  disabled class="col-1"/>
-                                    <input type="number"  th:placeholder="${player.validShooting}"  disabled  class="col-1"/>
-                                    <input type="number"   th:placeholder="${player.foul}"  disabled class="col-1"/>
-                                    <input type="number" th:placeholder="${player.goodDefense}" disabled class="col-1"/>
-                                    <input type="number" th:placeholder="${player.grade}"  disabled class="col-1"/>
-                                </div>
-                            </div>
-
-
-
-                        </div>
-                    </div>
-
                 </div>
-            </form>
+            </div>
         </div>
 
 
 
 
+        <!--내용 -->
 
-        <!-- 컨텐츠 끝 -->
 
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">
