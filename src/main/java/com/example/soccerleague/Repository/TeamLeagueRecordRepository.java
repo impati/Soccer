@@ -14,5 +14,5 @@ public interface TeamLeagueRecordRepository {
     List<TeamLeagueRecord> findBySeasonAndTeam(int season,int roundSt,Team team);
     List<TeamLeagueRecord> findBySeasonAndTeamRecent5(int season,int roundSt,Team team);
     List<TeamLeagueRecord> findByShowDown(Round round , Team teamA, Team teamB);
-
+    Optional<TeamLeagueRecord> findByLastRecord(int season,Long teamId);
 }

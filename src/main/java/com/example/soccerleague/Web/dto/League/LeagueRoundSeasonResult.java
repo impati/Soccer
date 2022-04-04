@@ -33,4 +33,6 @@ public class LeagueRoundSeasonResult extends DataTransferObject {
         obj.setDiff(gain - lost);
         return obj;
     }
+
+
 }

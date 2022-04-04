@@ -6,6 +6,7 @@ import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PlayerLeagueRecordRepository {
     void save(PlayerLeagueRecord playerLeagueRecord);
@@ -14,4 +15,5 @@ public interface PlayerLeagueRecordRepository {
     List<PlayerLeagueRecord> findByRoundId(Long roundId);
     List<Object[]> TopPlayerSeasonAndRoundStWithStrategy(Round round, Team team);
     List<PlayerLeagueRecord> findBySeasonAndLeague(int season,Long leagueId);
+    Optional<PlayerLeagueRecord> findByLast(int season,Long playerId);
 }

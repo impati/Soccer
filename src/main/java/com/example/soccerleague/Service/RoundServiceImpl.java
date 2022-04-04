@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -376,9 +377,56 @@ public class RoundServiceImpl implements RoundService {
         recordSave(1,matchResultB,byRoundId,dto,teams.get(1),bestGrade);
 
         round.setRoundStatus(RoundStatus.DONE);
-
+        rankMake(round);
         //SEASON AND ROUND 가 변하는 유일한 구간.
         endRoundOrEndSeason();
+
+    }
+
+
+    /**
+     * 랭크 관리 매경기가 끝난 후 호출해주어야함.
+     */
+    private void rankMake(Round round){
+        // roundst보다 적은 결과만을 가져옴.
+        List<Team> teamList = teamRepository.findByLeagueId(round.getLeagueId());
+        List<LeagueRoundSeasonResult> ret = new ArrayList<>();
+        for(var team:teamList){
+            LeagueRoundSeasonResult dto = (LeagueRoundSeasonResult)teamSeasonResult(round.getSeason(), round.getRoundSt() + 1, team);
+            ret.add(dto);
+        }
+
+        for(int i =0;i<ret.size();i++){
+            int r = 1;
+            LeagueRoundSeasonResult temp = ret.get(i);
+            int myPoint = temp.getPoint();
+            int myDiff =  temp.getDiff();
+            for(int k =0;k<ret.size();k++){
+                LeagueRoundSeasonResult nxt = ret.get(k);
+                int youPoint = nxt.getPoint();
+                int youDiff = nxt.getDiff();
+                if(myPoint < youPoint)r++;
+                else if(myPoint == youPoint && myDiff < youDiff)r++;
+            }
+            temp.setRank(r);
+        }
+
+
+        for(var element : ret){
+            TeamLeagueRecord tlr = teamLeagueRecordRepository.findByLastRecord(round.getSeason(), element.getTeam().getId()).orElse(null);
+            if(tlr == null)continue;
+
+            tlr.setRank(element.getRank());
+
+            List<Player> playerList = playerRepository.findByTeam(element.getTeam());
+            for(var player:playerList){
+                PlayerLeagueRecord plr = playerLeagueRecordRepository.findByLast(round.getSeason(), element.getTeam().getId()).orElse(null);
+                if(plr == null) continue;
+                plr.setRank(element.getRank());
+            }
+        }
+
+
 
     }
 
@@ -592,9 +640,11 @@ public class RoundServiceImpl implements RoundService {
         int lose = 0;
         int gain = 0,lost =0;
         for(var ele : teamAResult){
+            if(ele.getMathResult() == null)continue;
             if(ele.getMathResult().equals(MatchResult.WIN)) win+=1;
             else if(ele.getMathResult().equals(MatchResult.DRAW)) draw+=1;
-            else lose+=1;
+            else
+                lose+=1;
             gain += ele.getScore();
             lost += ele.getOppositeScore();
         }
@@ -706,6 +756,7 @@ public class RoundServiceImpl implements RoundService {
         }
         return ret;
     }
+
 
 
 }

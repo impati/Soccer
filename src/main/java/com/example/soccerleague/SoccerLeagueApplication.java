@@ -31,7 +31,7 @@ public class SoccerLeagueApplication {
 
 //       ret.onePlease();
 //
-//        for(int k = 0;k<=2;k++) {
+//        for(int k = 0;k<=1;k++) {
 //            for (int i = 1; i <= 15; i++) {
 //
 //                ret.LeagueRoundGameLineUp(k, i);
@@ -40,8 +40,8 @@ public class SoccerLeagueApplication {
 //        }
 //
 //        for(int i = 1;i<=8;i++){
-//            ret.LeagueRoundGameLineUp(3, i);
-//            ret.LeagueRoundGameSave(3, i);
+//            ret.LeagueRoundGameLineUp(2, i);
+//            ret.LeagueRoundGameSave(2, i);
 //        }
     }
 

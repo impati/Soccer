@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -99,5 +100,21 @@ public class PlayerLeagueRecordRepositoryImpl implements PlayerLeagueRecordRepos
                 .setParameter("leagueId",leagueId)
                 .setParameter("season",season)
                 .getResultList();
+    }
+
+    /**
+     * 가장 최근의 경기 하나만을 가져온다.
+     * @param season
+     * @param playerId
+     * @return
+     */
+    @Override
+    public Optional<PlayerLeagueRecord> findByLast(int season, Long playerId) {
+        return em.createQuery("select plr from PlayerLeagueRecord plr join plr.player p on p.id = :playerId " +
+                        "  where plr.season = :season and plr.mathResult is not null " +
+                        " order by plr.id desc ")
+                .setParameter("playerId",playerId)
+                .setParameter("season",season)
+                .setMaxResults(1).getResultList().stream().findFirst();
     }
 }

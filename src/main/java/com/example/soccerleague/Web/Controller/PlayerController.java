@@ -63,6 +63,7 @@ public class PlayerController {
     @GetMapping("/player-list")
     public String playerList(@ModelAttribute("playerSearchDto") PlayerSearchDto playerSearchDto, Model model){
         List<Player> playerList = playerService.findBySearchDto(playerSearchDto);
+
         List<League> leagues = leagueService.searchAll();
         List<Team> teams = new ArrayList<>();
         if(playerSearchDto.getLeagueId() != null) teams = teamService.searchByLeague(playerSearchDto.getLeagueId());
@@ -77,6 +78,7 @@ public class PlayerController {
     @PostMapping("/player-list")
     public String playerListResult(@ModelAttribute("playerSearchDto") PlayerSearchDto playerSearchDto,Model model){
         List<Player> playerList = playerService.findBySearchDto(playerSearchDto);
+        log.info("playerSearchDto [{}]",playerSearchDto);
         List<League> leagues = leagueService.searchAll();
         List<Team> teams = new ArrayList<>();
         if(playerSearchDto.getLeagueId() != null) teams = teamService.searchByLeague(playerSearchDto.getLeagueId());
@@ -85,8 +87,6 @@ public class PlayerController {
         model.addAttribute("teams",teams);
         model.addAttribute("PositionTypes", Position.values());
         model.addAttribute("playerList",playerList);
-        log.info("playerSearchDto [{}]",playerSearchDto);
-
 
 
         return "/player/playerList";

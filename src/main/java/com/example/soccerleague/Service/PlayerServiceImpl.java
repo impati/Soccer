@@ -12,11 +12,14 @@ import com.example.soccerleague.domain.Player.Striker;
 import com.example.soccerleague.domain.Team;
 import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -90,36 +93,47 @@ public class PlayerServiceImpl implements PlayerService {
      */
     @Override
     public List<Player> findBySearchDto(DataTransferObject searchDto) {
-
+        List<Player> ret = new ArrayList<>();
         //TODO : 정렬기준
         PlayerSearchDto playerSearchDto = (PlayerSearchDto) searchDto;
         if(playerSearchDto.getName() == null) playerSearchDto.setName("");
-
         List<Player> players = playerRepository.findByName(playerSearchDto.getName());
+        boolean visited [] = new boolean[players.size() + 1];
+
+
+
+
         if(playerSearchDto.getLeagueId() != null){
             for(int i = 0;i<players.size();i++){
-                if(players.get(i).getTeam() == null) players.remove(i); // 팀 등록이 안된 선수 제외
-                else if(players.get(i).getTeam().getLeague().getId() != playerSearchDto.getLeagueId()) players.remove(i);
+                if(players.get(i).getTeam() != null) {
+                    if(!players.get(i).getTeam().getLeague().getId().equals(playerSearchDto.getLeagueId()))visited[i]=true;
+                }
+
             }
         }
 
         if(playerSearchDto.getTeamId() != null){
             for(int i = 0;i<players.size();i++){
-                if(players.get(i).getTeam() == null) players.remove(i); // 팀 등록이 안된 선수 제외
-                else if(players.get(i).getTeam().getId() != playerSearchDto.getTeamId()) players.remove(i);
+                if(players.get(i).getTeam() != null) {
+                    if(!players.get(i).getTeam().getId().equals(playerSearchDto.getTeamId()))visited[i] = true;
+                }
             }
         }
 
 
         if(!playerSearchDto.getPositions().isEmpty()){
-            for(int i = 0;i<players.size();i++){
+            for(int i = 0;i<players.size();i++) {
                 Position position = players.get(i).getPosition();
-                if(!playerSearchDto.getPositions().contains(position)) players.remove(i);
+                if (visited[i]) continue;
+                if (!playerSearchDto.getPositions().contains(position)) visited[i] = true;
+
             }
         }
+        for(int i =0;i<players.size();i++){
+            if(!visited[i])ret.add(players.get(i));
+        }
 
-
-        return players;
+        return ret;
     }
 
 

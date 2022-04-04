@@ -42,4 +42,5 @@ public abstract class TeamRecord extends Record{
     protected double grade;
 
     protected int rating;
+    protected int rank;
 }

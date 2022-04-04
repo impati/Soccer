@@ -90,4 +90,23 @@ public class TeamLeagueRecordRepositoryImpl implements TeamLeagueRecordRepositor
         }
 
     }
+
+    /**
+     *  when 매 경기가 끝난 후 모든 팀의 순위를 업데이트를 하기위해서
+     *  가장 최근의 경기를 리턴.
+     *
+     *  결과적으로 마지막 record값의 순위를 제외하면 유효하지  않은 값
+     * @param season
+     * @param teamId
+     * @return
+     */
+    @Override
+    public Optional<TeamLeagueRecord> findByLastRecord(int season, Long teamId) {
+        return em.createQuery("select tlr from TeamLeagueRecord tlr join tlr.team t on t.id = :teamId " +
+                "  where tlr.season = :season and tlr.mathResult is not null " +
+                " order by tlr.id desc ")
+                .setParameter("teamId",teamId)
+                .setParameter("season",season)
+                .setMaxResults(1).getResultList().stream().findFirst();
+    }
 }
