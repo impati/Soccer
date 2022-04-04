@@ -2,10 +2,8 @@ package com.example.soccerleague.Web.Controller;
 
 import com.example.soccerleague.Repository.PlayerLeagueRecordRepository;
 import com.example.soccerleague.Service.*;
-import com.example.soccerleague.Web.dto.Player.PlayerDisplayDto;
-import com.example.soccerleague.Web.dto.Player.PlayerLeagueDisplayDto;
-import com.example.soccerleague.Web.dto.Player.PlayerSaveDto;
-import com.example.soccerleague.Web.dto.Player.PlayerSearchDto;
+import com.example.soccerleague.Web.dto.Player.*;
+import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
@@ -153,9 +151,6 @@ public class PlayerController {
         if(season == null){
             season = Season.CURRENTSEASON;
         }
-        // TODO :4/4
-        // TODO :rank 처리해주어야함.
-        // TODO :토탈 처리
         model.addAttribute("Seasons", Season.CURRENTSEASON);
         model.addAttribute("player", PlayerDisplayDto.createByPlayer(player));
 
@@ -164,15 +159,12 @@ public class PlayerController {
 
         model.addAttribute("playerLeagueRecordDisplayDto",playerLeagueDisplayDto);
 
+        //TODO:챔피언스리그,유로파...
 
+        // TODO :토탈 처리
+        PlayerTotalRecord playerTotalRecord = (PlayerTotalRecord)playerLeagueRecordService.totalRecord(playerId);
+        model.addAttribute("playerTotalRecord",playerTotalRecord);
 
-
-
-
-
-
-
-        //TODO:챔피언스리그
 
 
 

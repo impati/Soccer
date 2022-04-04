@@ -1,2 +1,3 @@
-package com.example.soccerleague.Web.dto.Player;public class PlayerDisplaySearchDto {
+package com.example.soccerleague.Web.dto.Player;
+public class PlayerDisplaySearchDto {
 }

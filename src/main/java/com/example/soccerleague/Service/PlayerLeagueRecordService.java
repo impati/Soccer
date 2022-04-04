@@ -12,4 +12,5 @@ public interface PlayerLeagueRecordService {
     PlayerLeagueRecord findById(Long id);
     DataTransferObject searchSeasonInfo(int season, Long playerId);
     List<DataTransferObject> searchSeasonAndPlayer(int season, Long leagueId,String sortType);
+    DataTransferObject totalRecord(Long playerId);
 }

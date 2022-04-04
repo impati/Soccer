@@ -26,7 +26,7 @@ public class PlayerLeagueDisplayDto extends DataTransferObject {
     private int lose;
 
     private int isBest;
-    private int sum;
+    private double sum;
     private double grade;
 
     private int rank;
@@ -62,7 +62,7 @@ public class PlayerLeagueDisplayDto extends DataTransferObject {
         else{
             this.setLose(this.getLose() + 1);
         }
-
+        this.setGrade(Math.round(Math.round(this.getGrade())));
 
     }
 

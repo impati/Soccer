@@ -262,6 +262,82 @@
                             </div>
                         </div>
                     </div>
+
+
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">전체 기록</h6>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>골</th>
+                                    <th>어시</th>
+                                    <th>패스</th>
+                                    <th>슈팅</th>
+                                    <th>유효 슈팅</th>
+                                    <th>파울</th>
+                                    <th>차단</th>
+                                    <th>승</th>
+                                    <th>무</th>
+                                    <th>패</th>
+                                    <th>MVP</th>
+                                    <th>평균 평점</th>
+                                    <th>경기 수</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${playerTotalRecord.goal}"></td>
+                                    <td th:text="${playerTotalRecord.assist}"></td>
+                                    <td th:text="${playerTotalRecord.pass}"></td>
+                                    <td th:text="${playerTotalRecord.shooting}"></td>
+                                    <td th:text="${playerTotalRecord.validShooting}"></td>
+                                    <td th:text="${playerTotalRecord.foul}"></td>
+                                    <td th:text="${playerTotalRecord.defense}"></td>
+                                    <td th:text="${playerTotalRecord.win}"></td>
+                                    <td th:text="${playerTotalRecord.draw}"></td>
+                                    <td th:text="${playerTotalRecord.lose}"></td>
+                                    <td th:text="${playerTotalRecord.mvp}"></td>
+                                    <td th:text="${playerTotalRecord.avgGrade}"></td>
+                                    <td th:text="${playerTotalRecord.gameNumber}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">업적</h6>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>리그 우승</th>
+                                    <th>리그 준우승</th>
+                                    <th>리그 3위</th>
+                                    <th>리그 4위</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${playerTotalRecord.first}"></td>
+                                    <td th:text="${playerTotalRecord.second}"></td>
+                                    <td th:text="${playerTotalRecord.threePlace}"></td>
+                                    <td th:text="${playerTotalRecord.fourth}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
             </div>
         </div>
 

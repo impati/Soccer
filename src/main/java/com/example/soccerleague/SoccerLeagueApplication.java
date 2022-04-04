@@ -29,20 +29,20 @@ public class SoccerLeagueApplication {
         sm.init();
         LeagueRoundGameLineUpSaveTestData ret = ac.getBean("leagueRoundGameLineUpSaveTestData", LeagueRoundGameLineUpSaveTestData.class);
 
-       ret.onePlease();
-
-        for(int k = 0;k<=1;k++) {
-            for (int i = 1; i <= 15; i++) {
-
-                ret.LeagueRoundGameLineUp(k, i);
-                ret.LeagueRoundGameSave(k, i);
-            }
-        }
-
-        for(int i = 1;i<=8;i++){
-            ret.LeagueRoundGameLineUp(2, i);
-            ret.LeagueRoundGameSave(2, i);
-        }
+//       ret.onePlease();
+//
+//        for(int k = 0;k<=1;k++) {
+//            for (int i = 1; i <= 15; i++) {
+//
+//                ret.LeagueRoundGameLineUp(k, i);
+//                ret.LeagueRoundGameSave(k, i);
+//            }
+//        }
+//
+//        for(int i = 1;i<=8;i++){
+//            ret.LeagueRoundGameLineUp(2, i);
+//            ret.LeagueRoundGameSave(2, i);
+//        }
     }
 
 

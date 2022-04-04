@@ -4,9 +4,11 @@ import com.example.soccerleague.Repository.PlayerLeagueRecordRepository;
 import com.example.soccerleague.Repository.PlayerRepository;
 import com.example.soccerleague.Web.dto.Cmp.record.*;
 import com.example.soccerleague.Web.dto.Player.PlayerLeagueDisplayDto;
+import com.example.soccerleague.Web.dto.Player.PlayerTotalRecord;
 import com.example.soccerleague.Web.dto.record.league.RecordPlayerLeagueDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
+import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -102,6 +104,31 @@ public class PlayerLeagueRecordServiceImpl implements PlayerLeagueRecordService{
         List<DataTransferObject> returnList = new ArrayList<>();
         ret.stream().forEach(ele->returnList.add(ele));
         return returnList;
+    }
+
+    /**
+     * 선수의 통합적인 결과를 설정.
+     * @param playerId
+     * @return
+     */
+    @Override
+    public DataTransferObject totalRecord(Long playerId) {
+        PlayerTotalRecord playerTotalRecord = new PlayerTotalRecord();
+        Player player = playerRepository.findById(playerId);
+
+        //리그
+        for(int i =0;i< Season.CURRENTSEASON;i++){
+            PlayerLeagueDisplayDto dataTransferObject = (PlayerLeagueDisplayDto)searchSeasonInfo(i, player.getId());
+            playerTotalRecord.update(dataTransferObject);
+            playerTotalRecord.leagueRankRecordUpdate(dataTransferObject.getRank());
+        }
+        PlayerLeagueDisplayDto dataTransferObject = (PlayerLeagueDisplayDto)searchSeasonInfo(Season.CURRENTSEASON, player.getId());
+        playerTotalRecord.update(dataTransferObject);
+
+        //TODO :챔피언스리그 ,유로파...
+
+
+        return playerTotalRecord;
     }
 
 
