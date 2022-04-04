@@ -52,8 +52,8 @@ public class PlayerLeagueRecordRepositoryImpl implements PlayerLeagueRecordRepos
     public List<PlayerLeagueRecord> findBySeasonAndPlayer(int season, Long playerId) {
         Query query = null;
         try {
-            query = em.createQuery("select plr from PlayerLeagueRecord plr where plr.player.id =:player and plr.season = :season" +
-                    " order by plr.leagueRound.roundSt");
+            query = em.createQuery("select plr from PlayerLeagueRecord plr where plr.player.id =:player and plr.season = :season " +
+                    " order by plr.id");
         }catch(Exception e){
             return new ArrayList<>();
         }

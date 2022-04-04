@@ -420,7 +420,7 @@ public class RoundServiceImpl implements RoundService {
 
             List<Player> playerList = playerRepository.findByTeam(element.getTeam());
             for(var player:playerList){
-                PlayerLeagueRecord plr = playerLeagueRecordRepository.findByLast(round.getSeason(), element.getTeam().getId()).orElse(null);
+                PlayerLeagueRecord plr = playerLeagueRecordRepository.findByLast(round.getSeason(), player.getId()).orElse(null);
                 if(plr == null) continue;
                 plr.setRank(element.getRank());
             }
