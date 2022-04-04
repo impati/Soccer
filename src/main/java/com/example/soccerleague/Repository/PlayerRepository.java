@@ -13,4 +13,5 @@ public interface PlayerRepository {
     List<Player> findAll();
     List<Player> findByName(String name);
     List<Player> findByTeam(Team team);
+    List<Player> findByLeague(Long leagueId);
 }

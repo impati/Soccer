@@ -1,4 +1,4 @@
-package com.example.soccerleague.Web.dto.Cmp;
+package com.example.soccerleague.Web.dto.Cmp.LeagueRound;
 
 import com.example.soccerleague.Web.dto.League.LeagueRoundSeasonResult;
 

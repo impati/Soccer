@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class PlayerDisplayDto extends DataTransferObject {
+    private Long id;
     private String name;
     private Team team;
     private Position position;
@@ -15,6 +16,7 @@ public class PlayerDisplayDto extends DataTransferObject {
 
     public static PlayerDisplayDto createByPlayer(Player player){
         PlayerDisplayDto playerDisplayDto = new PlayerDisplayDto();
+        playerDisplayDto.setId(player.getId());
         playerDisplayDto.setRating(player.getRating());
         playerDisplayDto.setTeam(player.getTeam());
         playerDisplayDto.setName(player.getName());

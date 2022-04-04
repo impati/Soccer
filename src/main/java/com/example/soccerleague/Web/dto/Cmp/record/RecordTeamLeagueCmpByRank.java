@@ -1,4 +1,4 @@
-package com.example.soccerleague.Web.dto.Cmp;
+package com.example.soccerleague.Web.dto.Cmp.record;
 
 import com.example.soccerleague.Web.dto.record.league.RecordTeamLeagueDto;
 import com.example.soccerleague.domain.DataTransferObject;
@@ -11,5 +11,4 @@ public class RecordTeamLeagueCmpByRank implements Comparator<RecordTeamLeagueDto
         if(o1.getRank() > o2.getRank())return 1;
         else return -1;
     }
-
 }

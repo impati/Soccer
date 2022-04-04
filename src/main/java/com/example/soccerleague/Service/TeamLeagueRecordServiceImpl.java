@@ -2,7 +2,7 @@ package com.example.soccerleague.Service;
 
 import com.example.soccerleague.Repository.TeamLeagueRecordRepository;
 import com.example.soccerleague.Repository.TeamRepository;
-import com.example.soccerleague.Web.dto.Cmp.RecordTeamLeagueCmpByRank;
+import com.example.soccerleague.Web.dto.Cmp.record.RecordTeamLeagueCmpByRank;
 import com.example.soccerleague.Web.dto.record.league.RecordTeamLeagueDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j

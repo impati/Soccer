@@ -46,4 +46,12 @@ public class PlayerRepositoryImpl implements PlayerRepository{
         return em.createQuery("select p from Player p where p.team = :team")
                 .setParameter("team",team).getResultList();
     }
+
+    @Override
+    public List<Player> findByLeague(Long leagueId) {
+        return em.createQuery("select p from Player p join p.team t on t.league.id = :leagueId")
+                .setParameter("leagueId",leagueId)
+                .getResultList();
+    }
+
 }

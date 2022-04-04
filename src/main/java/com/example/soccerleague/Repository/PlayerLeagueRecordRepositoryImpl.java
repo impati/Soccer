@@ -38,6 +38,11 @@ public class PlayerLeagueRecordRepositoryImpl implements PlayerLeagueRecordRepos
      *
      * when season 에 대한 선수 정보를 알고 싶을 때.
      * do 정보를 찾아서 리턴
+     *
+     *
+     *
+     * + when recordplayerleague에서 사용합니다
+     *
      * @param season
      * @param playerId
      * @return
@@ -86,5 +91,13 @@ public class PlayerLeagueRecordRepositoryImpl implements PlayerLeagueRecordRepos
         nativeQuery.setParameter(2,round.getRoundSt());
         nativeQuery.setParameter(3,team.getId());
         return nativeQuery.getResultList();
+    }
+
+    @Override
+    public List<PlayerLeagueRecord> findBySeasonAndLeague(int season, Long leagueId) {
+        return em.createQuery("select plr from PlayerLeagueRecord plr join plr.team t on t.league.id =:leagueId where plr.season = :season")
+                .setParameter("leagueId",leagueId)
+                .setParameter("season",season)
+                .getResultList();
     }
 }

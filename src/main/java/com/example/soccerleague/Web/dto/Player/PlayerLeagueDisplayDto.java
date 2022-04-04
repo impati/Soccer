@@ -26,10 +26,12 @@ public class PlayerLeagueDisplayDto extends DataTransferObject {
     private int lose;
 
     private int isBest;
+    private int sum;
     private double grade;
 
     private int rank;
     private int gameNumber;
+
 
     /**
      * PlayerLeagueRecord를 모두 받아 업데이트!
@@ -44,7 +46,8 @@ public class PlayerLeagueDisplayDto extends DataTransferObject {
         this.setGoodDefense(this.getGoodDefense() + playerRecord.getGoodDefense());
         this.setGameNumber(this.getGameNumber() + 1);
         this.setRank(playerRecord.getRank());
-        this.setGrade((this.getGrade() + playerRecord.getGrade())/this.getGameNumber());
+        this.setSum(this.getSum() + playerRecord.getGrade());
+        this.setGrade((this.getSum())/this.getGameNumber());
         this.setRating(rating);
 
         if(playerRecord.isBest()){

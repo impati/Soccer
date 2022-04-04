@@ -1,8 +1,7 @@
 package com.example.soccerleague.Service;
 
 import com.example.soccerleague.Repository.*;
-import com.example.soccerleague.Web.dto.Cmp.LeagueRoundSeasonResultCmpByRank;
-import com.example.soccerleague.Web.dto.Cmp.LeagueRoundTopPlayerCmpByAttackPoint;
+import com.example.soccerleague.Web.dto.Cmp.LeagueRound.LeagueRoundTopPlayerCmpByAttackPoint;
 import com.example.soccerleague.Web.dto.League.*;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;

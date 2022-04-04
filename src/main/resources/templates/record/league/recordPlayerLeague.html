@@ -184,20 +184,20 @@
 
             <div class="nav nav-tabs" id="nav-tab2" role="tablist">
                 <button class="nav-link btn btn-secondary rounded-pill m-2" id="nav-home-tab2" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                        aria-selected="true" th:onclick="|location.href='@{/record/team/league/1(season=${season})}'|" >분데스리가</button>
+                        aria-selected="true" th:onclick="|location.href='@{/record/player/league/1(season=${season},sortType=${sortType})}'|" >분데스리가</button>
                 <button class="nav-link  btn btn-success rounded-pill m-2" id="nav-profile-tab2" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
-                        aria-selected="true" th:onclick="|location.href='@{/record/team/league/2(season=${season})}'|">라리가</button>
+                        aria-selected="true" th:onclick="|location.href='@{/record/player/league/2(season=${season},sortType=${sortType})}'|">라리가</button>
                 <button class="nav-link btn btn-danger rounded-pill m-2" id="nav-contact-tab2" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
-                        aria-selected="true" th:onclick="|location.href='@{/record/team/league/3(season=${season})}'|">EPL</button>
+                        aria-selected="true" th:onclick="|location.href='@{/record/player/league/3(season=${season},sortType=${sortType})}'|">EPL</button>
                 <button class="nav-link btn btn-warning rounded-pill m-2" id="nav-contact-tab3" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
-                        aria-selected="true" th:onclick="|location.href='@{/record/team/league/4(season=${season})}'|">세리에</button>
+                        aria-selected="true" th:onclick="|location.href='@{/record/player/league/4(season=${season},sortType=${sortType})}'|">세리에</button>
             </div>
         </nav>
 
         <!---/TODO:url주소 지정하기. -->
         <div>
                 <span   th:each ="n : ${#numbers.sequence(0,Seasons)}">
-                <button type="button" class="btn btn-outline-info m-2" th:text="|Season  ${n}|" th:onclick="|location.href='@{/record/team/league/{leagueId}(leagueId=${league.id},season=${n})}'|"></button>
+                <button type="button" class="btn btn-outline-info m-2" th:text="|Season  ${n}|" th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${n},sortType=${sortType})}'|"></button>
                 </span>
         </div>
 
@@ -211,29 +211,32 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>팀</th>
-                                <th>경기수</th>
-                                <th>승점</th>
-                                <th>승</th>
-                                <th>무</th>
-                                <th>패</th>
-                                <th>득점</th>
-                                <th>실점</th>
-                                <th>득실차</th>
+                                <th>선수</th>
+                                <th>소속 팀</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Goal)}'|">득점</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Assist)}'|">도움</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=AttackPoint)}'|">공격포인트</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Shooting)}'|">슈팅</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=ValidShooting)}'|">유효 슈팅</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Foul)}'|">파울</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Pass)}'|">패스</th>
+                                <th  th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Defense)}'|">차단</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="ele : ${recordTeamLeagueDto}">
-                                <td th:text="${ele.rank}"></td>
-                                <td th:text="${ele.name}"></td>
-                                <td th:text="${ele.game}"></td>
-                                <td th:text="${ele.point}"></td>
-                                <td th:text="${ele.win}"></td>
-                                <td th:text="${ele.draw}"></td>
-                                <td th:text="${ele.lose}"></td>
-                                <td th:text="${ele.gain}"></td>
-                                <td th:text="${ele.lost}"></td>
-                                <td th:text="${ele.diff}"></td>
+                            <tr th:each="recordPlayerLeague,i : ${recordPlayerLeagueDtoList}">
+                                <td th:text="${i.count}"></td>
+                                <td th:text="${recordPlayerLeague.name}"></td>
+                                <td th:text="${recordPlayerLeague.team}"></td>
+                                <td th:text="${recordPlayerLeague.goal}"></td>
+                                <td th:text="${recordPlayerLeague.assist}"></td>
+                                <td th:text="${recordPlayerLeague.attackPoint}"></td>
+                                <td th:text="${recordPlayerLeague.shooting}"></td>
+                                <td th:text="${recordPlayerLeague.validShooting}"></td>
+                                <td th:text="${recordPlayerLeague.foul}"></td>
+                                <td th:text="${recordPlayerLeague.pass}"></td>
+                                <td th:text="${recordPlayerLeague.defense}"></td>
+
 
                             </tr>
                             </tbody>

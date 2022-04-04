@@ -53,6 +53,8 @@ public class PlayerController {
     }
 
     /**
+     *
+     * TODO :제대로 검색 되지않음 확인부탁.
      * 선수 목록 기능
      * @param playerSearchDto
      * @param model
@@ -151,12 +153,26 @@ public class PlayerController {
         if(season == null){
             season = Season.CURRENTSEASON;
         }
+        // TODO :4/4
+        // TODO :rank 처리해주어야함.
+        // TODO :토탈 처리
+        model.addAttribute("Seasons", Season.CURRENTSEASON);
         model.addAttribute("player", PlayerDisplayDto.createByPlayer(player));
+
         PlayerLeagueDisplayDto playerLeagueDisplayDto = (PlayerLeagueDisplayDto)playerLeagueRecordService.searchSeasonInfo(season,playerId);
-        log.info("playerLeagueRecordDisplayDto [{}]",playerLeagueDisplayDto);
+
+
         model.addAttribute("playerLeagueRecordDisplayDto",playerLeagueDisplayDto);
 
-        //TODO:시즌 버튼.
+
+
+
+
+
+
+
+
+
         //TODO:챔피언스리그
 
 

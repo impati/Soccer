@@ -22,13 +22,9 @@ class PlayerLeagueRecordRepositoryImplTest {
     private TeamRepository teamRepository;
     @Test
     void test(){
-        Round round = LeagueRound.createLeagueRound(1L,1L,2L,2,11);
-        Team team = teamRepository.findById(1L);
-        List<Object[]> list = playerLeagueRecordRepository.TopPlayerSeasonAndRoundStWithStrategy(round, team);
-        for(var obj :list){
-            System.out.println(obj[0] + " " + obj[1] + " " + obj[2]);
-        }
+     playerLeagueRecordRepository.findBySeasonAndPlayer(3,1L).stream().forEach(ele-> System.out.println(ele.getId()));
 
     }
+
 
 }
