@@ -25,9 +25,14 @@ PlayerLeagueRecordRepositoryImplTest {
     private TeamRepository teamRepository;
     @Test
     void test(){
-         playerLeagueRecordRepository.findBySeasonAndPlayer(3,1L).stream().forEach(ele-> System.out.println(ele.getId()));
-        PlayerLeagueRecord playerLeagueRecord = playerLeagueRecordRepository.findByLast(3, 1L).orElse(null);
-        Assertions.assertThat(playerLeagueRecord.getId()).isEqualTo(37323);
+
+
+        List<Object[]> seasonAndTeam = playerLeagueRecordRepository.findSeasonAndTeam(1, 1L);
+        for(var element :seasonAndTeam){
+            System.out.println(element[0] + " " + element[1]);
+        }
+
+
     }
 
 

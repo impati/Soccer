@@ -1,15 +1,13 @@
 package com.example.soccerleague.Web.dto.Player;
 
 import com.example.soccerleague.domain.DataTransferObject;
-import com.example.soccerleague.domain.record.MatchResult;
-import com.example.soccerleague.domain.record.PlayerRecord;
 import lombok.Data;
 
 /**
  * 리그 시즌 전부 기록 , 챔피언스 기록 전부,유로파전부,,
  */
 @Data
-public class PlayerTotalRecord extends DataTransferObject {
+public class PlayerTotalRecordDto extends DataTransferObject {
     private int goal;
     private int assist;
     private int pass;

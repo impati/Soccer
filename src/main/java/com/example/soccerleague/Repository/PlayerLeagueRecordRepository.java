@@ -16,4 +16,5 @@ public interface PlayerLeagueRecordRepository {
     List<Object[]> TopPlayerSeasonAndRoundStWithStrategy(Round round, Team team);
     List<PlayerLeagueRecord> findBySeasonAndLeague(int season,Long leagueId);
     Optional<PlayerLeagueRecord> findByLast(int season,Long playerId);
+    List<Object[]> findSeasonAndTeam(int season,Long teamId);
 }

@@ -117,4 +117,21 @@ public class PlayerLeagueRecordRepositoryImpl implements PlayerLeagueRecordRepos
                 .setParameter("season",season)
                 .setMaxResults(1).getResultList().stream().findFirst();
     }
+
+
+    /** 시즌,팀 정보로 해당시즌에 해당 팀에서 뛴 선수아이와 그 횟수를 리턴!
+     *
+     */
+    @Override
+    public List<Object[]> findSeasonAndTeam(int season, Long teamId) {
+        StringBuilder  s = new StringBuilder(" SELECT p.name,count(plr.player_id) ,avg(plr.rating) ,max(plr.position) FROM PLAYER_LEAGUE_RECORD plr ");
+        s.append(" join player p on p.player_id = plr.player_id ");
+        s.append(" where plr.team_id = ? and plr.season = ? ");
+        s.append(" group by plr.player_id ");
+        String sql = String.valueOf(s);
+        Query nativeQuery = em.createNativeQuery(sql);
+        nativeQuery.setParameter(1,teamId);
+        nativeQuery.setParameter(2,season);
+        return nativeQuery.getResultList();
+    }
 }

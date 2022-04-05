@@ -38,4 +38,6 @@ public class LeagueRoundGameDto extends DataTransferObject {
     private List<Integer> goodDefenseList = new ArrayList<>();
     private List<Integer> gradeList = new ArrayList<>(); // 100점 만점.
 
+
+
 }

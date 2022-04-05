@@ -124,6 +124,7 @@ public class LeagueController {
     public String gameLineUpPage(@PathVariable Long roundId,Model model){
         LeagueRoundLineUp leagueRoundLineUp = (LeagueRoundLineUp) roundService.getLineUp(roundId);
         log.info("leagueRoundLineUp : [{}]",leagueRoundLineUp);
+
         model.addAttribute("leagueRoundLineUp",leagueRoundLineUp);
         model.addAttribute("positionList", Position.values());
         if(leagueRoundLineUp.getRoundStatus() == RoundStatus.YET) model.addAttribute("DONE",false);

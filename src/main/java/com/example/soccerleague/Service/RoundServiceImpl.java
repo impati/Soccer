@@ -192,10 +192,12 @@ public class RoundServiceImpl implements RoundService {
             for (var ele : playerListA) {
                 LineUpPlayer lineUpPlayer = LineUpPlayer.create(ele.getId(), ele.getName(), ele.getPosition());
                 leagueRoundLineUp.getPlayerListA().add(lineUpPlayer);
+                leagueRoundLineUp.getJoinPlayer().add(ele.getId());
             }
             for (var ele : playerListB) {
                 LineUpPlayer lineUpPlayer = LineUpPlayer.create(ele.getId(), ele.getName(), ele.getPosition());
                 leagueRoundLineUp.getPlayerListB().add(lineUpPlayer);
+                leagueRoundLineUp.getJoinPlayer().add(ele.getId());
             }
         }
         else{

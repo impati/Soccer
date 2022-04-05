@@ -1,9 +1,7 @@
 package com.example.soccerleague.Web.Controller;
 
-import com.example.soccerleague.Repository.PlayerLeagueRecordRepository;
 import com.example.soccerleague.Service.*;
 import com.example.soccerleague.Web.dto.Player.*;
-import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
@@ -11,7 +9,6 @@ import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -162,7 +159,7 @@ public class PlayerController {
         //TODO:챔피언스리그,유로파...
 
         // TODO :토탈 처리
-        PlayerTotalRecord playerTotalRecord = (PlayerTotalRecord)playerLeagueRecordService.totalRecord(playerId);
+        PlayerTotalRecordDto playerTotalRecord = (PlayerTotalRecordDto)playerLeagueRecordService.totalRecord(playerId);
         model.addAttribute("playerTotalRecord",playerTotalRecord);
 
 

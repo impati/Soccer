@@ -4,13 +4,12 @@ import com.example.soccerleague.Repository.PlayerLeagueRecordRepository;
 import com.example.soccerleague.Repository.PlayerRepository;
 import com.example.soccerleague.Web.dto.Cmp.record.*;
 import com.example.soccerleague.Web.dto.Player.PlayerLeagueDisplayDto;
-import com.example.soccerleague.Web.dto.Player.PlayerTotalRecord;
+import com.example.soccerleague.Web.dto.Player.PlayerTotalRecordDto;
 import com.example.soccerleague.Web.dto.record.league.RecordPlayerLeagueDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-// TODO : rank update해주어야함.
 @Slf4j
 @Service
 public class PlayerLeagueRecordServiceImpl implements PlayerLeagueRecordService{
@@ -113,7 +111,7 @@ public class PlayerLeagueRecordServiceImpl implements PlayerLeagueRecordService{
      */
     @Override
     public DataTransferObject totalRecord(Long playerId) {
-        PlayerTotalRecord playerTotalRecord = new PlayerTotalRecord();
+        PlayerTotalRecordDto playerTotalRecord = new PlayerTotalRecordDto();
         Player player = playerRepository.findById(playerId);
 
         //리그

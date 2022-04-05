@@ -83,38 +83,258 @@
     </div>
     <!-- Sidebar End -->
 
+
     <!-- Content Start -->
     <div class="content">
-
-        <!-- playerInfo -->
-        <div class="container-fluid pt-4 px-4">
-            <div class="col-sm-12 col-xl-12">
-                <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">Responsive Table</h6>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>리그</th>
-                                <th>팀 이름</th>
-                                <th>레이팅</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td th:text="${team.leagueName}" th:href="@{/league/id (id=${team.leagueId})}"></td>
-                                <td th:text="${team.name}"></td>
-                                <td th:text="${team.rating}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
+        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+            </a>
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+                <i class="fa fa-bars"></i>
+            </a>
+            <form class="d-none d-md-flex ms-4">
+                <input class="form-control border-0" type="search" placeholder="Search">
+            </form>
+            <div class="navbar-nav align-items-center ms-auto">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-envelope me-lg-2"></i>
+                        <span class="d-none d-lg-inline-flex">Message</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" src="/img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="ms-2">
+                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                    <small>15 minutes ago</small>
+                                </div>
+                            </div>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" src="/img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="ms-2">
+                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                    <small>15 minutes ago</small>
+                                </div>
+                            </div>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" src="/img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                <div class="ms-2">
+                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                    <small>15 minutes ago</small>
+                                </div>
+                            </div>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item text-center">See all message</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-bell me-lg-2"></i>
+                        <span class="d-none d-lg-inline-flex">Notificatin</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">
+                            <h6 class="fw-normal mb-0">Profile updated</h6>
+                            <small>15 minutes ago</small>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <h6 class="fw-normal mb-0">New user added</h6>
+                            <small>15 minutes ago</small>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <h6 class="fw-normal mb-0">Password changed</h6>
+                            <small>15 minutes ago</small>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item text-center">See all notifications</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <img class="rounded-circle me-lg-2" src="/img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                        <span class="d-none d-lg-inline-flex">John Doe</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">My Profile</a>
+                        <a href="#" class="dropdown-item">Settings</a>
+                        <a href="#" class="dropdown-item">Log Out</a>
                     </div>
                 </div>
             </div>
+        </nav>
+        <!-- Navbar End -->
+
+        <nav>
+            <div>
+                <span   th:each ="n : ${#numbers.sequence(0,Seasons)}">
+                <button type="button" class="btn btn-outline-info m-2" th:text="|Season  ${n}|" th:onclick="|location.href='@{/team/{teamId}(teamId=${team.id},season=${n})}'|"></button>
+                </span>
+            </div>
+
+        </nav>
+
+
+        <!--내용 -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h4 class="mb-4" th:text="${team.name}"></h4>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>팀</th>
+                                    <th>리그</th>
+                                    <th>레이팅</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${team.name}"></td>
+                                    <td th:text ="${team.leagueName}"></td>
+                                    <td th:text="${team.rating}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">리그</h6>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>순위</th>
+                                    <th>경기 수</th>
+                                    <th>승점</th>
+                                    <th>승</th>
+                                    <th>무</th>
+                                    <th>패</th>
+                                    <th>득점</th>
+                                    <th>실점</th>
+                                    <th>득실차</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${teamSeasonInfo.rank}"></td>
+                                    <td th:text="${teamSeasonInfo.game}"></td>
+                                    <td th:text="${teamSeasonInfo.point}"></td>
+                                    <td th:text="${teamSeasonInfo.win}"></td>
+                                    <td th:text="${teamSeasonInfo.draw}"></td>
+                                    <td th:text="${teamSeasonInfo.lose}"></td>
+                                    <td th:text="${teamSeasonInfo.gain}"></td>
+                                    <td th:text="${teamSeasonInfo.gain}"></td>
+                                    <td th:text="${teamSeasonInfo.diff}"></td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>선수</th>
+                                    <th>포지션</th>
+                                    <th>경기 수</th>
+                                    <th>레이팅</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="ele : ${TeamLeaguePlayerList}">
+                                    <td th:text="${ele.name}"></td>
+                                    <td th:text="${ele.position}"></td>
+                                    <td th:text="${ele.game}"></td>
+                                    <td th:text="${ele.rating}"></td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h4 class="mb-4">전체 기록</h4>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>승</th>
+                                    <th>무</th>
+                                    <th>패</th>
+                                    <th>득점</th>
+                                    <th>실점</th>
+                                    <th>득실차</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <td th:text="${teamTotalRecord.win}"></td>
+                                    <td th:text="${teamTotalRecord.draw}"></td>
+                                    <td th:text="${teamTotalRecord.lose}"></td>
+                                    <td th:text="${teamTotalRecord.gain}"></td>
+                                    <td th:text="${teamTotalRecord.lost}"></td>
+                                    <td th:text="${teamTotalRecord.diff}"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h4 class="mb-4">업적</h4>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>리그 우승</th>
+                                    <th>리그 준우승</th>
+                                    <th>리그 3위</th>
+                                    <th>리그 4위</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <td th:text="${teamTotalRecord.first}"></td>
+                                    <td th:text="${teamTotalRecord.second}"></td>
+                                    <td th:text="${teamTotalRecord.threePlace}"></td>
+                                    <td th:text="${teamTotalRecord.fourth}"></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
         </div>
-        <!-- playerInfo -->
 
 
+        <!-- -->
 
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">
@@ -133,9 +353,6 @@
             </div>
         </div>
         <!-- Footer End -->
-
-
-
     </div>
     <!-- Content End -->
 

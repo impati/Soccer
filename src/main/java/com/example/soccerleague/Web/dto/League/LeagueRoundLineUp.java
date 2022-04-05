@@ -19,6 +19,7 @@ public class LeagueRoundLineUp extends DataTransferObject {
 
     private List<LineUpPlayer> playerListA = new ArrayList<>();
     private List<LineUpPlayer> playerListB = new ArrayList<>();
+
     private List<Long> joinPlayer = new ArrayList<>();
     private List<Position> joinPosition = new ArrayList<>();
 
