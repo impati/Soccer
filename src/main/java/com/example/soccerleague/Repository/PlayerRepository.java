@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface PlayerRepository {
     void save(Player player);
-    Player findById(Long id);
+    Optional<Player> findById(Long id);
     List<Player> findAll();
     List<Player> findByName(String name);
     List<Player> findByTeam(Team team);

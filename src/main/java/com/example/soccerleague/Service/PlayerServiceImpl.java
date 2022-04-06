@@ -73,7 +73,7 @@ public class PlayerServiceImpl implements PlayerService {
      */
     @Override
     public Player findPlayer(Long id) {
-        return playerRepository.findById(id);
+        return playerRepository.findById(id).orElse(null);
     }
 
 
@@ -149,7 +149,7 @@ public class PlayerServiceImpl implements PlayerService {
     public void playerUpdate(Long playerId,DataTransferObject dto){
         PlayerSaveDto playerSaveDto = (PlayerSaveDto) dto;
 
-        Player player = playerRepository.findById(playerId);
+        Player player = playerRepository.findById(playerId).orElse(null);
         Team team = teamRepository.findById(playerSaveDto.getTeamId());
         player.update(playerSaveDto.getName(),playerSaveDto.getPosition(),team,
                 playerSaveDto.getAcceleration(),playerSaveDto.getSpeed(),playerSaveDto.getPhysicalFight(),

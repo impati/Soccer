@@ -129,7 +129,6 @@ public class LeagueRoundGameLineUpSaveTestData {
      * 아무기록없을 시 단 한번만 호출.
      */
     public void onePlease(){
-
         roundService.leagueRoundTable(1L,Season.CURRENTSEASON);
         roundService.leagueRoundTable(2L,Season.CURRENTSEASON);
         roundService.leagueRoundTable(3L,Season.CURRENTSEASON);

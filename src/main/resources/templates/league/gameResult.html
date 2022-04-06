@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -187,8 +187,9 @@
 
         <!-- 컨텐츠 시작 -->
         <div class="container-fluid pt-xxl-5 px-xxl-5" >
-            <form  class="form-inline" method="post"  disabled>
-                <div class="row g-4">
+            <div class="row g-4">
+                <form  class="form-inline" method="post"  disabled>
+
 
                     <div class="col-xl-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4 align-items-center">
@@ -291,10 +292,44 @@
 
                         </div>
                     </div>
+                </form>
 
-                </div>
-            </form>
+                <form class="form-inline" method="post"  disabled>
+                    <div th:each ="gameGoalResult : ${gameGoalResultList}">
+                        <div class="col-xl-12 col-xl-6">
+                            <div class="bg-light rounded h-100 p-4 align-items-center">
+
+                                <div class="form-floating mb-3 d-sm-inline">
+
+                                    <select class="form-select d-sm-inline"   disabled aria-label="Floating label select example">
+                                        <option th:text="${gameGoalResult.scorer}">===득점===</option>
+                                    </select>
+
+
+                                    <select class="form-select d-sm-inline"   disabled aria-label="Floating label select example">
+                                        <option th:text="${gameGoalResult.assistant}">===득점===</option>
+                                    </select>
+
+
+
+                                    <select class="form-select d-sm-inline"   disabled aria-label="Floating label select example">
+                                        <option th:text="${gameGoalResult.goalType}">===득점===</option>
+                                    </select>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+
+
+            </div>
         </div>
+
+
 
 
 

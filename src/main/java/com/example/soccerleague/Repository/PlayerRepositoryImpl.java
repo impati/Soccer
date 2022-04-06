@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.swing.text.html.parser.Entity;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,8 +24,8 @@ public class PlayerRepositoryImpl implements PlayerRepository{
     }
 
     @Override
-    public Player findById(Long id) {
-        return em.find(Player.class,id);
+    public Optional<Player> findById(Long id) {
+        return Optional.ofNullable(em.find(Player.class,id));
     }
 
 

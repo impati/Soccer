@@ -265,7 +265,6 @@ public class RoundServiceImpl implements RoundService {
             if(flag){
                 PlayerLeagueRecord playerLeagueRecord = PlayerLeagueRecord.create(ele,leagueRoundLineUp.getJoinPosition().get(i),teamA,(LeagueRound)round);
                 playerLeagueRecordRepository.save(playerLeagueRecord);
-                log.info("playerLeagueRecord {}",playerLeagueRecord);
             }
         }
         for (int i = 0; i < szB;i++) {
@@ -278,7 +277,6 @@ public class RoundServiceImpl implements RoundService {
             if(flag){
                 PlayerLeagueRecord playerLeagueRecord = PlayerLeagueRecord.create(ele,leagueRoundLineUp.getJoinPosition().get(szA + i),teamB,(LeagueRound)round);
                 playerLeagueRecordRepository.save(playerLeagueRecord);
-                log.info("playerLeagueRecord {}",playerLeagueRecord);
             }
         }
 
@@ -357,7 +355,6 @@ public class RoundServiceImpl implements RoundService {
                 bestGrade = res.getGradeList().get(i);
             }
         }
-        log.info("bestGrade : {}",bestGrade);
         //matchResult  처리.
         MatchResult matchResultA = null;
         MatchResult matchResultB = null;
@@ -478,7 +475,6 @@ public class RoundServiceImpl implements RoundService {
         int sumFoul = 0;
         int sumGoodDefense = 0;
         int avgGrade = 0;
-        log.info("byRoundId.size() [{}]",byRoundId.size());
         for(int i = 0;i<byRoundId.size();i++){
             PlayerLeagueRecord playerLeagueRecord = byRoundId.get(i);
             if(playerLeagueRecord.getTeam().getId()== teamLeagueRecord.getTeam().getId()) {
@@ -504,7 +500,6 @@ public class RoundServiceImpl implements RoundService {
         }
 
         avgGrade /= count;
-        log.info("count" ,count);
         teamLeagueRecord.update(
                 res.getScorePair().get(idx),res.getScorePair().get(idx ^ 1),
                 res.getSharePair().get(idx),res.getCornerKickPair().get(idx),
@@ -685,10 +680,8 @@ public class RoundServiceImpl implements RoundService {
             }
             temp.setRank(r);
         }
-        log.info("sz :[{}]",ret.size());
         for(var ele :ret){
             LeagueRoundSeasonResult temp = (LeagueRoundSeasonResult)ele;
-            log.info("[{}]",temp);
         }
 
         return ret;

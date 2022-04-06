@@ -112,7 +112,7 @@ public class PlayerLeagueRecordServiceImpl implements PlayerLeagueRecordService{
     @Override
     public DataTransferObject totalRecord(Long playerId) {
         PlayerTotalRecordDto playerTotalRecord = new PlayerTotalRecordDto();
-        Player player = playerRepository.findById(playerId);
+        Player player = playerRepository.findById(playerId).orElse(null);
 
         //리그
         for(int i =0;i< Season.CURRENTSEASON;i++){
