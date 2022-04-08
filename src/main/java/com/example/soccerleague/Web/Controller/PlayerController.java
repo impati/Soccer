@@ -41,15 +41,13 @@ public class PlayerController {
     }
     @PostMapping("/register")
     public String playerSave(@ModelAttribute("playerSaveDto") PlayerSaveDto saveDto){
-        log.info("PlayerSaveDto [{}]",saveDto);
-
         playerService.signUp(saveDto);
         return "redirect:/player/register";
     }
 
     /**
      *
-     * TODO :제대로 검색 되지않음 확인부탁.
+     *
      * 선수 목록 기능
      * @param playerSearchDto
      * @param model
