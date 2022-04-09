@@ -3,6 +3,7 @@ package com.example.soccerleague.SearchService;
 import com.example.soccerleague.domain.DataTransferObject;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * WHEN DTO
@@ -10,5 +11,6 @@ import java.util.List;
  * THEN DTO
  */
 public interface SearchResolver {
-    List<DataTransferObject> search(DataTransferObject dto);
+    List<DataTransferObject> searchList(DataTransferObject dto);
+    Optional<DataTransferObject> search(DataTransferObject dto);
 }

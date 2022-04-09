@@ -1,5 +1,6 @@
 package com.example.soccerleague.Web.Controller;
 
+import com.example.soccerleague.SearchService.SearchResolver;
 import com.example.soccerleague.Service.*;
 import com.example.soccerleague.Web.dto.Player.*;
 import com.example.soccerleague.domain.League;
@@ -25,6 +26,7 @@ public class PlayerController {
     private final TeamService teamService;
     private final LeagueService leagueService;
     private final PlayerLeagueRecordService playerLeagueRecordService;
+
     /**
      *
      * 선수 등록기능
