@@ -4,6 +4,7 @@ import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.Record;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;
+import com.example.soccerleague.domain.record.TeamRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -47,10 +48,10 @@ public class TeamLeagueRecordEntityRepositoryIml implements TeamLeagueRecordEnti
     }
 
     @Override
-    public List<TeamLeagueRecord> findBySeasonAndTeam(int season, int roundSt,Team team) {
-        return em.createQuery("select tlr from TeamLeagueRecord tlr where tlr.season = :season and tlr.team =:team and tlr.round.roundSt < :roundSt")
+    public List<TeamLeagueRecord> findBySeasonAndTeam(int season, int roundSt,Long teamId) {
+        return em.createQuery("select tlr from TeamLeagueRecord tlr where tlr.season = :season and tlr.team.id =:teamId and tlr.round.roundSt < :roundSt order by tlr.id")
                 .setParameter("season",season)
-                .setParameter("team",team)
+                .setParameter("teamId",teamId)
                 .setParameter("roundSt",roundSt)
                 .getResultList();
     }
@@ -121,4 +122,11 @@ public class TeamLeagueRecordEntityRepositoryIml implements TeamLeagueRecordEnti
                 .setMaxResults(1).getResultList().stream().findFirst();
     }
 
+    @Override
+    public List<TeamRecord> findBySeasonAndTeam(int season, Long teamId) {
+        return em.createQuery("select tlr from TeamLeagueRecord tlr join tlr.team t on t.id =:teamId where tlr .season = :season ")
+                .setParameter("teamId",teamId)
+                .setParameter("season",season)
+                .getResultList();
+    }
 }

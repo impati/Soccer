@@ -24,8 +24,8 @@ public class AppConfig {
 //        return new PlayerSearch();
 //    }
 
-    @Bean
-    public SearchResult playerDisplay(){
-        return new PlayerDisplay();
-    }
+//    @Bean
+//    public SearchResult playerDisplay(){
+//        return new PlayerDisplay();
+//    }
 }

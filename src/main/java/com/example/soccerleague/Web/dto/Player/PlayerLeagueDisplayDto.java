@@ -7,6 +7,11 @@ import lombok.Data;
 
 @Data
 public class PlayerLeagueDisplayDto extends DataTransferObject {
+    //필요한 데이터
+    private Long playerId;
+    private int season;
+
+    //채워줄 데이터
     private int goal;
     private int assist;
     private int pass;
@@ -32,6 +37,12 @@ public class PlayerLeagueDisplayDto extends DataTransferObject {
     private int rank;
     private int gameNumber;
 
+    public static PlayerLeagueDisplayDto create(Long playerId,int season){
+        PlayerLeagueDisplayDto playerLeagueDisplayDto = new PlayerLeagueDisplayDto();
+        playerLeagueDisplayDto.setPlayerId(playerId);
+        playerLeagueDisplayDto.setSeason(season);
+        return playerLeagueDisplayDto;
+    }
 
     /**
      * PlayerLeagueRecord를 모두 받아 업데이트!

@@ -3,6 +3,7 @@ package com.example.soccerleague.EntityRepository;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.domain.record.PlayerRecord;
 import com.example.soccerleague.domain.record.Record;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -52,7 +53,7 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
      * @return
      */
     @Override
-    public List<PlayerLeagueRecord> findBySeasonAndPlayer(int season, Long playerId) {
+    public List<PlayerRecord> findBySeasonAndPlayer(int season, Long playerId) {
         Query query = null;
         try {
             query = em.createQuery("select plr from PlayerLeagueRecord plr where plr.player.id =:player and plr.season = :season " +

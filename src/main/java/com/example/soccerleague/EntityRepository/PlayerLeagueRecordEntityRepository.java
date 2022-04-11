@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PlayerLeagueRecordEntityRepository extends PlayerRecordEntityRepository{
-    List<PlayerLeagueRecord> findBySeasonAndPlayer(int season , Long playerId);
     List<PlayerLeagueRecord> findBySeasonAndLeague(int season,Long leagueId);
     List<Object[]> findSeasonAndTeam(int season,Long teamId);
     Optional<PlayerLeagueRecord> findByLast(int season, Long playerId);

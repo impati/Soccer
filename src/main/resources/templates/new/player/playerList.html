@@ -239,7 +239,7 @@
                             <tbody>
                             <tr th:each="player : *{playerList}">
                                 <td th:text="${player.playerId}"></td>
-                                <td ><a th:text="${player.playerName}" th:href="@{|/player/${player.playerId}|}" ></a></td>
+                                <td ><a th:text="${player.playerName}" th:href="@{|/new-player/${player.playerId}|}" ></a></td>
                                 <td th:text="${player.teamName}"></td>
                                 <td th:text="${player.position}"></td>
                                 <td><a th:href="@{|/player/edit/${player.playerId}|}" th:text="|선수 수정|"></a></td>
