@@ -3,20 +3,16 @@ package com.example.soccerleague.SearchService;
 import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.Repository.PlayerRepository;
-import com.example.soccerleague.Service.PlayerService;
 import com.example.soccerleague.Web.dto.Player.PlayerInfoDto;
-import com.example.soccerleague.Web.dto.Player.PlayerSaveDto;
-import com.example.soccerleague.Web.dto.Player.PlayerSearchDto;
+import com.example.soccerleague.Web.newDto.Player.PlayerSearchDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
-import com.example.soccerleague.domain.Team;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

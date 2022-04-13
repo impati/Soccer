@@ -1,5 +1,6 @@
-package com.example.soccerleague.Web.dto.Player;
+package com.example.soccerleague.Web.newDto.Player;
 
+import com.example.soccerleague.Web.dto.Player.PlayerInfoDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;

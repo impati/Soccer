@@ -1,11 +1,8 @@
-package com.example.soccerleague.Web.dto.Team;
+package com.example.soccerleague.Web.newDto.Team;
 
 import com.example.soccerleague.domain.DataTransferObject;
-import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class TeamLeaguePlayerListDto extends DataTransferObject {

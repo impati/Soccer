@@ -1,16 +1,14 @@
 package com.example.soccerleague.Web.Controller;
 
 import com.example.soccerleague.Service.TeamLeagueRecordService;
-import com.example.soccerleague.Service.TeamLeagueRecordServiceImpl;
 import com.example.soccerleague.Service.TeamService;
-import com.example.soccerleague.Web.dto.Team.TeamLeaguePlayerListDto;
+import com.example.soccerleague.Web.newDto.Team.TeamLeaguePlayerListDto;
 import com.example.soccerleague.Web.dto.Team.TeamPageDto;
-import com.example.soccerleague.Web.dto.Team.TeamTotalRecordDto;
+import com.example.soccerleague.Web.newDto.Team.TeamTotalRecordDto;
 import com.example.soccerleague.Web.dto.record.league.RecordTeamLeagueDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
-import com.example.soccerleague.domain.record.TeamLeagueRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

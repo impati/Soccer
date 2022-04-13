@@ -1,8 +1,7 @@
 package com.example.soccerleague.SearchService;
 
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.Web.dto.Team.TeamLeagueDisplayDto;
-import com.example.soccerleague.Web.dto.Team.TeamLeaguePlayerListDto;
+import com.example.soccerleague.Web.newDto.Team.TeamLeaguePlayerListDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
 import lombok.RequiredArgsConstructor;

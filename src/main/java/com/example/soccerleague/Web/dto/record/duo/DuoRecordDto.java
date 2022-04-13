@@ -1,8 +1,7 @@
 package com.example.soccerleague.Web.dto.record.duo;
 
-import com.example.soccerleague.Web.dto.League.LineUpPlayer;
+import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
-import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.record.GoalType;
 import lombok.Data;
 

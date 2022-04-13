@@ -1,7 +1,7 @@
 package com.example.soccerleague.SearchService;
 
 import com.example.soccerleague.EntityRepository.PlayerRecordEntityRepository;
-import com.example.soccerleague.Web.dto.Player.PlayerTotalRecordDto;
+import com.example.soccerleague.Web.newDto.Player.PlayerTotalRecordDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.PlayerRecord;

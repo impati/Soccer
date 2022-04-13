@@ -1,4 +1,4 @@
-package com.example.soccerleague.Web.dto.Player;
+package com.example.soccerleague.Web.newDto.Player;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.record.MatchResult;

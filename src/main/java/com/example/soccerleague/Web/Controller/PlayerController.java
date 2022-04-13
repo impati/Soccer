@@ -1,8 +1,11 @@
 package com.example.soccerleague.Web.Controller;
 
-import com.example.soccerleague.SearchService.SearchResolver;
 import com.example.soccerleague.Service.*;
 import com.example.soccerleague.Web.dto.Player.*;
+import com.example.soccerleague.Web.newDto.Player.PlayerDisplayDto;
+import com.example.soccerleague.Web.newDto.Player.PlayerLeagueDisplayDto;
+import com.example.soccerleague.Web.newDto.Player.PlayerSearchDto;
+import com.example.soccerleague.Web.newDto.Player.PlayerTotalRecordDto;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;

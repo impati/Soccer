@@ -1,7 +1,7 @@
 package com.example.soccerleague.SearchService;
 
 import com.example.soccerleague.EntityRepository.TeamLeagueRecordEntityRepository;
-import com.example.soccerleague.Web.dto.Team.TeamLeagueDisplayDto;
+import com.example.soccerleague.Web.newDto.Team.TeamLeagueDisplayDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;
@@ -17,13 +17,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class TeamLeagueDisplay implements SearchResult {
+public class DefaultTeamLeagueDisplay implements TeamLeagueDisPlay {
     private final TeamLeagueRecordEntityRepository teamLeagueRecordEntityRepository;
-    @Override
-    public boolean supports(DataTransferObject dto) {
-        return dto instanceof TeamLeagueDisplayDto;
-    }
-
     @Override
     public Optional<DataTransferObject> searchResult(DataTransferObject dto) {
         TeamLeagueDisplayDto displayDto = (TeamLeagueDisplayDto)dto;

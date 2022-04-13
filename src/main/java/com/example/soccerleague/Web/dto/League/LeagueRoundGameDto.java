@@ -1,9 +1,9 @@
 package com.example.soccerleague.Web.dto.League;
 
+import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import lombok.Data;
-import org.hibernate.collection.internal.PersistentList;
 
 import java.util.ArrayList;
 import java.util.List;

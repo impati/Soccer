@@ -12,4 +12,5 @@ public interface PlayerLeagueRecordEntityRepository extends PlayerRecordEntityRe
     List<Object[]> findSeasonAndTeam(int season,Long teamId);
     Optional<PlayerLeagueRecord> findByLast(int season, Long playerId);
     List<Object[]> TopPlayerSeasonAndRoundStWithStrategy(Round round, Team team);
+    List<PlayerLeagueRecord> findByRoundAndTeam(Long roundId,Long teamId);
 }

@@ -1,10 +1,10 @@
 package com.example.soccerleague.Web.renewController;
 
 import com.example.soccerleague.SearchService.SearchResolver;
-import com.example.soccerleague.Web.dto.Player.PlayerDisplayDto;
-import com.example.soccerleague.Web.dto.Player.PlayerLeagueDisplayDto;
-import com.example.soccerleague.Web.dto.Player.PlayerSearchDto;
-import com.example.soccerleague.Web.dto.Player.PlayerTotalRecordDto;
+import com.example.soccerleague.Web.newDto.Player.PlayerDisplayDto;
+import com.example.soccerleague.Web.newDto.Player.PlayerLeagueDisplayDto;
+import com.example.soccerleague.Web.newDto.Player.PlayerSearchDto;
+import com.example.soccerleague.Web.newDto.Player.PlayerTotalRecordDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -24,7 +22,7 @@ public class NewPlayerController {
 
     /**
      *
-     * 선수 검색 기능 컨트롤러
+     * 선수 검색 기능 컨트롤러 PlayerSearchDto
      *
      */
     @GetMapping("/player-list")
@@ -57,7 +55,7 @@ public class NewPlayerController {
          */
 
         /**
-         *  선수 전체적인 기록
+         *  선수 전체적인 기록 PlayerTotalRecordDto
          */
         PlayerTotalRecordDto playerTotalRecordDto = PlayerTotalRecordDto.create(playerId);
         model.addAttribute("playerTotalRecordDto",searchResolver.search(playerTotalRecordDto).orElse(null));

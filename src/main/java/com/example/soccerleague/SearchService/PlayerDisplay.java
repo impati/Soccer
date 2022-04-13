@@ -1,14 +1,13 @@
 package com.example.soccerleague.SearchService;
 
 import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.Web.dto.Player.PlayerDisplayDto;
+import com.example.soccerleague.Web.newDto.Player.PlayerDisplayDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j

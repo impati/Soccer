@@ -3,20 +3,23 @@ package com.example.soccerleague.EntityRepository;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Team;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class TeamEntityRepositoryImpl implements TeamEntityRepository{
     private final EntityManager em;
     @Override
     public List<Team> findByLeagueId(Long leagueId) {
-        return em.createQuery("select t from Team t where t.league.id = :league_id order by t.rating desc")
-                .setParameter("league_id", leagueId)
+        log.info("leagueId :[{}]",leagueId);
+        return em.createQuery("select t from Team t join t.league l on l.id = :leagueId ")
+                .setParameter("leagueId", leagueId)
                 .getResultList();
 
     }

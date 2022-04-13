@@ -1,7 +1,7 @@
 package com.example.soccerleague.SearchService;
 
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
-import com.example.soccerleague.Web.dto.Team.TeamDisplayDto;
+import com.example.soccerleague.Web.newDto.Team.TeamDisplayDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Team;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class TeamDisplay implements SearchResult{
         TeamDisplayDto displayDto = (TeamDisplayDto) dto;
         Team team = (Team)teamEntityRepository.findById(displayDto.getTeamId()).orElse(null);
         displayDto.fillData(team.getName(),team.getLeague().getName(),team.getRating());
-        log.info("displayDto [{}]",displayDto);
+
         return Optional.ofNullable(displayDto);
     }
 }

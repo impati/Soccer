@@ -3,6 +3,7 @@ package com.example.soccerleague.Service;
 import com.example.soccerleague.Repository.*;
 import com.example.soccerleague.Web.dto.Cmp.LeagueRound.LeagueRoundTopPlayerCmpByAttackPoint;
 import com.example.soccerleague.Web.dto.League.*;
+import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service

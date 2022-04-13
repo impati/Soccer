@@ -1,10 +1,8 @@
-package com.example.soccerleague.Web.dto.League;
+package com.example.soccerleague.Web.newDto.league;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
 import lombok.Data;
-
-import java.util.zip.DataFormatException;
 
 @Data
 public class LineUpPlayer extends DataTransferObject {

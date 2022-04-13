@@ -1,4 +1,4 @@
-package com.example.soccerleague.Web.dto.Team;
+package com.example.soccerleague.Web.newDto.Team;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import lombok.Data;

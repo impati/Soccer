@@ -1,13 +1,9 @@
-package com.example.soccerleague.Web.dto.Team;
+package com.example.soccerleague.Web.newDto.Team;
 
-import com.example.soccerleague.SearchService.TeamLeagueDisplay;
-import com.example.soccerleague.Web.dto.record.league.RecordTeamLeagueDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;
 import lombok.Data;
-
-import java.math.MathContext;
 
 @Data
 public class TeamLeagueDisplayDto extends DataTransferObject {
