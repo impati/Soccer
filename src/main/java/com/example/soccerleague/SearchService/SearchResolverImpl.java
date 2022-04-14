@@ -28,7 +28,6 @@ public class SearchResolverImpl implements SearchResolver{
 
     @Override
     public Optional<DataTransferObject> search(DataTransferObject dto) {
-       log.info("searchResult {}",searchResult);
        for(var result : searchResult){
            if(result.supports(dto)){
                return result.searchResult(dto);

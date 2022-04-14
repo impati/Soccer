@@ -31,7 +31,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/league")
-public class LeagueController {
+public class  LeagueController {
     private final LeagueService leagueService;
     private final TeamService teamService;
     private final RoundService roundService;

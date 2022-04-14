@@ -1,17 +1,25 @@
 package com.example.soccerleague.Web.renewController;
 
+import com.example.soccerleague.EntityRepository.TeamEntityRepository;
+import com.example.soccerleague.RegisterService.RegisterResolver;
 import com.example.soccerleague.SearchService.SearchResolver;
 import com.example.soccerleague.Web.newDto.Player.PlayerDisplayDto;
 import com.example.soccerleague.Web.newDto.Player.PlayerLeagueDisplayDto;
 import com.example.soccerleague.Web.newDto.Player.PlayerSearchDto;
 import com.example.soccerleague.Web.newDto.Player.PlayerTotalRecordDto;
+import com.example.soccerleague.Web.newDto.PlayerEditDto;
+import com.example.soccerleague.Web.newDto.register.PlayerRegisterDto;
 import com.example.soccerleague.domain.DataTransferObject;
+import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Season;
+import com.example.soccerleague.domain.Team;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -19,7 +27,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/new-player")
 public class NewPlayerController {
     private final SearchResolver searchResolver;
-
+    private final RegisterResolver registerResolver;
+    private final TeamEntityRepository teamEntityRepository;
     /**
      *
      * 선수 검색 기능 컨트롤러 PlayerSearchDto
@@ -66,8 +75,34 @@ public class NewPlayerController {
         return "new/player/page";
     }
 
+    @GetMapping("/register")
+    public String playerRegisterPage(Model model){
+        model.addAttribute("teams",teamEntityRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList()));
+        model.addAttribute("PositionTypes" , Position.values());
+        model.addAttribute("playerRegisterDto",new PlayerRegisterDto());
+        return "new/player/register";
+    }
 
+    @PostMapping("/register")
+    public String playerRegister(@ModelAttribute PlayerRegisterDto playerRegisterDto){
+        registerResolver.register(playerRegisterDto);
+        return "redirect:/new-player/register";
+    }
 
-
+    @GetMapping("/edit/{playerId}")
+    public String playerEditPage(@PathVariable Long playerId, Model model){
+        model.addAttribute("teams",teamEntityRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList()));
+        model.addAttribute("PositionTypes" , Position.values());
+        PlayerEditDto playerEditDto = new PlayerEditDto(playerId);
+        searchResolver.search(playerEditDto);
+        model.addAttribute("playerEditDto",playerEditDto);
+        return "new/player/edit";
+    }
+    @PostMapping("/edit/{playerId}")
+    public String playerEdit(@PathVariable Long playerId,@ModelAttribute PlayerEditDto playerEditDto){
+        playerEditDto.setPlayerId(playerId);
+        registerResolver.register(playerEditDto);
+        return "redirect:/new-player/edit/" + playerId;
+    }
 
 }

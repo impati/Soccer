@@ -1,10 +1,12 @@
 package com.example.soccerleague.Web.renewController;
 
+import com.example.soccerleague.RegisterService.RegisterResolver;
 import com.example.soccerleague.SearchService.SearchResolver;
 import com.example.soccerleague.Service.LeagueService;
 import com.example.soccerleague.Service.RoundService;
 import com.example.soccerleague.Web.newDto.league.LeagueRoundLineUpDto;
 import com.example.soccerleague.Web.newDto.league.LeagueRoundSearchDto;
+import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Season;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class NewLeagueController {
     private final SearchResolver searchResolver;
-    private final RoundService roundService;
+    private final RegisterResolver registerResolver;
     /**
      * 리그 라운드 정보들.
      */
@@ -53,16 +55,14 @@ public class NewLeagueController {
     public String leagueRoundLineUpPage(@PathVariable Long roundId,Model model){
         LeagueRoundLineUpDto leagueRoundLineUpDto =  new LeagueRoundLineUpDto(roundId);
         model.addAttribute("leagueRoundLineUpDto",searchResolver.search(leagueRoundLineUpDto).orElse(null));
+        model.addAttribute("positionList", Position.values());
         return "new/league/LineUpPage";
     }
 
     @PostMapping("/round/{roundId}/line-up")
     public String leagueRoundLineUpPageSave(@PathVariable Long roundId,@ModelAttribute LeagueRoundLineUpDto leagueRoundLineUpDto){
-        /**
-         * TODO:저장 리졸버가 만들어질때까지 기존의 기능을 사용
-         */
-//        roundService.lineUpSave(roundId,leagueRoundLineUpDto);
-        return "redirect:round/" + roundId +"/line-up";
+        registerResolver.register(leagueRoundLineUpDto);
+        return "redirect:/new-league/round/" + roundId +"/line-up";
     }
 
 }

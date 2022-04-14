@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Service
+@Service(value ="LeagueRoundLineUpSearch")
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class LeagueRoundLineUp implements SearchResult{
@@ -55,12 +55,16 @@ public class LeagueRoundLineUp implements SearchResult{
             playerEntityRepository.findByTeam(teamA).stream()
                     .forEach(ele-> {
                         lineUpDto.getPlayerListA().add(LineUpPlayer.create(ele.getId(), ele.getName(), ele.getPosition()));
-                        lineUpDto.getJoinPlayer().add(ele.getId());});
+                        lineUpDto.getJoinPlayer().add(ele.getId());
+
+                        });
 
             playerEntityRepository.findByTeam(teamB).stream()
                     .forEach(ele-> {
                         lineUpDto.getPlayerListB().add(LineUpPlayer.create(ele.getId(), ele.getName(), ele.getPosition()));
-                        lineUpDto.getJoinPlayer().add(ele.getId());});
+                        lineUpDto.getJoinPlayer().add(ele.getId());
+
+                    });
 
 
         }
@@ -71,13 +75,16 @@ public class LeagueRoundLineUp implements SearchResult{
             lineUpDto.setLineUpDone(true);
             playerLeagueRecordEntityRepository.findByRoundAndTeam(lineUpDto.getRoundId(),teamA.getId()).stream()
                     .map(ele->(PlayerLeagueRecord)ele)
-                    .map(ele->ele.getPlayer())
-                    .forEach(ele->lineUpDto.getPlayerListA().add(LineUpPlayer.create(ele.getId(),ele.getName(),ele.getPosition())));
+                    .forEach(ele->lineUpDto.getPlayerListA().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
+
+
+
 
             playerLeagueRecordEntityRepository.findByRoundAndTeam(lineUpDto.getRoundId(),teamB.getId()).stream()
                     .map(ele->(PlayerLeagueRecord)ele)
-                    .map(ele->ele.getPlayer())
-                    .forEach(ele->lineUpDto.getPlayerListB().add(LineUpPlayer.create(ele.getId(),ele.getName(),ele.getPosition())));
+                    .forEach(ele->lineUpDto.getPlayerListB().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
+
+
 
         }
 
