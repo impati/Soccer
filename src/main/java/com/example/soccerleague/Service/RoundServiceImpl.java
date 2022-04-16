@@ -3,7 +3,7 @@ package com.example.soccerleague.Service;
 import com.example.soccerleague.Repository.*;
 import com.example.soccerleague.Web.dto.Cmp.LeagueRound.LeagueRoundTopPlayerCmpByAttackPoint;
 import com.example.soccerleague.Web.dto.League.*;
-import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
+import com.example.soccerleague.Web.newDto.league.*;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
@@ -522,9 +522,9 @@ public class RoundServiceImpl implements RoundService {
         List<TeamLeagueRecord> teams = teamLeagueRecordRepository.findByRoundId(roundId);
         TeamLeagueRecord teamA = teams.get(0);
         TeamLeagueRecord teamB = teams.get(1);
-        LeagueRoundGameResultTeamDto retA = LeagueRoundGameResultTeamDto.create(
+        LeagueRoundGameTeamResultDto retA = LeagueRoundGameTeamResultDto.create(
                 teamA.getTeam().getName(),teamA.getTeam().getId(),teamA.getScore(),teamA.getShare(),teamA.getCornerKick(),teamA.getFreeKick());
-        LeagueRoundGameResultTeamDto retB = LeagueRoundGameResultTeamDto.create(
+        LeagueRoundGameTeamResultDto retB = LeagueRoundGameTeamResultDto.create(
                 teamB.getTeam().getName(),teamB.getTeam().getId(),teamB.getScore(),teamB.getShare(),teamB.getCornerKick(),teamB.getFreeKick());
         List<DataTransferObject> ret = new ArrayList<>();
         ret.add(retA);
@@ -542,7 +542,7 @@ public class RoundServiceImpl implements RoundService {
         List<PlayerLeagueRecord> players = playerLeagueRecordRepository.findByRoundId(roundId);
         List<DataTransferObject> ret = new ArrayList<>();
         for(var ele : players){
-            LeagueRoundGameResultPlayerDto tmp = LeagueRoundGameResultPlayerDto.create(
+            LeagueRoundGamePlayerResultDto tmp = LeagueRoundGamePlayerResultDto.create(
                    ele.getTeam().getId(), ele.getPosition(),ele.getPlayer().getName(),ele.getGoal(), ele.getAssist(),
                     ele.getPass(),ele.getShooting(), ele.getValidShooting(),ele.getFoul(),ele.getGoodDefense(),ele.getGrade()
             );

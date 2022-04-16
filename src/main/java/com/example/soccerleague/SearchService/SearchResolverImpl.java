@@ -35,4 +35,5 @@ public class SearchResolverImpl implements SearchResolver{
        }
        throw new NotFoundImplementError("구현체를 찾지 못했습니다.");
     }
+
 }

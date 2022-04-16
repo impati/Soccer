@@ -5,7 +5,7 @@ import com.example.soccerleague.Repository.RoundRepository;
 import com.example.soccerleague.Repository.TeamRepository;
 import com.example.soccerleague.Service.RoundService;
 import com.example.soccerleague.Web.Controller.LeagueController;
-import com.example.soccerleague.Web.dto.League.LeagueRoundGameDto;
+import com.example.soccerleague.Web.newDto.league.LeagueRoundGameDto;
 import com.example.soccerleague.Web.dto.League.LeagueRoundLineUp;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Round.Round;
@@ -15,11 +15,7 @@ import com.example.soccerleague.domain.Team;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.ConcurrentModel;
-import org.springframework.ui.Model;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j

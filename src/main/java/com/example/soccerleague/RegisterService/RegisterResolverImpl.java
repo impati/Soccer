@@ -19,4 +19,9 @@ public class RegisterResolverImpl implements RegisterResolver{
         registerData.stream().filter(ele->ele.supports(dataTransferObject)).findFirst().orElse(null).register(dataTransferObject);
 
     }
+
+    @Override
+    public void register(Long id, DataTransferObject dataTransferObject) {
+        registerData.stream().filter(ele->ele.supports(dataTransferObject)).findFirst().orElse(null).register(id,dataTransferObject);
+    }
 }

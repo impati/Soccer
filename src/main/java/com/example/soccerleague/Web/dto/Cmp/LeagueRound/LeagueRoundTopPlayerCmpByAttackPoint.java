@@ -1,6 +1,6 @@
 package com.example.soccerleague.Web.dto.Cmp.LeagueRound;
 
-import com.example.soccerleague.Web.dto.League.LeagueRoundTopPlayer;
+import com.example.soccerleague.Web.newDto.league.LeagueRoundTopPlayer;
 
 import java.util.Comparator;
 

@@ -1,4 +1,4 @@
-package com.example.soccerleague.Web.dto.League;
+package com.example.soccerleague.Web.newDto.league;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import lombok.Data;
@@ -11,6 +11,8 @@ import lombok.Data;
  */
 @Data
 public class RecentShowDown extends DataTransferObject {
+
+    //채워줄 데이터
     private String teamA;
     private String teamB;
 

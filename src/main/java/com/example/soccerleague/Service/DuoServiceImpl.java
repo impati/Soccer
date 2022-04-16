@@ -4,8 +4,8 @@ import com.example.soccerleague.Repository.DuoRepository;
 import com.example.soccerleague.Repository.PlayerRepository;
 import com.example.soccerleague.Web.dto.League.LeagueRoundLineUp;
 import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
-import com.example.soccerleague.Web.dto.record.duo.DuoRecordDto;
-import com.example.soccerleague.Web.dto.record.duo.DuoRecordResultDto;
+import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
+import com.example.soccerleague.Web.newDto.duo.DuoRecordResultDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
@@ -82,7 +82,7 @@ public class DuoServiceImpl implements DuoService{
             if(scorer!=null)scorerName = scorer.getName();
             if(assistant != null)assistantName = assistant.getName();
 
-            DuoRecordResultDto obj = new DuoRecordResultDto(scorerName,assistantName,element.getGoalType());
+            DuoRecordResultDto obj = DuoRecordResultDto.create(scorerName,assistantName,element.getGoalType());
             ret.add(obj);
         }
         return ret;

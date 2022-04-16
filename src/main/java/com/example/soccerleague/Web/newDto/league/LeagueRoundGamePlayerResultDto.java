@@ -1,4 +1,4 @@
-package com.example.soccerleague.Web.dto.League;
+package com.example.soccerleague.Web.newDto.league;
 
 
 import com.example.soccerleague.domain.DataTransferObject;
@@ -10,7 +10,8 @@ import lombok.Data;
  * 선수 경기결과를 display해줄 dto
  */
 @Data
-public class LeagueRoundGameResultPlayerDto extends DataTransferObject {
+public class LeagueRoundGamePlayerResultDto extends DataTransferObject {
+    private Long roundId;
     private Position position;
     private String  name;
     private Integer goal;
@@ -23,13 +24,13 @@ public class LeagueRoundGameResultPlayerDto extends DataTransferObject {
     private Integer grade;
     private Long teamId;
 
-    public static LeagueRoundGameResultPlayerDto create(
+    public static LeagueRoundGamePlayerResultDto create(
             Long teamId,Position position,String name,
             int goal,int assist,int pass,
             int shooting,int validShooting,int foul,
             int goodDefense,int grade
     ){
-        LeagueRoundGameResultPlayerDto ret = new LeagueRoundGameResultPlayerDto();
+        LeagueRoundGamePlayerResultDto ret = new LeagueRoundGamePlayerResultDto();
         ret.setPosition(position);
         ret.setName(name);
         ret.setTeamId(teamId);
@@ -42,6 +43,13 @@ public class LeagueRoundGameResultPlayerDto extends DataTransferObject {
         ret.setValidShooting(validShooting);
         ret.setGoodDefense(goodDefense);
         return ret;
+    }
+    public static LeagueRoundGamePlayerResultDto create(Long roundId,Long teamId){
+        LeagueRoundGamePlayerResultDto ret = new LeagueRoundGamePlayerResultDto();
+        ret.setRoundId(roundId);
+        ret.setTeamId(teamId);
+        return ret;
+
     }
 
 

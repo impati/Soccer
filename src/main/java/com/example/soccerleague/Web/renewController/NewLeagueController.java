@@ -1,18 +1,28 @@
 package com.example.soccerleague.Web.renewController;
 
+import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.RegisterService.RegisterResolver;
+import com.example.soccerleague.SearchService.DuoRecord;
+import com.example.soccerleague.SearchService.LeagueRoundGame;
+import com.example.soccerleague.SearchService.LeagueRoundGamePlayerResult;
 import com.example.soccerleague.SearchService.SearchResolver;
-import com.example.soccerleague.Service.LeagueService;
-import com.example.soccerleague.Service.RoundService;
-import com.example.soccerleague.Web.newDto.league.LeagueRoundLineUpDto;
-import com.example.soccerleague.Web.newDto.league.LeagueRoundSearchDto;
+import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
+import com.example.soccerleague.Web.newDto.duo.DuoRecordResultDto;
+import com.example.soccerleague.Web.newDto.league.*;
+import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
+import com.example.soccerleague.domain.Round.LeagueRound;
+import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Season;
+import com.example.soccerleague.domain.record.TeamLeagueRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -21,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 public class NewLeagueController {
     private final SearchResolver searchResolver;
     private final RegisterResolver registerResolver;
+    private final RoundEntityRepository roundEntityRepository;
     /**
      * 리그 라운드 정보들.
      */
@@ -64,5 +75,111 @@ public class NewLeagueController {
         registerResolver.register(leagueRoundLineUpDto);
         return "redirect:/new-league/round/" + roundId +"/line-up";
     }
+
+
+    /**
+     * 라운드 경기
+     */
+    @GetMapping("/round/{roundId}/game")
+    public String leagueRoundGamePage(@PathVariable Long roundId,Model model){
+        LeagueRound round = (LeagueRound) roundEntityRepository.findById(roundId).orElse(null);
+        if(round.getRoundStatus().equals(RoundStatus.YET)){
+            return "new/league/BeforeGame";
+        }
+        else if(round.getRoundStatus().equals(RoundStatus.ING)){
+            /**
+             *  라운드의 기본적인 정보를 가져온 후 경기 내용을 리턴 받음
+             */
+            LeagueRoundGameDto leagueRoundGameDto = LeagueRoundGameDto.create(roundId);
+            model.addAttribute("leagueRoundGameDto",searchResolver.search(leagueRoundGameDto).orElse(null));
+            return "new/league/game";
+        }
+        else if(round.getRoundStatus().equals(RoundStatus.RECORD)){
+
+            /**
+             * 라운드 경기내용을 내려주고 골-어시스트 정보를 리턴받음
+             */
+            LeagueRoundGameTeamResultDto leagueRoundGameTeamResultDto = LeagueRoundGameTeamResultDto.create(roundId);
+            List<LeagueRoundGameTeamResultDto> teams = searchResolver.searchList(leagueRoundGameTeamResultDto)
+                    .stream()
+                    .map(ele -> (LeagueRoundGameTeamResultDto) ele).collect(Collectors.toList());
+
+            LeagueRoundGameTeamResultDto teamA =  teams.get(0);
+            LeagueRoundGameTeamResultDto teamB =  teams.get(1);
+
+
+            LeagueRoundGamePlayerResultDto playerA = LeagueRoundGamePlayerResultDto.create(roundId,teamA.getTeamId());
+            LeagueRoundGamePlayerResultDto playerB = LeagueRoundGamePlayerResultDto.create(roundId,teamB.getTeamId());
+
+            DuoRecordDto duoRecordDto = DuoRecordDto.create(roundId);
+
+            searchResolver.search(duoRecordDto);
+
+
+
+            model.addAttribute("teamA",teamA);
+            model.addAttribute("teamB",teamB);
+            model.addAttribute("playerA",searchResolver.searchList(playerA));
+            model.addAttribute("playerB",searchResolver.searchList(playerB));
+            model.addAttribute("count",teamA.getScore() + teamB.getScore());
+            model.addAttribute("duoRecord",duoRecordDto);
+
+
+            return "new/league/gameRecord";
+        }
+        else{
+            /**
+             * 라운드 경기내용을 내려주고 골-어시스트 정보도 내려줌.
+             */
+            LeagueRoundGameTeamResultDto leagueRoundGameTeamResultDto = LeagueRoundGameTeamResultDto.create(roundId);
+            List<LeagueRoundGameTeamResultDto> teams = searchResolver.searchList(leagueRoundGameTeamResultDto)
+                    .stream()
+                    .map(ele -> (LeagueRoundGameTeamResultDto) ele).collect(Collectors.toList());
+
+            LeagueRoundGameTeamResultDto teamA =  teams.get(0);
+            LeagueRoundGameTeamResultDto teamB =  teams.get(1);
+
+
+            LeagueRoundGamePlayerResultDto playerA = LeagueRoundGamePlayerResultDto.create(roundId,teamA.getTeamId());
+
+            LeagueRoundGamePlayerResultDto playerB = LeagueRoundGamePlayerResultDto.create(roundId,teamB.getTeamId());
+
+            DuoRecordResultDto duoRecordResult = DuoRecordResultDto.create(roundId);
+
+            model.addAttribute("teamA",teamA);
+            model.addAttribute("teamB",teamB);
+            model.addAttribute("playerA", searchResolver.searchList(playerA));
+            model.addAttribute("playerB",  searchResolver.searchList(playerB));
+            model.addAttribute("count",teamA.getScore() + teamB.getScore());
+            model.addAttribute("duoRecordResult",searchResolver.searchList(duoRecordResult));
+            return "new/league/gameResult";
+        }
+
+    }
+    @PostMapping("/round/{roundId}/game")
+    public String leagueRoundGameSave(@PathVariable Long roundId,@ModelAttribute LeagueRoundGameDto leagueRoundGameDto){
+        leagueRoundGameDto.setRoundId(roundId);
+        registerResolver.register(leagueRoundGameDto);
+        return "redirect:/new-league/round/"+ roundId + "/game";
+    }
+    @PostMapping("/round/{roundId}/game-record")
+    public String leagueRoundGameRecord(@PathVariable Long roundId,@ModelAttribute DuoRecordDto duoRecordDto){
+        log.info("*****");
+        registerResolver.register(roundId,duoRecordDto);
+        return "redirect:/new-league/round/"+ roundId + "/game";
+    }
+
+
+
+
+
+    @GetMapping("/round/{roundId}/strategy")
+    public String leagueRoundStrategy(@PathVariable Long roundId){
+
+    }
+
+
+
+
 
 }

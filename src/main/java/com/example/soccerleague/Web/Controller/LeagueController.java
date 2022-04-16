@@ -5,9 +5,11 @@ import com.example.soccerleague.Service.LeagueService;
 import com.example.soccerleague.Service.RoundService;
 import com.example.soccerleague.Service.TeamService;
 import com.example.soccerleague.Web.dto.League.*;
+import com.example.soccerleague.Web.dto.League.LeagueRoundSearchDto;
 import com.example.soccerleague.Web.dto.Team.TeamSimpleInfoDto;
-import com.example.soccerleague.Web.dto.record.duo.DuoRecordDto;
-import com.example.soccerleague.Web.dto.record.duo.DuoRecordResultDto;
+import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
+import com.example.soccerleague.Web.newDto.duo.DuoRecordResultDto;
+import com.example.soccerleague.Web.newDto.league.*;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Round.Round;
@@ -191,23 +193,23 @@ public class  LeagueController {
         Integer count = 0;
         List<DataTransferObject> teams = roundService.gameTeamResult(roundId);
         List<DataTransferObject> players = roundService.gamePlayerResult(roundId);
-        LeagueRoundGameResultTeamDto teamADto = (LeagueRoundGameResultTeamDto) teams.get(0);
+        LeagueRoundGameTeamResultDto teamADto = (LeagueRoundGameTeamResultDto) teams.get(0);
         count += teamADto.getScore();
-        LeagueRoundGameResultTeamDto teamBDto = (LeagueRoundGameResultTeamDto) teams.get(1);
+        LeagueRoundGameTeamResultDto teamBDto = (LeagueRoundGameTeamResultDto) teams.get(1);
         count += teamBDto.getScore();
 
-        List<LeagueRoundGameResultPlayerDto> playerADto = new ArrayList<>();
+        List<LeagueRoundGamePlayerResultDto> playerADto = new ArrayList<>();
         for(int i =0;i<players.size();i++){
-            LeagueRoundGameResultPlayerDto tmp = (LeagueRoundGameResultPlayerDto) players.get(i);
+            LeagueRoundGamePlayerResultDto tmp = (LeagueRoundGamePlayerResultDto) players.get(i);
             if(tmp.getTeamId() == teamADto.getTeamId()){
                 playerADto.add(tmp);
             }
 
         }
 
-        List<LeagueRoundGameResultPlayerDto> playerBDto = new ArrayList<>();
+        List<LeagueRoundGamePlayerResultDto> playerBDto = new ArrayList<>();
         for(int i =0;i<players.size();i++){
-            LeagueRoundGameResultPlayerDto tmp = (LeagueRoundGameResultPlayerDto) players.get(i);
+            LeagueRoundGamePlayerResultDto tmp = (LeagueRoundGamePlayerResultDto) players.get(i);
             if(tmp.getTeamId() == teamBDto.getTeamId()){
                 playerBDto.add(tmp);
             }
@@ -219,6 +221,7 @@ public class  LeagueController {
         model.addAttribute("teamBDto",teamBDto);
         model.addAttribute("playerADto",playerADto);
         model.addAttribute("playerBDto",playerBDto);
+
         model.addAttribute("count",count);
     }
 

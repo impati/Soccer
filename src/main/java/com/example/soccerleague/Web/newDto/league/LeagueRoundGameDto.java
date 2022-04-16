@@ -1,7 +1,8 @@
-package com.example.soccerleague.Web.dto.League;
+package com.example.soccerleague.Web.newDto.league;
 
 import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
+import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 public class LeagueRoundGameDto extends DataTransferObject {
     //display 넣어줄 데이터들
+    private Long roundId;
     private RoundStatus roundStatus;
     private String teamA;
     private String teamB;
@@ -37,6 +39,12 @@ public class LeagueRoundGameDto extends DataTransferObject {
     private List<Integer> foulList = new ArrayList<>();
     private List<Integer> goodDefenseList = new ArrayList<>();
     private List<Integer> gradeList = new ArrayList<>(); // 100점 만점.
+
+    public static LeagueRoundGameDto create(Long roundId){
+        LeagueRoundGameDto leagueRoundGameDto = new LeagueRoundGameDto();
+        leagueRoundGameDto.setRoundId(roundId);
+        return leagueRoundGameDto;
+    }
 
 
 

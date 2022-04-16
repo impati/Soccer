@@ -1,9 +1,6 @@
 package com.example.soccerleague.RegisterService;
 
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.EntityRepository.RoundEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
+import com.example.soccerleague.EntityRepository.*;
 import com.example.soccerleague.Web.newDto.league.LeagueRoundLineUpDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
@@ -13,6 +10,7 @@ import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.domain.record.TeamLeagueRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,9 +24,11 @@ import java.util.List;
 @Transactional
 public class LeagueRoundLineUp implements RegisterData{
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
+    private final TeamLeagueRecordEntityRepository teamLeagueRecordEntityRepository;
     private final RoundEntityRepository roundEntityRepository;
     private final TeamEntityRepository teamEntityRepository;
     private final PlayerEntityRepository playerEntityRepository;
+
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
         return dataTransferObject instanceof LeagueRoundLineUpDto;
@@ -51,6 +51,8 @@ public class LeagueRoundLineUp implements RegisterData{
                 }
             }
         }
+        TeamLeagueRecord teamLeagueRecordA = TeamLeagueRecord.create(round,teamA);
+        teamLeagueRecordEntityRepository.save(teamLeagueRecordA);
         int sz = playerListA.size();
         Team teamB = (Team)teamEntityRepository.findById(round.getAwayTeamId()).orElse(null);
         List<Player> playerListB = playerEntityRepository.findByTeam(teamB);
@@ -65,6 +67,9 @@ public class LeagueRoundLineUp implements RegisterData{
                 }
             }
         }
+        TeamLeagueRecord teamLeagueRecordB = TeamLeagueRecord.create(round,teamB);
+        teamLeagueRecordEntityRepository.save(teamLeagueRecordB);
+
 
         round.setRoundStatus(RoundStatus.ING);
 
