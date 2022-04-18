@@ -6,7 +6,6 @@ import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Round.LeagueRound;
-import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
@@ -22,7 +21,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class LeagueRoundLineUp implements RegisterData{
+public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegister{
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
     private final TeamLeagueRecordEntityRepository teamLeagueRecordEntityRepository;
     private final RoundEntityRepository roundEntityRepository;

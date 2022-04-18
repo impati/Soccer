@@ -7,7 +7,6 @@ import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.Web.newDto.league.LeagueRoundLineUpDto;
 import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
-import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
@@ -17,14 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service(value ="LeagueRoundLineUpSearch")
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class LeagueRoundLineUp implements SearchResult{
+public class DefaultLeagueRoundLineUp implements LeagueRoundLineUpSearch {
     private final RoundEntityRepository roundEntityRepository;
     private final TeamEntityRepository teamEntityRepository;
     private final PlayerEntityRepository playerEntityRepository;
@@ -56,14 +54,14 @@ public class LeagueRoundLineUp implements SearchResult{
                     .forEach(ele-> {
                         lineUpDto.getPlayerListA().add(LineUpPlayer.create(ele.getId(), ele.getName(), ele.getPosition()));
                         lineUpDto.getJoinPlayer().add(ele.getId());
-
+                        lineUpDto.getJoinPosition().add(ele.getPosition());
                         });
 
             playerEntityRepository.findByTeam(teamB).stream()
                     .forEach(ele-> {
                         lineUpDto.getPlayerListB().add(LineUpPlayer.create(ele.getId(), ele.getName(), ele.getPosition()));
                         lineUpDto.getJoinPlayer().add(ele.getId());
-
+                        lineUpDto.getJoinPosition().add(ele.getPosition());
                     });
 
 

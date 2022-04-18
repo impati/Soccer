@@ -8,7 +8,6 @@ import com.example.soccerleague.Web.newDto.league.LeagueSeasonTableDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Round.LeagueRound;
-import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.Duo;
@@ -19,10 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Service(value="DuoRecordRegister")
+@Service
 @Transactional
 @RequiredArgsConstructor
-public class DuoRecord implements RegisterData{
+public class DefaultDuoRecordRegister implements DuoRecordRegister{
     private final DuoEntityRepository duoEntityRepository;
     private final RoundEntityRepository roundEntityRepository;
     private final LeagueSeasonTable leagueSeasonTable;
@@ -33,9 +32,9 @@ public class DuoRecord implements RegisterData{
     }
 
     @Override
-    public void register(Long id, DataTransferObject dataTransferObject) {
+    public void register(DataTransferObject dataTransferObject) {
         DuoRecordDto duoRecordDto = (DuoRecordDto)dataTransferObject;
-        LeagueRound leagueRound =  (LeagueRound) roundEntityRepository.findById(id).orElse(null);
+        LeagueRound leagueRound =  (LeagueRound) roundEntityRepository.findById(duoRecordDto.getRoundId()).orElse(null);
         int sz = duoRecordDto.getScorer().size();
         for(int i = 0;i < sz; i++){
             Long scorer = duoRecordDto.getScorer().get(i);
@@ -44,7 +43,7 @@ public class DuoRecord implements RegisterData{
             Duo duo = Duo.create(scorer,assistant,goalType,leagueRound);
             duoEntityRepository.save(duo);
         }
-
+        log.info("duo [{}]",duoRecordDto);
         leagueRound.setRoundStatus(RoundStatus.DONE);
 
         if(roundEntityRepository.currentRoundIsDone(leagueRound)){

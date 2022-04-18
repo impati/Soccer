@@ -14,4 +14,5 @@ public interface RoundEntityRepository extends EntityRepository{
     List<Round> isRemainSeasonAndRoundSt(int season, int roundSt);
     Boolean currentRoundIsDone(Round round);
     Boolean findByLeagueSeason(Long leagueId,int season);
+    List<Round> findNotDoneGame(int season,int roundSt);
 }

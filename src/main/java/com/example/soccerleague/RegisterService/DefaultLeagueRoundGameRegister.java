@@ -3,13 +3,10 @@ package com.example.soccerleague.RegisterService;
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamLeagueRecordEntityRepository;
-import com.example.soccerleague.Repository.PlayerLeagueRecordRepository;
-import com.example.soccerleague.Repository.TeamLeagueRecordRepository;
 import com.example.soccerleague.Web.newDto.league.LeagueRoundGameDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.RoundStatus;
-import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.Record;
@@ -22,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Slf4j
-@Service(value ="LeagueRoundGameRegister")
+@Service
 @RequiredArgsConstructor
 @Transactional
-public class LeagueRoundGame implements RegisterData{
+public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
     private final RoundEntityRepository roundEntityRepository;
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
     private final TeamLeagueRecordEntityRepository teamLeagueRecordEntityRepository;

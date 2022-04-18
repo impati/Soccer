@@ -1,6 +1,5 @@
 package com.example.soccerleague.SearchService;
 
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
@@ -9,7 +8,6 @@ import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Round.LeagueRound;
-import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +20,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Service(value = "LeagueRoundGameSearch")
+@Service
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class LeagueRoundGame implements SearchResult{
+public class DefaultLeagueRoundGameSearch implements LeagueRoundGameSearch{
     private final RoundEntityRepository roundEntityRepository;
     private final TeamEntityRepository teamEntityRepository;
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;

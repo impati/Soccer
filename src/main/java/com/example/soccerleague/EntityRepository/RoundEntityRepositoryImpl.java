@@ -75,4 +75,13 @@ public class RoundEntityRepositoryImpl implements RoundEntityRepository{
         if(sz > 0) return true;
         else return false;
     }
+
+    @Override
+    public List<Round> findNotDoneGame(int season, int roundSt) {
+        return em.createQuery("select r from Round r where r.season = : season and r.roundSt = :roundSt and r.roundStatus <> :status")
+                .setParameter("season",season)
+                .setParameter("roundSt",roundSt)
+                .setParameter("status",RoundStatus.DONE)
+                .getResultList();
+    }
 }

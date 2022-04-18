@@ -204,7 +204,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="round: ${leagueRound.leagueRoundInfoList}"  th:onclick="'location.href=' + '\'' + @{/league/round/{roundId}/line-up (roundId=${round.roundId})} + '\''">
+                                <tr th:each="round: ${leagueRound.leagueRoundInfoList}"  th:onclick="'location.href=' + '\'' + @{/new-league/round/{roundId}/line-up (roundId=${round.roundId})} + '\''">
                                     <td th:text="${round.teamAName}"></td>
                                     <td th:if="${round.isDone}" th:text="${round.scoreA}"></td>
                                     <td th:unless="${round.isDone}"></td>
