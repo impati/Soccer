@@ -148,4 +148,19 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
                 .setParameter("teamId",teamId)
                 .getResultList();
     }
+
+    /**
+     *  라운드 정보 이전까지 선수들의 기록.
+     *
+     * */
+
+    @Override
+    public List<PlayerLeagueRecord> findBySeasonAndPlayer(Round round, Long playerId) {
+        return em.createQuery("select plr from PlayerLeagueRecord plr " +
+                " join  plr.player p on p.id =:playerId " +
+                " join  plr.leagueRound lr on lr.id < :roundId")
+                .setParameter("playerId",playerId)
+                .setParameter("roundId",round.getId())
+                .getResultList();
+    }
 }

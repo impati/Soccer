@@ -10,7 +10,9 @@ import lombok.Data;
  * 최근 5경기 양팀 맞대결
  */
 @Data
-public class RecentShowDown extends DataTransferObject {
+public class ShowDownDto extends DataTransferObject {
+
+    private Long roundId;
 
     //채워줄 데이터
     private String teamA;
@@ -25,6 +27,16 @@ public class RecentShowDown extends DataTransferObject {
     //리그? 챔피언스리그? 유로파?
     private String type;
 
+    public static ShowDownDto create(Long roundId){
+        ShowDownDto obj = new ShowDownDto();
+        obj.setRoundId(roundId);
+        obj.setType("League");
+        return obj;
+    }
+
+
+
+
     /**
      * 리그 타입 생성
      * @param teamA
@@ -33,8 +45,8 @@ public class RecentShowDown extends DataTransferObject {
      * @param scoreB
      * @return
      */
-    public static RecentShowDown create(String teamA,String teamB,int scoreA, int scoreB,int season,int roundSt){
-        RecentShowDown obj = new RecentShowDown();
+    public static ShowDownDto create(String teamA, String teamB, int scoreA, int scoreB, int season, int roundSt){
+        ShowDownDto obj = new ShowDownDto();
         obj.setTeamA(teamA);
         obj.setTeamB(teamB);
         obj.setScoreA(scoreA);

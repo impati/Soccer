@@ -12,5 +12,5 @@ public interface TeamLeagueRecordEntityRepository extends TeamRecordEntityReposi
     List<TeamLeagueRecord> findBySeasonAndTeam(int season, int roundSt, Long teamId);
     List<TeamLeagueRecord> findBySeasonAndTeamRecent5(int season,int roundSt,Team team);
     Optional<TeamLeagueRecord> findByLastRecord(int season, Long teamId);
-    List<TeamLeagueRecord> findByShowDown(Round round , Team teamA, Team teamB);
+    List<TeamLeagueRecord> findByShowDown(Round round , Long homeId, Long awayId);
 }

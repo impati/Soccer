@@ -49,7 +49,7 @@ public class TeamLeagueRecordEntityRepositoryIml implements TeamLeagueRecordEnti
 
     @Override
     public List<TeamLeagueRecord> findBySeasonAndTeam(int season, int roundSt,Long teamId) {
-        return em.createQuery("select tlr from TeamLeagueRecord tlr where tlr.season = :season and tlr.team.id =:teamId and tlr.round.roundSt < :roundSt order by tlr.id")
+        return em.createQuery("select tlr from TeamLeagueRecord tlr where tlr.season = :season and tlr.team.id =:teamId and tlr.round.roundSt < :roundSt ")
                 .setParameter("season",season)
                 .setParameter("teamId",teamId)
                 .setParameter("roundSt",roundSt)
@@ -68,39 +68,15 @@ public class TeamLeagueRecordEntityRepositoryIml implements TeamLeagueRecordEnti
     }
 
     /**
-     *  양팀 맞대결에서 쓰일 정보로써
-     *  두팀의 최근 경기결과를 쌍으로 가져옴
-     *  따라서 idx = 1 부터 +=2 증가함으로써 home = A 를 지켜줄 수 있음.
-     *        idx = 0 부터 +=2  away = B
      *
-     *  또한 호출한 시점에 season보다 이전의 결과만 가져온다.
-     * @param teamA
-     * @param teamB
-     * @return
      */
     @Override
-    public List<TeamLeagueRecord> findByShowDown(Round round, Team teamA, Team teamB) {
-
-        StringBuilder sql = new StringBuilder(" select *  from TEAM_LEAGUE_RECORD tlr ");
-        sql.append(" join round r on r.round_id = tlr.round_id ");
-        sql.append(" where (r.away_team_id = ? and r.home_team_id = ? ) and (r.season <= ? ) ");
-        sql.append(" order by tlr.team_league_record_id desc");
-
-        String ret = String.valueOf(sql);
-        Query nativeQuery = em.createNativeQuery(ret, TeamLeagueRecord.class);
-        nativeQuery.setParameter(1,teamA.getId());
-        nativeQuery.setParameter(2,teamB.getId());
-        nativeQuery.setParameter(3,round.getSeason());
-        List<TeamLeagueRecord> resultList = nativeQuery.getResultList();
-        if(resultList.size() > 0)return resultList;
-        else{
-            Query nq = em.createNativeQuery(ret, TeamLeagueRecord.class);
-            nq.setParameter(1,teamB.getId());
-            nq.setParameter(2,teamA.getId());
-            nq.setParameter(3,round.getSeason());
-            return  nq.getResultList();
-        }
-
+    public List<TeamLeagueRecord> findByShowDown(Round round, Long homeId, Long awayId) {
+        return em.createQuery("select tlr from TeamLeagueRecord tlr join  tlr.round r on r.homeTeamId = :homeId and r.awayTeamId =:awayId and r.id < :roundId order by tlr.id desc")
+                .setParameter("homeId",homeId)
+                .setParameter("awayId",awayId)
+                .setParameter("roundId",round.getId())
+                .getResultList();
     }
 
     /**

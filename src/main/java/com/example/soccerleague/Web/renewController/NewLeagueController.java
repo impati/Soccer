@@ -2,19 +2,14 @@ package com.example.soccerleague.Web.renewController;
 
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.RegisterService.RegisterResolver;
-import com.example.soccerleague.SearchService.DuoRecord;
-import com.example.soccerleague.SearchService.LeagueRoundGame;
-import com.example.soccerleague.SearchService.LeagueRoundGamePlayerResult;
 import com.example.soccerleague.SearchService.SearchResolver;
 import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
 import com.example.soccerleague.Web.newDto.duo.DuoRecordResultDto;
 import com.example.soccerleague.Web.newDto.league.*;
-import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Season;
-import com.example.soccerleague.domain.record.TeamLeagueRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -83,6 +78,7 @@ public class NewLeagueController {
     @GetMapping("/round/{roundId}/game")
     public String leagueRoundGamePage(@PathVariable Long roundId,Model model){
         LeagueRound round = (LeagueRound) roundEntityRepository.findById(roundId).orElse(null);
+        model.addAttribute("round",round.getId());
         if(round.getRoundStatus().equals(RoundStatus.YET)){
             return "new/league/BeforeGame";
         }
@@ -174,8 +170,40 @@ public class NewLeagueController {
 
 
     @GetMapping("/round/{roundId}/strategy")
-    public String leagueRoundStrategy(@PathVariable Long roundId){
+    public String leagueRoundStrategy(@PathVariable Long roundId,Model model){
+        LeagueRound round = (LeagueRound) roundEntityRepository.findById(roundId).orElse(null);
+        model.addAttribute("round",round.getId());
+        /**
+         * 팀의 시즌 승무패 ,평균득점,평균실점.
+         */
+        LeagueRoundSeasonTeamDto leagueRoundSeasonTeamDtoA = LeagueRoundSeasonTeamDto.create(roundId,round.getHomeTeamId());
+        model.addAttribute("teamASeason",searchResolver.search(leagueRoundSeasonTeamDtoA).orElse(null));
 
+        LeagueRoundSeasonTeamDto leagueRoundSeasonTeamDtoB = LeagueRoundSeasonTeamDto.create(roundId,round.getHomeTeamId());
+        model.addAttribute("teamBSeason",searchResolver.search(leagueRoundSeasonTeamDtoB).orElse(null));
+
+
+        /**
+         * 팀의 최근 양팀 맞대결
+         */
+        ShowDownDto downDto = ShowDownDto.create(roundId);
+        model.addAttribute("recentShowDown",searchResolver.searchList(downDto));
+
+        /**
+         * 팀의 탑티어 선수들
+         */
+        LeagueRoundTopPlayerDto leagueRoundTopPlayerA = LeagueRoundTopPlayerDto.create(round.getHomeTeamId(),round);
+        model.addAttribute("teamATopPlayer",searchResolver.searchList(leagueRoundTopPlayerA));
+
+        LeagueRoundTopPlayerDto leagueRoundTopPlayerB = LeagueRoundTopPlayerDto.create(round.getAwayTeamId(),round);
+        model.addAttribute("teamBTopPlayer",searchResolver.searchList(leagueRoundTopPlayerB));
+
+
+
+
+
+
+        return "new/league/strategy";
     }
 
 

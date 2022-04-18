@@ -252,21 +252,21 @@ public class  LeagueController {
 
         dataTransferObjects = roundService.RecentShowDownWithStrategy(roundId);
 
-        List<RecentShowDown> recentShowDown = new ArrayList<>();
+        List<ShowDownDto> recentShowDown = new ArrayList<>();
         for(var ele :dataTransferObjects){
-            recentShowDown.add((RecentShowDown)ele);
+            recentShowDown.add((ShowDownDto)ele);
         }
 
         List<DataTransferObject> A = roundService.seasonTopPlayerWithStrategy(roundId, "A");
-        List<LeagueRoundTopPlayer> teamATopPlayer = new ArrayList<>();
+        List<LeagueRoundTopPlayerDto> teamATopPlayer = new ArrayList<>();
         for(var ele : A){
-            teamATopPlayer.add((LeagueRoundTopPlayer) ele);
+            teamATopPlayer.add((LeagueRoundTopPlayerDto) ele);
         }
 
         List<DataTransferObject> B = roundService.seasonTopPlayerWithStrategy(roundId, "B");
-        List<LeagueRoundTopPlayer> teamBTopPlayer = new ArrayList<>();
+        List<LeagueRoundTopPlayerDto> teamBTopPlayer = new ArrayList<>();
         for(var ele : B){
-            teamBTopPlayer.add((LeagueRoundTopPlayer) ele);
+            teamBTopPlayer.add((LeagueRoundTopPlayerDto) ele);
         }
 
 

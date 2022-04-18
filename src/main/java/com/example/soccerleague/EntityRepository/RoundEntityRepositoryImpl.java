@@ -1,6 +1,7 @@
 package com.example.soccerleague.EntityRepository;
 
 import com.example.soccerleague.domain.Round.Round;
+import com.example.soccerleague.domain.Round.RoundStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -51,7 +52,17 @@ public class RoundEntityRepositoryImpl implements RoundEntityRepository{
     }
 
     @Override
-    public Boolean findByLeagueSeason(int season, Long leagueId) {
+    public Boolean currentRoundIsDone(Round round) {
+        int sz = em.createQuery("select r from Round r where r.roundSt = :roundSt and r.roundStatus <> :status")
+                .setParameter("roundSt", round.getRoundSt())
+                .setParameter("status", RoundStatus.DONE)
+                .getResultList().size();
+        if(sz == 0)return true;
+        else return false;
+    }
+
+    @Override
+    public Boolean findByLeagueSeason(Long leagueId, int season) {
         int sz = 0;
         try {
             sz = em.createQuery("select r from Round r where r.leagueId =:league and r.season = :season")
@@ -64,6 +75,4 @@ public class RoundEntityRepositoryImpl implements RoundEntityRepository{
         if(sz > 0) return true;
         else return false;
     }
-
-
 }

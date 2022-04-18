@@ -17,12 +17,12 @@ import javax.persistence.*;
 @MappedSuperclass
 public abstract class PlayerRecord extends Record{
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="player_id")
     protected Player player;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     protected Team team;
 

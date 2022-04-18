@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LeagueRoundTopPlayer extends DataTransferObject {
-
-    //채워줄 정보
-    private String name;
-    private int goal;
-    private int assist;
+public class LeagueSeasonTableDto extends DataTransferObject {
+    private Long leagueId;
+    private int season;
 }

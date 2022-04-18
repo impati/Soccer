@@ -1,7 +1,7 @@
 package com.example.soccerleague.Service;
 
 import com.example.soccerleague.Repository.*;
-import com.example.soccerleague.Web.dto.Cmp.LeagueRound.LeagueRoundTopPlayerCmpByAttackPoint;
+import com.example.soccerleague.Web.newDto.cmp.LeagueRoundTopPlayerCmpByAttackPoint;
 import com.example.soccerleague.Web.dto.League.*;
 import com.example.soccerleague.Web.newDto.league.*;
 import com.example.soccerleague.domain.DataTransferObject;
@@ -708,7 +708,7 @@ public class RoundServiceImpl implements RoundService {
             TeamLeagueRecord temp = teamLeagueRecordList.get(i);
             if(temp.getRound().getSeason() == round.getSeason() && temp.getRound().getRoundSt() >= round.getRoundSt())continue;
             count ++;
-            RecentShowDown element = RecentShowDown.create(teamA.getName(),teamB.getName(),temp.getScore(),temp.getOppositeScore(),temp.getSeason(),temp.getRound().getRoundSt());
+            ShowDownDto element = ShowDownDto.create(teamA.getName(),teamB.getName(),temp.getScore(),temp.getOppositeScore(),temp.getSeason(),temp.getRound().getRoundSt());
             ret.add(element);
             if(count == 5)break;
         }
@@ -736,13 +736,13 @@ public class RoundServiceImpl implements RoundService {
         else{
             objects = playerLeagueRecordRepository.TopPlayerSeasonAndRoundStWithStrategy(round, teamB);
         }
-        List<LeagueRoundTopPlayer> temp =  new ArrayList<>();
+        List<LeagueRoundTopPlayerDto> temp =  new ArrayList<>();
 
         for(var ele : objects){
             String name = (String)ele[0];
             int goal = Integer.valueOf(String.valueOf(ele[1]));
             int assist =Integer.valueOf(String.valueOf(ele[2]));
-            LeagueRoundTopPlayer leagueRoundTopPlayer = new LeagueRoundTopPlayer(name,goal,assist);
+            LeagueRoundTopPlayerDto leagueRoundTopPlayer = new LeagueRoundTopPlayerDto(name,goal,assist);
             temp.add(leagueRoundTopPlayer);
         }
         temp.sort(new LeagueRoundTopPlayerCmpByAttackPoint());
