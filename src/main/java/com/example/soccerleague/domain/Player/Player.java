@@ -65,17 +65,16 @@ public class Player {
                        int intercepting,int slidingTackle,int diving,
                        int handling,int goalKick,int speedReaction,
                        int positioning, int visualRange, int sense
-                       ){
+                       ) {
         this.setName(name);
         this.setPosition(position);
         this.setTeam(team);
         this.getStat().update(
-                acceleration,speed,physicalFight,
-                stamina,activeness,jump,balance,ballControl,
-                crosses,pass,longPass,dribble,goalDetermination,midRangeShot,
-                shootPower,heading,defense,
-                tackle,intercepting,slidingTackle,diving,
-                handling,goalKick,speedReaction,positioning,visualRange,sense);
+                acceleration, speed, physicalFight,
+                stamina, activeness, jump, balance, ballControl,
+                crosses, pass, longPass, dribble, goalDetermination, midRangeShot,
+                shootPower, heading, defense,
+                tackle, intercepting, slidingTackle, diving,
+                handling, goalKick, speedReaction, positioning, visualRange, sense);
     }
-
 }

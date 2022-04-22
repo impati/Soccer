@@ -1,14 +1,12 @@
-package com.example.soccerleague.RegisterService;
+package com.example.soccerleague.RegisterService.PlayerEdit;
 
 import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
-import com.example.soccerleague.Web.newDto.PlayerEditDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Team;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service(value = "PlayerEditRegister")
 @Transactional
-public class PlayerEdit implements RegisterData{
+public class DefaultPlayerEditRegister implements PlayerEditRegister {
     private final PlayerEntityRepository playerEntityRepository;
     private final TeamEntityRepository teamEntityRepository;
     @Override

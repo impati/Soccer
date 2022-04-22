@@ -180,7 +180,7 @@
                 <div class="col-xl-12 col-xl-6">
                     <div class="bg-light rounded h-100 p-4">
                         <h6 class="mb-4">Basic Form</h6>
-                        <form  th:object="${playerSaveDto}" method="post">
+                        <form  th:object="${playerEdit}" method="post">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">이름</label>
                                 <input type="text" th:field="*{name}" class="form-control" id="exampleInputEmail1"
@@ -208,97 +208,97 @@
                             </div>
 
                             <div class="input-group mb-1">
-                                <span class="input-group-text col-sm-2" id="basic-addon1" th:text="|가속력   |">가속력</span>
-                                <input type="text" class="col-sm-1" th:field ="*{acceleration}"  aria-label="Username"
+                                <span class="input-group-text col-1" id="basic-addon1" th:text="|가속력   |">가속력</span>
+                                <input type="text" class="col-1" th:field ="*{acceleration}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon2">속력</span>
-                                <input type="text" class="col-sm-1" th:field ="*{speed}" aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon2">속력</span>
+                                <input type="text" class="col-1" th:field ="*{speed}" aria-label="Username"
                                        aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon3">몸싸움</span>
-                                <input type="text" class="col-sm-1" th:field ="*{physicalFight}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-
-                                <span class="input-group-text col-sm-2 " id="basic-addon4">체력</span>
-                                <input type="text" class="col-sm-1" th:field ="*{stamina}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon5">적극성</span>
-                                <input type="text" class="col-sm-1" th:field ="*{activeness}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon6">점프력</span>
-                                <input type="text" class="col-sm-1" th:field ="*{jump}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon7">밸런스</span>
-                                <input type="text" class="col-sm-1" th:field ="*{balance}"  aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon3">몸싸움</span>
+                                <input type="text" class="col-1" th:field ="*{physicalFight}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
 
-                                <span class="input-group-text col-sm-2 " id="basic-addon8">볼컨트롤</span>
-                                <input type="text" class="col-sm-1" th:field ="*{ballControl}"  aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon4">체력</span>
+                                <input type="text" class="col-1" th:field ="*{stamina}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon9">크로스</span>
-                                <input type="text" class="col-sm-1" th:field ="*{crosses}"  aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon5">적극성</span>
+                                <input type="text" class="col-1" th:field ="*{activeness}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon10">패스</span>
-                                <input type="text" class="col-sm-1" th:field ="*{pass}"  aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon6">점프력</span>
+                                <input type="text" class="col-1" th:field ="*{jump}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
-
-                                <span class="input-group-text col-sm-2 " id="basic-addon11">롱패스</span>
-                                <input type="text" class="col-sm-1" th:field ="*{longPass}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon12">드리블</span>
-                                <input type="text" class="col-sm-1" th:field ="*{dribble}"  aria-label="Username" aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon13">골결정력</span>
-                                <input type="text" class="col-sm-1" th:field ="*{goalDetermination}"  aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon7">밸런스</span>
+                                <input type="text" class="col-1" th:field ="*{balance}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
 
+                                <span class="input-group-text col-1 " id="basic-addon8">볼컨트롤</span>
+                                <input type="text" class="col-1" th:field ="*{ballControl}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
+                                <span class="input-group-text col-1 " id="basic-addon9">크로스</span>
+                                <input type="text" class="col-1" th:field ="*{crosses}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
+                                <span class="input-group-text col-1 " id="basic-addon10">패스</span>
+                                <input type="text" class="col-1" th:field ="*{pass}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
 
-                                <span class="input-group-text col-sm-2 " id="basic-addon14">중거리슛</span>
-                                <input type="text" class="col-sm-1" th:field ="*{midRangeShot}"  aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon11">롱패스</span>
+                                <input type="text" class="col-1" th:field ="*{longPass}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon15">슛파워</span>
-                                <input type="text" class="col-sm-1" th:field ="*{shootPower}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon16">헤딩</span>
-                                <input type="text" class="col-sm-1" th:field ="*{heading}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-
-                                <span class="input-group-text col-sm-2 " id="basic-addon17">디펜스</span>
-                                <input type="text" class="col-sm-1" th:field ="*{defense}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon18">태클</span>
-                                <input type="text" class="col-sm-1" th:field ="*{tackle}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon19">차단</span>
-                                <input type="text" class="col-sm-1" th:field ="*{intercepting}"  aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon12">드리블</span>
+                                <input type="text" class="col-1" th:field ="*{dribble}"  aria-label="Username" aria-describedby="basic-addon1">
+                                <span class="input-group-text col-1 " id="basic-addon13">골결정력</span>
+                                <input type="text" class="col-1" th:field ="*{goalDetermination}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
 
 
-                                <span class="input-group-text col-sm-2 " id="basic-addon20">슬라이딩태클</span>
-                                <input type="text" class="col-sm-1" th:field ="*{slidingTackle}"  aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon14">중거리슛</span>
+                                <input type="text" class="col-1" th:field ="*{midRangeShot}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon21">다이빙</span>
-                                <input type="text" class="col-sm-1" th:field ="*{diving}"  aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon15">슛파워</span>
+                                <input type="text" class="col-1" th:field ="*{shootPower}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon22">핸들링</span>
-                                <input type="text" class="col-sm-1" th:field ="*{handling}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-
-
-                                <span class="input-group-text col-sm-2 " id="basic-addon23">골킥</span>
-                                <input type="text" class="col-sm-1" th:field ="*{goalKick}"  aria-label="Username"
-                                       aria-describedby="basic-addon1">
-                                <span class="input-group-text col-sm-2 " id="basic-addon24">반응속도</span>
-                                <input type="text" class="col-sm-1" th:field ="*{speedReaction}"  aria-label="Username"
+                                <span class="input-group-text col-1 " id="basic-addon16">헤딩</span>
+                                <input type="text" class="col-1" th:field ="*{heading}"  aria-label="Username"
                                        aria-describedby="basic-addon1">
 
+                                <span class="input-group-text col-1 " id="basic-addon17">디펜스</span>
+                                <input type="text" class="col-1" th:field ="*{defense}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
+                                <span class="input-group-text col-1 " id="basic-addon18">태클</span>
+                                <input type="text" class="col-1" th:field ="*{tackle}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
+                                <span class="input-group-text col-1 " id="basic-addon19">차단</span>
+                                <input type="text" class="col-1" th:field ="*{intercepting}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
 
-                                <span class="input-group-text col-sm-2 " id="basic-addon26">위치선정</span>
-                                <input type="text" class="col-sm-1" th:field ="*{positioning}"  aria-label="Username" aria-describedby="basic-addon1">
 
-                                <span class="input-group-text col-sm-2 " id="basic-addon27">시야</span>
-                                <input type="text" class="col-sm-1" th:field ="*{visualRange}"  aria-label="Username" aria-describedby="basic-addon1">
+                                <span class="input-group-text col-1 " id="basic-addon20">슬라이딩태클</span>
+                                <input type="text" class="col-1" th:field ="*{slidingTackle}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
+                                <span class="input-group-text col-1 " id="basic-addon21">다이빙</span>
+                                <input type="text" class="col-1" th:field ="*{diving}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
+                                <span class="input-group-text col-1 " id="basic-addon22">핸들링</span>
+                                <input type="text" class="col-1" th:field ="*{handling}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
 
-                                <span class="input-group-text col-sm-2 " id="basic-addon28">센스</span>
-                                <input type="text" class="col-sm-1" th:field ="*{sense}"  aria-label="Username" aria-describedby="basic-addon1">
+
+                                <span class="input-group-text col-1 " id="basic-addon23">골킥</span>
+                                <input type="text" class="col-1" th:field ="*{goalKick}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
+                                <span class="input-group-text col-1 " id="basic-addon24">반응속도</span>
+                                <input type="text" class="col-1" th:field ="*{speedReaction}"  aria-label="Username"
+                                       aria-describedby="basic-addon1">
+
+
+                                <span class="input-group-text col-1 " id="basic-addon26">위치선정</span>
+                                <input type="text" class="col-1" th:field ="*{positioning}"  aria-label="Username" aria-describedby="basic-addon1">
+
+                                <span class="input-group-text col-1 " id="basic-addon27">시야</span>
+                                <input type="text" class="col-1" th:field ="*{visualRange}"  aria-label="Username" aria-describedby="basic-addon1">
+
+                                <span class="input-group-text col-1 " id="basic-addon28">센스</span>
+                                <input type="text" class="col-1" th:field ="*{sense}"  aria-label="Username" aria-describedby="basic-addon1">
                             </div>
 
                             <hr>

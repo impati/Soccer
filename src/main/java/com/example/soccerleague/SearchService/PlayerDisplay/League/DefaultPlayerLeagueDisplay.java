@@ -1,7 +1,6 @@
-package com.example.soccerleague.SearchService;
+package com.example.soccerleague.SearchService.PlayerDisplay.League;
 
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.Web.newDto.Player.PlayerLeagueDisplayDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.PlayerRecord;
@@ -29,4 +28,13 @@ public class DefaultPlayerLeagueDisplay implements PlayerLeagueDisplay{
         return Optional.ofNullable(playerLeagueDisplayDto);
     }
 
+    @Override
+    public Optional<DataTransferObject> search(DataTransferObject playerLeagueDisplayRequest) {
+        PlayerLeagueDisplayRequest req = (PlayerLeagueDisplayRequest) playerLeagueDisplayRequest;
+        PlayerLeagueDisplayResponse resp = new PlayerLeagueDisplayResponse();
+        List<PlayerRecord> plr = playerLeagueRecordEntityRepository.
+                findBySeasonAndPlayer(req.getSeason(), req.getPlayerId());
+        plr.stream().forEach(ele->resp.update((PlayerLeagueRecord) ele));
+        return Optional.ofNullable(resp);
+    }
 }

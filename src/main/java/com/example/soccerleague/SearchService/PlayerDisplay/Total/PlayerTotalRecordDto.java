@@ -1,5 +1,6 @@
-package com.example.soccerleague.Web.newDto.Player;
+package com.example.soccerleague.SearchService.PlayerDisplay.Total;
 
+import com.example.soccerleague.SearchService.PlayerDisplay.League.PlayerLeagueDisplayDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.MatchResult;

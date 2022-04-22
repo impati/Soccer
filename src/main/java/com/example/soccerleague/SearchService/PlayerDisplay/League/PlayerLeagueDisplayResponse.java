@@ -1,4 +1,4 @@
-package com.example.soccerleague.Web.newDto.Player;
+package com.example.soccerleague.SearchService.PlayerDisplay.League;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.record.MatchResult;
@@ -6,11 +6,7 @@ import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import lombok.Data;
 
 @Data
-public class PlayerLeagueDisplayDto extends DataTransferObject {
-    //필요한 데이터
-    private Long playerId;
-    private int season;
-
+public class PlayerLeagueDisplayResponse extends DataTransferObject {
     //채워줄 데이터
     private int goal;
     private int assist;
@@ -37,16 +33,6 @@ public class PlayerLeagueDisplayDto extends DataTransferObject {
     private int rank;
     private int gameNumber;
 
-    public static PlayerLeagueDisplayDto create(Long playerId,int season){
-        PlayerLeagueDisplayDto playerLeagueDisplayDto = new PlayerLeagueDisplayDto();
-        playerLeagueDisplayDto.setPlayerId(playerId);
-        playerLeagueDisplayDto.setSeason(season);
-        return playerLeagueDisplayDto;
-    }
-
-    /**
-     * PlayerLeagueRecord를 모두 받아 업데이트!
-     */
     public void update(PlayerLeagueRecord playerRecord){
         this.setGoal(this.getGoal() + playerRecord.getGoal());
         this.setAssist(this.getAssist() + playerRecord.getAssist());
@@ -76,6 +62,4 @@ public class PlayerLeagueDisplayDto extends DataTransferObject {
         this.setGrade(Math.round(Math.round(this.getGrade())));
 
     }
-
-
 }

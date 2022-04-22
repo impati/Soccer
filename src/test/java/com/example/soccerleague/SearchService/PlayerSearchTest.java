@@ -1,6 +1,6 @@
 package com.example.soccerleague.SearchService;
 
-import com.example.soccerleague.Web.newDto.Player.PlayerDisplayDto;
+import com.example.soccerleague.SearchService.PlayerDisplay.PlayerDisplayDto;
 import com.example.soccerleague.Web.newDto.Player.PlayerSearchDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

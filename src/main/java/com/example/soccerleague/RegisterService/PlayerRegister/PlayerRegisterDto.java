@@ -1,14 +1,8 @@
-package com.example.soccerleague.Web.newDto.register;
+package com.example.soccerleague.RegisterService.PlayerRegister;
 
-import com.example.soccerleague.Web.dto.Player.PlayerSaveDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
-import com.example.soccerleague.domain.Player.Stat;
-import com.example.soccerleague.domain.Team;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 public class PlayerRegisterDto extends DataTransferObject {

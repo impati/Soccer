@@ -1,7 +1,7 @@
-package com.example.soccerleague.SearchService;
+package com.example.soccerleague.SearchService.PlayerDisplay.Total;
 
 import com.example.soccerleague.EntityRepository.PlayerRecordEntityRepository;
-import com.example.soccerleague.Web.newDto.Player.PlayerTotalRecordDto;
+import com.example.soccerleague.SearchService.SearchResult;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.PlayerRecord;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class PlayerTotalDisplay implements SearchResult{
+public class DefaultPlayerTotalDisplay implements PlayerTotal {
     private final List<PlayerRecordEntityRepository> playerRecordEntityRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
@@ -32,5 +32,18 @@ public class PlayerTotalDisplay implements SearchResult{
             }
         }
         return Optional.ofNullable(playerTotalRecordDto);
+    }
+
+    @Override
+    public Optional<DataTransferObject> search(DataTransferObject dataTransferObject) {
+        PlayerTotalRequest req = (PlayerTotalRequest)  dataTransferObject;
+        PlayerTotalResponse resp = new PlayerTotalResponse();
+        for(var recordRepository : playerRecordEntityRepository){
+            for(int i = 0 ;i <= Season.CURRENTSEASON;i++){
+                List<PlayerRecord> pr = recordRepository.findBySeasonAndPlayer(i, req.getPlayerId());
+                pr.stream().forEach(ele->resp.update(ele));
+            }
+        }
+        return Optional.ofNullable(resp);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.soccerleague.Web.newDto.Player;
+package com.example.soccerleague.SearchService.PlayerDisplay;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
@@ -16,15 +16,7 @@ public class PlayerDisplayDto extends DataTransferObject {
     private Position position;
     private int rating;
 
-    public static PlayerDisplayDto createByPlayer(Player player){
-        PlayerDisplayDto playerDisplayDto = new PlayerDisplayDto();
-        playerDisplayDto.setId(player.getId());
-        playerDisplayDto.setRating(player.getRating());
-        playerDisplayDto.setTeam(player.getTeam());
-        playerDisplayDto.setName(player.getName());
-        playerDisplayDto.setPosition(player.getPosition());
-        return playerDisplayDto;
-    }
+
     public static PlayerDisplayDto createById(Long id){
         PlayerDisplayDto playerDisplayDto = new PlayerDisplayDto();
         playerDisplayDto.setId(id);
