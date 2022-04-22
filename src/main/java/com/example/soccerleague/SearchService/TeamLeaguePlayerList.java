@@ -36,6 +36,7 @@ public class TeamLeaguePlayerList implements SearchResult{
             TeamLeaguePlayerListDto player = TeamLeaguePlayerListDto.create(name,game,rating,position);
             ret.add(player);
         }
+
         return ret;
 
 

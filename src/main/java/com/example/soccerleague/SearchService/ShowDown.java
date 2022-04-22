@@ -40,7 +40,7 @@ public class ShowDown implements SearchResult {
         List<TeamLeagueRecord> showDownList = teamLeagueRecordEntityRepository.findByShowDown(round, round.getHomeTeamId(), round.getAwayTeamId());
         // teamA,teamB 기록이 두개가 조회됨.
         Team teamA = (Team)teamEntityRepository.findById(round.getHomeTeamId()).orElse(null);
-        Team teamB = (Team)teamEntityRepository.findById(round.getHomeTeamId()).orElse(null);
+        Team teamB = (Team)teamEntityRepository.findById(round.getAwayTeamId()).orElse(null);
         for(int i =0;i<showDownList.size();i+=2){
             ShowDownDto temp = ShowDownDto.create(
                     teamA.getName(),teamB.getName(),showDownList.get(i).getScore(),showDownList.get(i+1).getScore(),showDownList.get(i).getSeason(),showDownList.get(i).getRound().getRoundSt());

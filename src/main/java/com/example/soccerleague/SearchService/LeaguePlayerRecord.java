@@ -1,5 +1,6 @@
 package com.example.soccerleague.SearchService;
 
+import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
 import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.Web.newDto.Player.PlayerLeagueDisplayDto;
@@ -24,6 +25,7 @@ public class LeaguePlayerRecord implements SearchResult{
     private final PlayerLeagueDisplay playerLeagueDisplay;
     private final TeamEntityRepository teamEntityRepository;
     private final PlayerEntityRepository playerEntityRepository;
+    private final LeagueEntityRepository leagueEntityRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
         return dto instanceof LeaguePlayerRecordDto;
@@ -33,10 +35,9 @@ public class LeaguePlayerRecord implements SearchResult{
         LeaguePlayerRecordDto playerRecordDto = (LeaguePlayerRecordDto)dto;
         if(playerRecordDto.getSeason() == null) playerRecordDto.setSeason(Season.CURRENTSEASON);
         if(playerRecordDto.getLeagueId() == null) playerRecordDto.setLeagueId(1L);
-        if(playerRecordDto.getLeagueName() == null) playerRecordDto.setLeagueName("분데스리가");
         if(playerRecordDto.getSortType() == null)playerRecordDto.setSortType(SortType.GOAL);
         if(playerRecordDto.getDirection() == null)playerRecordDto.setDirection(Direction.DESC);
-        log.info("playerRecordDto :[{}]",playerRecordDto);
+        playerRecordDto.setLeagueName(leagueEntityRepository.findById(playerRecordDto.getLeagueId()).map(ele->(League)ele).orElse(null).getName());
         List<LeaguePlayerRecordDto> ret = new ArrayList<>();
 
         /**
@@ -70,8 +71,6 @@ public class LeaguePlayerRecord implements SearchResult{
         /**
          *  찾아온 데이터들을 정렬 기준에따라 정렬후 리턴
          */
-
-
         ret.sort(new LeaguePlayerRecordCmp());
         return ret.stream().map(ele -> (DataTransferObject) ele).collect(Collectors.toList());
 

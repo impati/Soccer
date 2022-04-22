@@ -20,12 +20,12 @@ public class LeagueRoundSeasonTeamDto extends DataTransferObject {
     private int TotalWin;
     private int TotalDraw;
     private int TotalLose;
-    private String total;
+    private String total = "1위 0 승 0 무 0 패";
 
     private int recentWin;
     private int recentDraw;
     private int recentLose;
-    private String recent;
+    private String recent = "0승 0무 0 패";
 
 
     private double avgGain;
@@ -47,7 +47,7 @@ public class LeagueRoundSeasonTeamDto extends DataTransferObject {
         if(matchResult.equals(MatchResult.WIN))this.setTotalWin(this.getTotalWin() + 1);
         else if(matchResult.equals(MatchResult.DRAW))this.setTotalDraw(this.getTotalDraw() + 1);
         else this.setTotalLose(this.getTotalLose() + 1);
-        this.setAvgGain(this.getAvgLost() + gain);
+        this.setAvgGain(this.getAvgGain() + gain);
         this.setAvgLost(this.getAvgLost() + lost);
         this.setRank(rank);
         this.setTotal(this.getRank() + " 위 " + this.getTotalWin() + " 승 " + this.getTotalDraw() + " 무 " + this.getTotalLose() + " 패 ");
@@ -56,12 +56,12 @@ public class LeagueRoundSeasonTeamDto extends DataTransferObject {
         if(matchResult.equals(MatchResult.WIN))this.setRecentWin(this.getRecentWin() + 1);
         else if(matchResult.equals(MatchResult.DRAW))this.setRecentDraw(this.getRecentDraw() + 1);
         else this.setRecentLose(this.getRecentLose() + 1);
-        this.setTotal(this.getTotalWin() + " 승 " + this.getTotalDraw() + " 무 " + this.getTotalLose() + " 패 ");
+        this.setRecent(this.getTotalWin() + " 승 " + this.getTotalDraw() + " 무 " + this.getTotalLose() + " 패 ");
     }
     public void updateGainAndLost(int sz) {
         if (sz == 0) return;
-        this.setAvgLost(this.getAvgLost() / sz);
-        this.setAvgGain(this.getAvgGain() / sz);
+        this.setAvgLost((double) Math.round((this.getAvgLost() / sz) * 1000)/1000 );
+        this.setAvgGain((double) Math.round((this.getAvgGain() / sz) * 1000)/1000 );
     }
 
 }

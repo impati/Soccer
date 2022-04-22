@@ -160,8 +160,9 @@ public class NewLeagueController {
     }
     @PostMapping("/round/{roundId}/game-record")
     public String leagueRoundGameRecord(@PathVariable Long roundId,@ModelAttribute DuoRecordDto duoRecordDto){
-        log.info("*****");
-        registerResolver.register(roundId,duoRecordDto);
+
+        duoRecordDto.setRoundId(roundId);
+        registerResolver.register(duoRecordDto);
         return "redirect:/new-league/round/"+ roundId + "/game";
     }
 
@@ -179,7 +180,7 @@ public class NewLeagueController {
         LeagueRoundSeasonTeamDto leagueRoundSeasonTeamDtoA = LeagueRoundSeasonTeamDto.create(roundId,round.getHomeTeamId());
         model.addAttribute("teamASeason",searchResolver.search(leagueRoundSeasonTeamDtoA).orElse(null));
 
-        LeagueRoundSeasonTeamDto leagueRoundSeasonTeamDtoB = LeagueRoundSeasonTeamDto.create(roundId,round.getHomeTeamId());
+        LeagueRoundSeasonTeamDto leagueRoundSeasonTeamDtoB = LeagueRoundSeasonTeamDto.create(roundId,round.getAwayTeamId());
         model.addAttribute("teamBSeason",searchResolver.search(leagueRoundSeasonTeamDtoB).orElse(null));
 
 

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,7 +24,7 @@ public class DefaultTeamLeagueDisplay implements TeamLeagueDisPlay {
     public Optional<DataTransferObject> searchResult(DataTransferObject dto) {
         TeamLeagueDisplayDto displayDto = (TeamLeagueDisplayDto)dto;
         List<TeamLeagueRecord> teamLeagueRecordList = teamLeagueRecordEntityRepository.
-                findBySeasonAndTeam(displayDto.getSeason(), Season.LASTLEAGUEROUND, displayDto.getTeamId());
+                findBySeasonAndTeam(displayDto.getSeason(), displayDto.getTeamId()).stream().map(ele->(TeamLeagueRecord)ele).collect(Collectors.toList());
         teamLeagueRecordList.stream().forEach(ele->displayDto.update(ele));
         return Optional.ofNullable(displayDto);
     }

@@ -9,7 +9,6 @@ import com.example.soccerleague.Web.newDto.Player.PlayerSearchDto;
 import com.example.soccerleague.Web.newDto.Player.PlayerTotalRecordDto;
 import com.example.soccerleague.Web.newDto.PlayerEditDto;
 import com.example.soccerleague.Web.newDto.register.PlayerRegisterDto;
-import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
@@ -36,7 +35,7 @@ public class NewPlayerController {
      */
     @GetMapping("/player-list")
     public String playerList(@ModelAttribute PlayerSearchDto playerSearchDto){
-        DataTransferObject search = searchResolver.search(playerSearchDto).orElse(null);
+        searchResolver.search(playerSearchDto);
         return "new/player/playerList";
     }
 
@@ -75,6 +74,9 @@ public class NewPlayerController {
         return "new/player/page";
     }
 
+    /**
+     * 선수 등록
+     */
     @GetMapping("/register")
     public String playerRegisterPage(Model model){
         model.addAttribute("teams",teamEntityRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList()));
@@ -88,6 +90,10 @@ public class NewPlayerController {
         registerResolver.register(playerRegisterDto);
         return "redirect:/new-player/register";
     }
+
+
+
+
 
     @GetMapping("/edit/{playerId}")
     public String playerEditPage(@PathVariable Long playerId, Model model){

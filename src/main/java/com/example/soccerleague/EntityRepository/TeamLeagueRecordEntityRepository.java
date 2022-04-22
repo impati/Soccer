@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface TeamLeagueRecordEntityRepository extends TeamRecordEntityRepository{
     List<TeamLeagueRecord> findByTeamId(Long teamId);
-    List<TeamLeagueRecord> findBySeasonAndTeam(int season, int roundSt, Long teamId);
     List<TeamLeagueRecord> findBySeasonAndTeamRecent5(int season,int roundSt,Team team);
     Optional<TeamLeagueRecord> findByLastRecord(int season, Long teamId);
     List<TeamLeagueRecord> findByShowDown(Round round , Long homeId, Long awayId);
+
 }

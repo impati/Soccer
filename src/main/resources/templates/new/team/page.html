@@ -240,7 +240,7 @@
                                     <td th:text="*{draw}"></td>
                                     <td th:text="*{lose}"></td>
                                     <td th:text="*{gain}"></td>
-                                    <td th:text="*{gain}"></td>
+                                    <td th:text="*{lost}"></td>
                                     <td th:text="*{diff}"></td>
 
                                 </tr>
@@ -318,10 +318,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <td th:text="${first}"></td>
-                                    <td th:text="${second}"></td>
-                                    <td th:text="${threePlace}"></td>
-                                    <td th:text="${fourth}"></td>
+                                    <td th:text="*{first}"></td>
+                                    <td th:text="*{second}"></td>
+                                    <td th:text="*{threePlace}"></td>
+                                    <td th:text="*{fourth}"></td>
                                 </tbody>
                             </table>
                         </div>

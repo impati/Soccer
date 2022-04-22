@@ -39,7 +39,7 @@ public class NewGameResultTestData {
     private final TeamEntityRepository teamEntityRepository;
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
     public void isNotDoneGame(){
-
+        log.info(" season :{} , round :{}",Season.CURRENTSEASON,Season.CURRENTLEAGUEROUND);
         List<Round> notDoneGame = roundEntityRepository.findNotDoneGame(Season.CURRENTSEASON, Season.CURRENTLEAGUEROUND);
 
         for (Round round : notDoneGame) {
@@ -79,7 +79,7 @@ public class NewGameResultTestData {
 
             for(int i =0;i<22;i++) {
                 int goal = (int) (Math.random() * 2);
-                int assist = (int) (Math.random() * goal);
+                int assist = (int) (Math.random() * 2);
                 int pass = (int) (Math.random() * 60);
                 int shooting = (int) (Math.random() * 10);
                 int valid = (int) (Math.random() * shooting);
@@ -131,7 +131,7 @@ public class NewGameResultTestData {
                 duoRecordDto.getGoalType().add(goalTypes[idx]);
                 goalB -=1;
             }
-            log.info("duoRecordDto [{}]",duoRecordDto);
+
             duoRecordRegister.register(duoRecordDto);
 
 

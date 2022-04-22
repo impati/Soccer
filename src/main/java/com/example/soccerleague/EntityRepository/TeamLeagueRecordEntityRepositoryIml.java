@@ -47,14 +47,7 @@ public class TeamLeagueRecordEntityRepositoryIml implements TeamLeagueRecordEnti
                 .setParameter("round",roundId).getResultList();
     }
 
-    @Override
-    public List<TeamLeagueRecord> findBySeasonAndTeam(int season, int roundSt,Long teamId) {
-        return em.createQuery("select tlr from TeamLeagueRecord tlr where tlr.season = :season and tlr.team.id =:teamId and tlr.round.roundSt < :roundSt ")
-                .setParameter("season",season)
-                .setParameter("teamId",teamId)
-                .setParameter("roundSt",roundSt)
-                .getResultList();
-    }
+
 
     @Override
     public List<TeamLeagueRecord> findBySeasonAndTeamRecent5(int season,int roundSt, Team team) {

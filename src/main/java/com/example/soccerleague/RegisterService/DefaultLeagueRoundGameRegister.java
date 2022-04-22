@@ -34,7 +34,6 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
     @Override
     public void register(DataTransferObject dataTransferObject) {
         LeagueRoundGameDto leagueRoundGameDto = (LeagueRoundGameDto)dataTransferObject;
-        log.info("leagueRoundGameDto {}",leagueRoundGameDto);
 
         LeagueRound leagueRound = (LeagueRound)roundEntityRepository.findById(leagueRoundGameDto.getRoundId()).orElse(null);
 
@@ -66,6 +65,16 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
 
         recordSave(0,matchResultA,playerRecords,leagueRoundGameDto,teams.get(0),bestGrade);
         recordSave(1,matchResultB,playerRecords,leagueRoundGameDto,teams.get(1),bestGrade);
+
+
+
+
+
+
+
+
+
+
 
 
         leagueRound.setRoundStatus(RoundStatus.RECORD);

@@ -52,7 +52,7 @@ public class NewTeamController {
          *  선택된 시즌 때 해당 팀에서 참가한 선수들의 목록을 가져오는 기능 TeamLeaguePlayerListDto
          */
         TeamLeaguePlayerListDto teamLeaguePlayerListDto = TeamLeaguePlayerListDto.create(season,teamId);
-        model.addAttribute("teamLeaguePlayerListDto",searchResolver.search(teamLeaguePlayerListDto).orElse(null));
+        model.addAttribute("teamLeaguePlayerListDto",searchResolver.searchList(teamLeaguePlayerListDto));
 
         /**
          * 팀의 전체 기록과 업적 기능 TeamTotalRecordDto

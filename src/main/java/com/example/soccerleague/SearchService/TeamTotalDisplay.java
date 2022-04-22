@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +31,8 @@ public class TeamTotalDisplay implements SearchResult{
         for(var record: teamRecordEntityRepository){
             for(int i = 0 ;i<=Season.CURRENTSEASON;i++){
                 List<TeamRecord> teamRecordList = record.findBySeasonAndTeam(i, teamTotalRecordDto.getTeamId());
-                teamRecordList.stream().forEach(ele->teamTotalRecordDto.update(ele));
+                teamRecordList.stream().forEach(ele->{teamTotalRecordDto.update(ele);});
+
             }
         }
         return Optional.ofNullable(teamTotalRecordDto);

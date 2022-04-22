@@ -30,7 +30,7 @@ public class TeamLeagueDisplayDto extends DataTransferObject {
     public static TeamLeagueDisplayDto create(int season, Long teamId){
         TeamLeagueDisplayDto obj = new TeamLeagueDisplayDto();
         obj.setSeason(season);
-        obj.setLeagueId(teamId);
+        obj.setTeamId(teamId);
         return obj;
     }
 

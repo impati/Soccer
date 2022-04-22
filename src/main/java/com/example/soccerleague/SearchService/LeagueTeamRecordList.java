@@ -4,6 +4,7 @@ import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamLeagueRecordEntityRepository;
 import com.example.soccerleague.Web.newDto.Team.TeamLeagueDisplayDto;
+import com.example.soccerleague.Web.newDto.cmp.LeagueTeamRecordCmpByRank;
 import com.example.soccerleague.Web.newDto.record.LeagueTeamRecordDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -37,16 +39,17 @@ public class LeagueTeamRecordList implements SearchResult{
         if(teamRecordDto.getLeagueId() == null) teamRecordDto.setLeagueId(1L);
         if(teamRecordDto.getSeason() == null) teamRecordDto.setSeason(Season.CURRENTSEASON);
         League league = (League)leagueEntityRepository.findById(teamRecordDto.getLeagueId()).orElse(null);
+
+        log.info("teamRecordDto {}",teamRecordDto);
         teamRecordDto.setLeagueName(league.getName());
 
-        List<DataTransferObject> ret = new ArrayList<>();
+        List<LeagueTeamRecordDto> ret = new ArrayList<>();
 
         List<Team> teams = teamEntityRepository.findByLeagueId(teamRecordDto.getLeagueId());
         for (Team team : teams) {
             TeamLeagueDisplayDto element = TeamLeagueDisplayDto.create(teamRecordDto.getSeason(),team.getId());
 
             teamLeagueDisPlay.searchResult(element);
-
             ret.add(LeagueTeamRecordDto.create(
                     team.getName(),element.getGame(),element.getWin(),
                     element.getDraw(),element.getLose(),element.getGain(),element.getLost()
@@ -65,7 +68,8 @@ public class LeagueTeamRecordList implements SearchResult{
             }
             cur.update(r);
         }
+        ret.sort(new LeagueTeamRecordCmpByRank());
 
-        return ret;
+        return ret.stream().map(ele->(DataTransferObject)ele).collect(Collectors.toList());
     }
 }

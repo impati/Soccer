@@ -54,17 +54,10 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
      */
     @Override
     public List<PlayerRecord> findBySeasonAndPlayer(int season, Long playerId) {
-        Query query = null;
-        try {
-            query = em.createQuery("select plr from PlayerLeagueRecord plr where plr.player.id =:player and plr.season = :season " +
-                    " order by plr.id");
-        }catch(Exception e){
-            return new ArrayList<>();
-        }
-
-        return query
-                .setParameter("player",playerId)
+        return em.createQuery("Select plr from PlayerLeagueRecord plr join plr.leagueRound lr on lr.season = :season " +
+                " join plr.player p on p.id = :playerId")
                 .setParameter("season",season)
+                .setParameter("playerId",playerId)
                 .getResultList();
     }
 
@@ -158,9 +151,10 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
     public List<PlayerLeagueRecord> findBySeasonAndPlayer(Round round, Long playerId) {
         return em.createQuery("select plr from PlayerLeagueRecord plr " +
                 " join  plr.player p on p.id =:playerId " +
-                " join  plr.leagueRound lr on lr.id < :roundId")
+                " join  plr.leagueRound lr on lr.id < :roundId where plr.season = : season")
                 .setParameter("playerId",playerId)
                 .setParameter("roundId",round.getId())
+                .setParameter("season",round.getSeason())
                 .getResultList();
     }
 }

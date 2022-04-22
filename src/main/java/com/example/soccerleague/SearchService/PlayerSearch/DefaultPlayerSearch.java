@@ -1,4 +1,4 @@
-package com.example.soccerleague.SearchService;
+package com.example.soccerleague.SearchService.PlayerSearch;
 
 import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
@@ -23,14 +23,11 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PlayerSearch implements SearchResult{
+public class DefaultPlayerSearch implements PlayerSearch{
     private final LeagueEntityRepository leagueEntityRepository;
     private final TeamEntityRepository teamEntityRepository;
     private final PlayerRepository playerRepository;
-    @Override
-    public boolean supports(DataTransferObject dto) {
-        return dto instanceof PlayerSearchDto;
-    }
+
 
     @Override
     public Optional<DataTransferObject> searchResult(DataTransferObject dto) {
@@ -38,7 +35,7 @@ public class PlayerSearch implements SearchResult{
         List<Object> leagueList = leagueEntityRepository.findAll();
         leagueList.stream().forEach(element -> playerSearchDto.getLeagueList().add((League)element));
         playerSearchDto.setTeamList(teamEntityRepository.findByLeagueId(playerSearchDto.getLeagueId()));
-
+        log.info("playerSearchDto {}",playerSearchDto);
         //TODO : 정렬기준
         if(playerSearchDto.getName() == null) playerSearchDto.setName("");
         List<Player> players = playerRepository.findByName(playerSearchDto.getName());
@@ -79,6 +76,22 @@ public class PlayerSearch implements SearchResult{
                playerSearchDto.getPlayerList().add(playerInfoDto);
             }
         }
-        return Optional.ofNullable(dto);
+        log.info("playerSearchDto {}",playerSearchDto);
+        return Optional.ofNullable(playerSearchDto);
+    }
+
+    // 파리미터로 서비스를 제공하는 기능.! ->
+    @Override
+    public DataTransferObject search(String name, Long leagueId, Long teamId, List<Position> positions) {
+
+        PlayerSearchDto playerSearchDto = new PlayerSearchDto();
+        playerSearchDto.setName(name);
+        playerSearchDto.setLeagueId(leagueId);
+        playerSearchDto.setTeamId(teamId);
+        if(positions != null)
+            positions.stream().forEach(ele-> playerSearchDto.getPositions().add(ele));
+        searchResult(playerSearchDto);
+
+        return playerSearchDto;
     }
 }
