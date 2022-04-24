@@ -176,7 +176,7 @@
         <div class="container-fluid pt-4 px-4">
             <div class="col-xl-12">
                 <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">Responsive Table</h6>
+                    <h6 class="mb-4" th:text="${leagueName}">Responsive Table</h6>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -187,9 +187,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="team : ${teams}">
-                                <td th:text="${team.order}"></td>
-                                <td ><a th:text="${team.name}" th:href="@{|/team/${team.id}|}" ></a></td>
+                            <tr th:each="team,i: ${teamDisplayResponse}">
+                                <td th:text="${i.count}"></td>
+                                <td ><a th:text="${team.name}" th:href="@{|/team/${team.teamId}|}" ></a></td>
                                 <td th:text="${team.rating}"></td>
                             </tr>
                             </tbody>

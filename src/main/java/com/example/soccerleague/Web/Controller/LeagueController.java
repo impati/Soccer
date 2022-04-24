@@ -1,5 +1,8 @@
 package com.example.soccerleague.Web.Controller;
 
+import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
+import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplay;
+import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplayRequest;
 import com.example.soccerleague.Service.DuoService;
 import com.example.soccerleague.Service.LeagueService;
 import com.example.soccerleague.Service.RoundService;
@@ -11,6 +14,7 @@ import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
 import com.example.soccerleague.Web.newDto.duo.DuoRecordResultDto;
 import com.example.soccerleague.Web.newDto.league.*;
 import com.example.soccerleague.domain.DataTransferObject;
+import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
@@ -38,23 +42,15 @@ public class  LeagueController {
     private final TeamService teamService;
     private final RoundService roundService;
     private final DuoService duoService;
-
+    private final TeamDisplay teamDisplay;
+    private final LeagueEntityRepository leagueEntityRepository;
     /**
      * 해당 리그에 해당하는 팀을 레이팅 순으로 나열한것.
-     * @param leagueId
-     * @param model
-     * @return
      */
     @GetMapping("/{leagueId}")
     public String LeaguePage(@PathVariable Long leagueId, Model model){
-        List<Team> teams = teamService.searchByLeague(leagueId);
-        List<TeamSimpleInfoDto> teamDto = new ArrayList<>();
-        int i = 0;
-        for(var team : teams){
-            TeamSimpleInfoDto teamISimpleInfoDto = TeamSimpleInfoDto.create(team.getId(),++i,team.getName(),team.getRating());
-            teamDto.add(teamISimpleInfoDto);
-        }
-        model.addAttribute("teams",teamDto);
+        model.addAttribute("leagueName",leagueEntityRepository.findById(leagueId).map(ele->(League)ele).orElse(null).getName());
+        model.addAttribute("teamDisplayResponse",teamDisplay.search(new TeamDisplayRequest(leagueId)));
         return "league/page";
     }
 

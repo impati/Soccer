@@ -17,7 +17,7 @@ public class TeamEntityRepositoryImpl implements TeamEntityRepository{
     private final EntityManager em;
     @Override
     public List<Team> findByLeagueId(Long leagueId) {
-        return em.createQuery("select t from Team t join t.league l on l.id = :leagueId ")
+        return em.createQuery("select t from Team t join t.league l on l.id = :leagueId order by  t.rating desc ")
                 .setParameter("leagueId", leagueId)
                 .getResultList();
 

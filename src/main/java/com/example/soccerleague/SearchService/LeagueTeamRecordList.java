@@ -3,6 +3,9 @@ package com.example.soccerleague.SearchService;
 import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamLeagueRecordEntityRepository;
+import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeagueDisplay;
+import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeagueDisplayRequest;
+import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeagueDisplayResponse;
 import com.example.soccerleague.Web.newDto.Team.TeamLeagueDisplayDto;
 import com.example.soccerleague.Web.newDto.cmp.LeagueTeamRecordCmpByRank;
 import com.example.soccerleague.Web.newDto.record.LeagueTeamRecordDto;
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class LeagueTeamRecordList implements SearchResult{
-    private final TeamLeagueDisPlay teamLeagueDisPlay;
+    private final TeamLeagueDisplay teamLeagueDisPlay;
     private final LeagueEntityRepository leagueEntityRepository;
     private final TeamEntityRepository teamEntityRepository;
     @Override
@@ -47,12 +50,13 @@ public class LeagueTeamRecordList implements SearchResult{
 
         List<Team> teams = teamEntityRepository.findByLeagueId(teamRecordDto.getLeagueId());
         for (Team team : teams) {
-            TeamLeagueDisplayDto element = TeamLeagueDisplayDto.create(teamRecordDto.getSeason(),team.getId());
+            TeamLeagueDisplayRequest element = new TeamLeagueDisplayRequest(team.getId(),teamRecordDto.getSeason());
 
-            teamLeagueDisPlay.searchResult(element);
+
+            TeamLeagueDisplayResponse  teamLeagueDisplayResponse =  (TeamLeagueDisplayResponse) teamLeagueDisPlay.search(element);
             ret.add(LeagueTeamRecordDto.create(
-                    team.getName(),element.getGame(),element.getWin(),
-                    element.getDraw(),element.getLose(),element.getGain(),element.getLost()
+                    team.getName(),teamLeagueDisplayResponse.getGame(),teamLeagueDisplayResponse.getWin(),
+                    teamLeagueDisplayResponse.getDraw(),teamLeagueDisplayResponse.getLose(),teamLeagueDisplayResponse.getGain(),teamLeagueDisplayResponse.getLost()
                     ));
 
         }

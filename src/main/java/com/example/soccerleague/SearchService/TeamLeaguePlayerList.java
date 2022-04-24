@@ -1,6 +1,7 @@
 package com.example.soccerleague.SearchService;
 
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
+import com.example.soccerleague.SearchService.SearchResult;
 import com.example.soccerleague.Web.newDto.Team.TeamLeaguePlayerListDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
@@ -16,7 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class TeamLeaguePlayerList implements SearchResult{
+public class TeamLeaguePlayerList implements SearchResult {
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
     @Override
     public boolean supports(DataTransferObject dto) {

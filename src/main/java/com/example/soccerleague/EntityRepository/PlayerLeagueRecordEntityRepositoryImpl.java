@@ -1,5 +1,7 @@
 package com.example.soccerleague.EntityRepository;
 
+import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeaguePlayerResponse;
+import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
@@ -13,6 +15,7 @@ import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -122,7 +125,7 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
      */
     @Override
     public List<Object[]> findSeasonAndTeam(int season, Long teamId) {
-        StringBuilder  s = new StringBuilder(" SELECT p.name,count(plr.player_id) ,avg(plr.rating) ,max(plr.position) FROM PLAYER_LEAGUE_RECORD plr ");
+        StringBuilder  s = new StringBuilder(" SELECT p.name,count(plr.player_id) ,p.rating ,max(plr.position) FROM PLAYER_LEAGUE_RECORD plr ");
         s.append(" join player p on p.player_id = plr.player_id ");
         s.append(" where plr.team_id = ? and plr.season = ? ");
         s.append(" group by plr.player_id ");
@@ -132,6 +135,9 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
         nativeQuery.setParameter(2,season);
         return nativeQuery.getResultList();
     }
+
+
+
 
 
     @Override
@@ -157,4 +163,6 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
                 .setParameter("season",round.getSeason())
                 .getResultList();
     }
+
+
 }

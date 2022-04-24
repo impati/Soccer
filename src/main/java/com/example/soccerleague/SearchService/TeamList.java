@@ -1,6 +1,7 @@
 package com.example.soccerleague.SearchService;
 
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
+import com.example.soccerleague.SearchService.SearchResult;
 import com.example.soccerleague.Web.newDto.Team.TeamListDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Team;
@@ -16,7 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class TeamList implements SearchResult{
+public class TeamList implements SearchResult {
     private final TeamEntityRepository teamEntityRepository;
     @Override
     public boolean supports(DataTransferObject dto) {

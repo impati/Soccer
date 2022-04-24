@@ -1,6 +1,8 @@
-package com.example.soccerleague.SearchService;
+package com.example.soccerleague.SearchService.TeamDisplay.Total;
 
 import com.example.soccerleague.EntityRepository.TeamRecordEntityRepository;
+import com.example.soccerleague.SearchService.SearchResult;
+import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeaguePlayerResponse;
 import com.example.soccerleague.Web.newDto.Team.TeamTotalRecordDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
@@ -12,13 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 @Slf4j
 @Transactional(readOnly = true)
-public class TeamTotalDisplay implements SearchResult{
+public class DefaultTeamTotalDisplay implements TeamTotalDisplay {
     private final List<TeamRecordEntityRepository> teamRecordEntityRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
@@ -38,4 +39,16 @@ public class TeamTotalDisplay implements SearchResult{
         return Optional.ofNullable(teamTotalRecordDto);
     }
 
+
+    @Override
+    public DataTransferObject search(DataTransferObject dataTransferObject) {
+        TeamTotalRequest req = (TeamTotalRequest) dataTransferObject;
+        TeamTotalResponse resp = new TeamTotalResponse();
+        for(var record: teamRecordEntityRepository){
+            for(int i = 0 ;i<=Season.CURRENTSEASON;i++){
+                record.findBySeasonAndTeam(i, req.getTeamId()).stream().forEach(ele->{resp.update(ele);});
+            }
+        }
+        return resp;
+    }
 }

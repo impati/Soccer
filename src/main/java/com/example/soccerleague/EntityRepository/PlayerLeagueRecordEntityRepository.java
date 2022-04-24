@@ -1,5 +1,6 @@
 package com.example.soccerleague.EntityRepository;
 
+import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
