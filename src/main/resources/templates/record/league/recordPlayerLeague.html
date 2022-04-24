@@ -213,18 +213,18 @@
                                 <th>#</th>
                                 <th>선수</th>
                                 <th>소속 팀</th>
-                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Goal)}'|">득점</th>
-                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Assist)}'|">도움</th>
-                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=AttackPoint)}'|">공격포인트</th>
-                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Shooting)}'|">슈팅</th>
-                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=ValidShooting)}'|">유효 슈팅</th>
-                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Foul)}'|">파울</th>
-                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Pass)}'|">패스</th>
-                                <th  th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=Defense)}'|">차단</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=GOAL)}'|">득점</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=ASSIST)}'|">도움</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=ATTACKPOINT)}'|">공격포인트</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=SHOOTING)}'|">슈팅</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=VALIDSHOOTING)}'|">유효 슈팅</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=FOUL)}'|">파울</th>
+                                <th th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=PASS)}'|">패스</th>
+                                <th  th:onclick="|location.href='@{/record/player/league/{leagueId}(leagueId=${league.id},season=${season},sortType=DEFENSE)}'|">차단</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="recordPlayerLeague,i : ${recordPlayerLeagueDtoList}">
+                            <tr th:each="recordPlayerLeague,i : ${leaguePlayerRecordResponse}">
                                 <td th:text="${i.count}"></td>
                                 <td th:text="${recordPlayerLeague.name}"></td>
                                 <td th:text="${recordPlayerLeague.team}"></td>

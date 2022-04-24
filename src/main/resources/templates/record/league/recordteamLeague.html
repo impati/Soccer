@@ -223,10 +223,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="ele : ${recordTeamLeagueDto}">
+                            <tr th:each="ele : ${leagueTeamRecordResponse}">
                                 <td th:text="${ele.rank}"></td>
-                                <td th:text="${ele.name}"></td>
-                                <td th:text="${ele.game}"></td>
+                                <td th:text="${ele.teamName}"></td>
+                                <td th:text="${ele.gameNumber}"></td>
                                 <td th:text="${ele.point}"></td>
                                 <td th:text="${ele.win}"></td>
                                 <td th:text="${ele.draw}"></td>

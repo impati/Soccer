@@ -1,14 +1,13 @@
-package com.example.soccerleague.Web.newDto.cmp;
+package com.example.soccerleague.SearchService.LeagueRecord.Player;
 
-import com.example.soccerleague.Web.newDto.record.LeaguePlayerRecordDto;
 import com.example.soccerleague.domain.Direction;
 import com.example.soccerleague.domain.SortType;
 
 import java.util.Comparator;
 
-public class LeaguePlayerRecordCmp implements Comparator<LeaguePlayerRecordDto>  {
+public class LeaguePlayerRecordCmpBy implements Comparator<LeaguePlayerRecordResponse> {
     @Override
-    public int compare(LeaguePlayerRecordDto o1, LeaguePlayerRecordDto o2) {
+    public int compare(LeaguePlayerRecordResponse o1, LeaguePlayerRecordResponse o2) {
         if(o1.getSortType().equals(SortType.GOAL)){
             if(o1.getDirection().equals(Direction.ASC)){
                 if(o1.getGoal() > o2.getGoal())return 1;
