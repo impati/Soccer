@@ -1,6 +1,8 @@
 package com.example.soccerleague.Web.Controller;
 
 import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
+import com.example.soccerleague.SearchService.LeagueRound.LeagueRoundInfo;
+import com.example.soccerleague.SearchService.LeagueRound.LeagueRoundInfoRequest;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplay;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplayRequest;
 import com.example.soccerleague.Service.DuoService;
@@ -38,12 +40,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/league")
 public class  LeagueController {
-    private final LeagueService leagueService;
-    private final TeamService teamService;
     private final RoundService roundService;
     private final DuoService duoService;
     private final TeamDisplay teamDisplay;
     private final LeagueEntityRepository leagueEntityRepository;
+    private final LeagueRoundInfo leagueRoundInfo;
     /**
      * 해당 리그에 해당하는 팀을 레이팅 순으로 나열한것.
      */
@@ -56,52 +57,27 @@ public class  LeagueController {
 
     /**
      * 모든 league의 season , round 정보를 내려줌.
-     * @param season
-     * @param roundst
-     * @param model
-     * @return
      */
     @GetMapping("/round")
-    public String leagueRoundPage(@RequestParam(required = false) Integer season, @RequestParam(required = false) Integer roundst,Model model)  {
-        if(season == null) season = Season.CURRENTSEASON;
-        if(season < 0 || season > Season.CURRENTSEASON){
-            return "error/404";
-        }
-        if(roundst == null) roundst = Season.CURRENTLEAGUEROUND;
-        if(roundst < 1 || roundst > Season.LASTLEAGUEROUND){
-            return "error/404";
-        }
-        /**
-         * season ,round 유효 해야하는 값이고 조회가 되어야함.
-         */
+    public String leagueRoundPage(@RequestParam(required = false) Integer season,
+                                  @RequestParam(required = false) Integer roundSt,
+                                  Model model)  {
+        if(season == null )season = Season.CURRENTSEASON;
+        if(roundSt == null) roundSt = Season.CURRENTLEAGUEROUND;
 
+        model.addAttribute("LastRound",Season.LASTLEAGUEROUND);
+        model.addAttribute("season",season);
+        model.addAttribute("roundSt",roundSt);
+        model.addAttribute("Seasons",Season.CURRENTSEASON);
 
-        List<DataTransferObject> GdataTransferObjects = roundService.searchLeagueAndSeasonAndRoundStDisplayDto(1L, season, roundst);
-
-        model.addAttribute("GLeague",GdataTransferObjects);
-
-
-
-        List<DataTransferObject> LdataTransferObjects = roundService.searchLeagueAndSeasonAndRoundStDisplayDto(2L, season, roundst);
-
-        model.addAttribute("LLeague",LdataTransferObjects);
+        model.addAttribute("GLeague",leagueRoundInfo.searchList(new LeagueRoundInfoRequest(season,roundSt,1L)));
+        model.addAttribute("LLeague",leagueRoundInfo.searchList(new LeagueRoundInfoRequest(season,roundSt,2L)));
+        model.addAttribute("ELeague",leagueRoundInfo.searchList(new LeagueRoundInfoRequest(season,roundSt,3L)));
+        model.addAttribute("SLeague",leagueRoundInfo.searchList(new LeagueRoundInfoRequest(season,roundSt,4L)));
 
 
 
 
-        List<DataTransferObject> EdataTransferObjects = roundService.searchLeagueAndSeasonAndRoundStDisplayDto(3L, season, roundst);
-
-        model.addAttribute("ELeague",EdataTransferObjects);
-
-
-
-
-        List<DataTransferObject> SdataTransferObjects = roundService.searchLeagueAndSeasonAndRoundStDisplayDto(4L, season, roundst);
-
-        model.addAttribute("SLeague",SdataTransferObjects);
-
-
-        model.addAttribute("SearchDto",LeagueRoundSearchDto.create(season,roundst,Season.CURRENTSEASON,Season.LASTLEAGUEROUND));
 
         return "league/round";
 

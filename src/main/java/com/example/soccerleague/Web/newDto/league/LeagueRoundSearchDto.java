@@ -1,7 +1,6 @@
 package com.example.soccerleague.Web.newDto.league;
 
 import com.example.soccerleague.domain.DataTransferObject;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +19,6 @@ public class LeagueRoundSearchDto extends DataTransferObject {
     }
     // 채워줄 데이터
     private String leagueName;
-    private List<LeagueRoundInfo> leagueRoundInfoList = new ArrayList<>();
+    private List<LeagueRoundInfoDto> leagueRoundInfoList = new ArrayList<>();
 
 }

@@ -1,9 +1,8 @@
 package com.example.soccerleague.Web.newDto.league;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 @Data
-public class LeagueRoundInfo{
+public class LeagueRoundInfoDto {
     private Long roundId;
     private boolean isDone;
     private String teamAName;
@@ -11,16 +10,16 @@ public class LeagueRoundInfo{
     private int scoreA;
     private int scoreB;
 
-    public static LeagueRoundInfo create(Long roundId,String teamAName,String teamBName){
-        LeagueRoundInfo leagueRoundInfo = new LeagueRoundInfo();
+    public static LeagueRoundInfoDto create(Long roundId, String teamAName, String teamBName){
+        LeagueRoundInfoDto leagueRoundInfo = new LeagueRoundInfoDto();
         leagueRoundInfo.setRoundId(roundId);
         leagueRoundInfo.setDone(false);
         leagueRoundInfo.setTeamAName(teamAName);
         leagueRoundInfo.setTeamBName(teamBName);
         return leagueRoundInfo;
     }
-    public static LeagueRoundInfo create(Long roundId,String teamAName,String teamBName,int scoreA,int scoreB){
-        LeagueRoundInfo leagueRoundInfo = new LeagueRoundInfo();
+    public static LeagueRoundInfoDto create(Long roundId, String teamAName, String teamBName, int scoreA, int scoreB){
+        LeagueRoundInfoDto leagueRoundInfo = new LeagueRoundInfoDto();
         leagueRoundInfo.setRoundId(roundId);
         leagueRoundInfo.setDone(true);
         leagueRoundInfo.setTeamAName(teamAName);
