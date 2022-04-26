@@ -1,17 +1,19 @@
 package com.example.soccerleague.Web.Controller;
 
 import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
+import com.example.soccerleague.EntityRepository.RoundEntityRepository;
+import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpDto;
+import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpRegister;
 import com.example.soccerleague.SearchService.LeagueRound.LeagueRoundInfo;
 import com.example.soccerleague.SearchService.LeagueRound.LeagueRoundInfoRequest;
+import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpRequest;
+import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpResponse;
+import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpSearch;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplay;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplayRequest;
 import com.example.soccerleague.Service.DuoService;
-import com.example.soccerleague.Service.LeagueService;
 import com.example.soccerleague.Service.RoundService;
-import com.example.soccerleague.Service.TeamService;
 import com.example.soccerleague.Web.dto.League.*;
-import com.example.soccerleague.Web.dto.League.LeagueRoundSearchDto;
-import com.example.soccerleague.Web.dto.Team.TeamSimpleInfoDto;
 import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
 import com.example.soccerleague.Web.newDto.duo.DuoRecordResultDto;
 import com.example.soccerleague.Web.newDto.league.*;
@@ -21,7 +23,6 @@ import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Season;
-import com.example.soccerleague.domain.Team;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -45,6 +46,10 @@ public class  LeagueController {
     private final TeamDisplay teamDisplay;
     private final LeagueEntityRepository leagueEntityRepository;
     private final LeagueRoundInfo leagueRoundInfo;
+    private final LeagueRoundLineUpSearch leagueRoundLineUpSearch;
+    private final LeagueRoundLineUpRegister leagueRoundLineUpRegister;
+    private final RoundEntityRepository roundEntityRepository;
+
     /**
      * 해당 리그에 해당하는 팀을 레이팅 순으로 나열한것.
      */
@@ -75,14 +80,9 @@ public class  LeagueController {
         model.addAttribute("ELeague",leagueRoundInfo.searchList(new LeagueRoundInfoRequest(season,roundSt,3L)));
         model.addAttribute("SLeague",leagueRoundInfo.searchList(new LeagueRoundInfoRequest(season,roundSt,4L)));
 
-
-
-
-
         return "league/round";
 
     }
-
 
 
     /**
@@ -90,32 +90,24 @@ public class  LeagueController {
      * 경기전 == RoundStatus.YET일때 라인업을 저장할 수 있는 상태
      * 라인업을 저장후 경기가 시작.
      * 라인업이 저장된 이후 상태는 playerLeagueRecord에서 저장된 라인업을 가져와 디스플레이.*
-     * @param roundId
-     * @param model
-     * @return
      */
     @GetMapping("/round/{roundId}/line-up")
     public String gameLineUpPage(@PathVariable Long roundId,Model model){
-        LeagueRoundLineUp leagueRoundLineUp = (LeagueRoundLineUp) roundService.getLineUp(roundId);
-
-
-        model.addAttribute("leagueRoundLineUp",leagueRoundLineUp);
+        model.addAttribute("leagueRoundLineUpResponse",leagueRoundLineUpSearch.search(new LeagueRoundLineUpRequest(roundId)).orElse(null));
+        model.addAttribute("round",roundEntityRepository.findById(roundId).orElse(null));
         model.addAttribute("positionList", Position.values());
-        if(leagueRoundLineUp.getRoundStatus() == RoundStatus.YET) model.addAttribute("DONE",false);
-        else model.addAttribute("DONE",true);
         return "league/lineup";
     }
 
     /**
      * 라인업을 저장하는 메서드.
-     * @param roundId
-     * @param leagueRoundLineUp
-     * @return
      */
     @PostMapping("/round/{roundId}/line-up")
-    public String gameLineUpSave(@PathVariable Long roundId,@ModelAttribute LeagueRoundLineUp leagueRoundLineUp){
-
-        roundService.lineUpSave(roundId,leagueRoundLineUp);
+    public String gameLineUpSave(@PathVariable Long roundId,@ModelAttribute LeagueRoundLineUpResponse leagueRoundLineUpResponse){
+        LeagueRoundLineUpDto lineUpDto = new LeagueRoundLineUpDto(roundId);
+        lineUpDto.setJoinPlayer(leagueRoundLineUpResponse.getJoinPlayer());
+        lineUpDto.setJoinPosition(leagueRoundLineUpResponse.getJoinPosition());
+        leagueRoundLineUpRegister.register(lineUpDto);
         return "redirect:/league/round/" + roundId  + "/line-up";
     }
 
@@ -128,14 +120,16 @@ public class  LeagueController {
      */
     @GetMapping("/round/{roundId}/game")
     public String game(@PathVariable Long roundId,Model model){
-        Round round = roundService.searchRound(roundId);
+        Round round = (Round) roundEntityRepository.findById(roundId).orElse(null);
         model.addAttribute("round",roundId);
         if(round.getRoundStatus() == RoundStatus.YET){
             return "/league/BeforeGame";
         }
         else if(round.getRoundStatus() == RoundStatus.ING){
+
             LeagueRoundGameDto leagueRoundGameDto = (LeagueRoundGameDto)roundService.getGameForm(roundId);
             model.addAttribute("leagueRoundGameDto",leagueRoundGameDto);
+
             return "/league/game";
         }
         else{

@@ -176,11 +176,11 @@
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <button class="nav-link btn btn-lg btn-secondary m-2" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/strategy(roundId=${leagueRoundLineUp.roundId})}'|" >전력</button>
+                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/strategy(roundId=${round.id})}'|" >전력</button>
                 <button class="nav-link  btn btn-lg btn-secondary m-2" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
-                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/line-up(roundId=${leagueRoundLineUp.roundId})}'|">라인업</button>
+                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/line-up(roundId=${round.id})}'|">라인업</button>
                 <button class="nav-link btn btn-lg btn-secondary m-2" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
-                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/game(roundId=${leagueRoundLineUp.roundId})}'|">경기 기록</button>
+                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/game(roundId=${round.id})}'|">경기 기록</button>
             </div>
         </nav>
 
@@ -188,8 +188,8 @@
 
 
 
-        <div th:unless="${DONE}" class="container-fluid pt-4 px-4" th:object="${leagueRoundLineUp}">
-            <form th:action="@{/league/round/{st}/line-up/(st=*{roundId})}" class="form-inline" method="post">
+        <div th:unless="${leagueRoundLineUpResponse.lineUpDone}" class="container-fluid pt-4 px-4" th:object="${leagueRoundLineUpResponse}">
+            <form th:action="@{/league/round/{st}/line-up/(st=${round.id})}" class="form-inline" method="post">
                 <div class="row g-4">
 
                     <div class="col-sm-12 col-xl-6">
@@ -246,8 +246,8 @@
         </div>
 
 
-        <div th:if="${DONE}" class="container-fluid pt-4 px-4" th:object="${leagueRoundLineUp}" disabled>
-            <form th:action="@{/league/round/{st}/line-up/(st=*{roundId})}" class="form-inline" method="post" disabled>
+        <div th:if="${leagueRoundLineUpResponse.lineUpDone}" class="container-fluid pt-4 px-4" th:object="${leagueRoundLineUpResponse}" disabled>
+            <form th:action="@{/league/round/{st}/line-up/(st=${round.id})}" class="form-inline" method="post" disabled>
                 <div class="row g-4">
 
                     <div class="col-sm-12 col-xl-6">

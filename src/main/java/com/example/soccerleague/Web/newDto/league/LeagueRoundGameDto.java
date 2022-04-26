@@ -1,8 +1,7 @@
 package com.example.soccerleague.Web.newDto.league;
 
-import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
+import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
-import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import lombok.Data;
 

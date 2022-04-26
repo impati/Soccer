@@ -3,7 +3,6 @@ package com.example.soccerleague;
 import com.example.soccerleague.Service.LeagueService;
 import com.example.soccerleague.support.ApplicationContextProvider;
 import com.example.soccerleague.support.PostData;
-import com.example.soccerleague.support.testData.LeagueRoundGameLineUpSaveTestData;
 import com.example.soccerleague.support.testData.NewGameResultTestData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

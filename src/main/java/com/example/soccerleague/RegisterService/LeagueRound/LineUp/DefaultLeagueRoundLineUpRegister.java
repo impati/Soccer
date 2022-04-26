@@ -1,7 +1,6 @@
-package com.example.soccerleague.RegisterService;
+package com.example.soccerleague.RegisterService.LeagueRound.LineUp;
 
 import com.example.soccerleague.EntityRepository.*;
-import com.example.soccerleague.Web.newDto.league.LeagueRoundLineUpDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
@@ -15,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service(value ="LeagueRoundLineUpRegister")
@@ -39,7 +39,11 @@ public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegist
         LeagueRound round = (LeagueRound)roundEntityRepository.findById(lineUpDto.getRoundId()).orElse(null);
         Team teamA = (Team)teamEntityRepository.findById(round.getHomeTeamId()).orElse(null);
         List<Player> playerListA = playerEntityRepository.findByTeam(teamA);
-
+        playerListA.sort((o1, o2) -> {
+            if(o1.getPosition().ordinal() > o2.getPosition().ordinal())return 1;
+            else if(o1.getPosition().ordinal() < o2.getPosition().ordinal()) return -1;
+            else return 0;
+        });
         for (int pos = 0 ; pos < playerListA.size();pos++){
             Player player = playerListA.get(pos);
             for (int i = 0; i < lineUpDto.getJoinPlayer().size(); i++) {
@@ -52,10 +56,17 @@ public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegist
         }
         TeamLeagueRecord teamLeagueRecordA = TeamLeagueRecord.create(round,teamA);
         teamLeagueRecordEntityRepository.save(teamLeagueRecordA);
+
+
+
         int sz = playerListA.size();
         Team teamB = (Team)teamEntityRepository.findById(round.getAwayTeamId()).orElse(null);
         List<Player> playerListB = playerEntityRepository.findByTeam(teamB);
-
+        playerListB.sort((o1, o2) -> {
+            if(o1.getPosition().ordinal() > o2.getPosition().ordinal())return 1;
+            else if(o1.getPosition().ordinal() < o2.getPosition().ordinal()) return -1;
+            else return 0;
+        });
         for (int pos = 0 ; pos < playerListB.size();pos++){
             Player player = playerListB.get(pos);
             for (int i = 0; i < lineUpDto.getJoinPlayer().size(); i++) {
@@ -73,5 +84,7 @@ public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegist
         round.setRoundStatus(RoundStatus.ING);
 
     }
+
+
 
 }

@@ -1,8 +1,9 @@
 package com.example.soccerleague.SearchService;
 
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
+import com.example.soccerleague.SearchService.LeagueRound.Game.DuoRecordSearch;
 import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
-import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
+import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @Service(value ="DuoRecordSearch")
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class DefaultDuoRecordSearch implements DuoRecordSearch{
+public class DefaultDuoRecordSearch implements DuoRecordSearch {
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
     @Override
     public boolean supports(DataTransferObject dto) {

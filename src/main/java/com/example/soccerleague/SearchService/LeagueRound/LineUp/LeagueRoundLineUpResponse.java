@@ -1,19 +1,18 @@
-package com.example.soccerleague.Web.newDto.league;
+package com.example.soccerleague.SearchService.LeagueRound.LineUp;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
-import com.example.soccerleague.domain.Round.RoundStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class LeagueRoundLineUpDto extends DataTransferObject {
-    //필요한 데이터
-    private Long roundId;
-
-    //채워줄 데이터
+@AllArgsConstructor
+@NoArgsConstructor
+public class LeagueRoundLineUpResponse extends DataTransferObject {
     private boolean lineUpDone;
     private String teamA;
     private String teamB;
@@ -24,7 +23,9 @@ public class LeagueRoundLineUpDto extends DataTransferObject {
     private List<Long> joinPlayer = new ArrayList<>();
     private List<Position> joinPosition = new ArrayList<>();
 
-    public LeagueRoundLineUpDto(Long roundId) {
-        this.roundId = roundId;
+
+    public LeagueRoundLineUpResponse(String teamA, String teamB) {
+        this.teamA = teamA;
+        this.teamB = teamB;
     }
 }

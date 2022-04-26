@@ -1,10 +1,11 @@
-package com.example.soccerleague.SearchService;
+package com.example.soccerleague.SearchService.LeagueRound.Game;
 
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
+import com.example.soccerleague.SearchService.LeagueRoundGameSearch;
 import com.example.soccerleague.Web.newDto.league.LeagueRoundGameDto;
-import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
+import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Round.LeagueRound;
@@ -24,7 +25,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class DefaultLeagueRoundGameSearch implements LeagueRoundGameSearch{
+public class DefaultLeagueRoundGameSearch implements LeagueRoundGameSearch {
     private final RoundEntityRepository roundEntityRepository;
     private final TeamEntityRepository teamEntityRepository;
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;

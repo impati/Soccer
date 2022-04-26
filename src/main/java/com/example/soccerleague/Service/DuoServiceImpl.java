@@ -3,7 +3,7 @@ package com.example.soccerleague.Service;
 import com.example.soccerleague.Repository.DuoRepository;
 import com.example.soccerleague.Repository.PlayerRepository;
 import com.example.soccerleague.Web.dto.League.LeagueRoundLineUp;
-import com.example.soccerleague.Web.newDto.league.LineUpPlayer;
+import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
 import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
 import com.example.soccerleague.Web.newDto.duo.DuoRecordResultDto;
 import com.example.soccerleague.domain.DataTransferObject;
