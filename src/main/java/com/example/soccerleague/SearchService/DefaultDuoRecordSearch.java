@@ -1,8 +1,7 @@
 package com.example.soccerleague.SearchService;
 
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.SearchService.LeagueRound.Game.DuoRecordSearch;
-import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
+import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
 import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;

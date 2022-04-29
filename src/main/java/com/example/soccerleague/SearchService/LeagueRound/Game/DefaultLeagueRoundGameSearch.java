@@ -3,12 +3,13 @@ package com.example.soccerleague.SearchService.LeagueRound.Game;
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
-import com.example.soccerleague.SearchService.LeagueRoundGameSearch;
+import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayerCmpByPosition;
 import com.example.soccerleague.Web.newDto.league.LeagueRoundGameDto;
 import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Round.LeagueRound;
+import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import lombok.RequiredArgsConstructor;
@@ -62,5 +63,32 @@ public class DefaultLeagueRoundGameSearch implements LeagueRoundGameSearch {
 
         return Optional.ofNullable(leagueRoundGameDto);
 
+    }
+    @Override
+    public Optional<DataTransferObject> search(DataTransferObject dataTransferObject) {
+        LeagueRoundGameRequest req = (LeagueRoundGameRequest) dataTransferObject;
+        Round round = (Round)roundEntityRepository.findById(req.getRoundId()).orElse(null);
+        Team teamA = (Team)teamEntityRepository.findById(round.getHomeTeamId()).orElse(null);
+        Team teamB = (Team)teamEntityRepository.findById(round.getAwayTeamId()).orElse(null);
+
+        LeagueRoundGameResponse resp = new LeagueRoundGameResponse(round.getRoundStatus(),teamA.getName(),teamB.getName());
+
+        playerLeagueRecordEntityRepository.findByRoundAndTeam(req.getRoundId(), teamA.getId())
+                .stream()
+                .forEach(ele->{
+                    Player player = ele.getPlayer();
+                    resp.getPlayerListA().add(LineUpPlayer.create(player.getId(),player.getName(),ele.getPosition()));
+                });
+        playerLeagueRecordEntityRepository.findByRoundAndTeam(req.getRoundId(), teamB.getId())
+                .stream()
+                .forEach(ele->{
+                    Player player = ele.getPlayer();
+                    resp.getPlayerListB().add(LineUpPlayer.create(player.getId(),player.getName(),ele.getPosition()));
+                });
+
+        resp.getPlayerListA().sort(new LineUpPlayerCmpByPosition());
+        resp.getPlayerListB().sort(new LineUpPlayerCmpByPosition());
+
+        return Optional.ofNullable(resp);
     }
 }

@@ -157,9 +157,9 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
     public List<PlayerLeagueRecord> findBySeasonAndPlayer(Round round, Long playerId) {
         return em.createQuery("select plr from PlayerLeagueRecord plr " +
                 " join  plr.player p on p.id =:playerId " +
-                " join  plr.leagueRound lr on lr.id < :roundId where plr.season = : season")
+                " join  plr.leagueRound lr on lr.roundSt < :roundSt where plr.season = : season")
                 .setParameter("playerId",playerId)
-                .setParameter("roundId",round.getId())
+                .setParameter("roundSt",round.getRoundSt())
                 .setParameter("season",round.getSeason())
                 .getResultList();
     }

@@ -1,5 +1,6 @@
 package com.example.soccerleague.Web.newDto.league;
 
+import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
 import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.RoundStatus;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 @Data
 public class LeagueRoundGameDto extends DataTransferObject {
+    //----------------------- 삭제 예정 --------------------------
     //display 넣어줄 데이터들
     private Long roundId;
     private RoundStatus roundStatus;
@@ -20,6 +22,7 @@ public class LeagueRoundGameDto extends DataTransferObject {
     private String teamB;
     private List<LineUpPlayer> playerListA = new ArrayList<>();
     private List<LineUpPlayer> playerListB = new ArrayList<>();
+    //----------------------- 삭제 예정 --------------------------
 
     // 받아올 데이터들
 
@@ -45,6 +48,22 @@ public class LeagueRoundGameDto extends DataTransferObject {
         return leagueRoundGameDto;
     }
 
+    public static LeagueRoundGameDto of(LeagueRoundGameResponse resp){
+        LeagueRoundGameDto obj = new LeagueRoundGameDto();
+        obj.setScorePair(resp.getScorePair());
+        obj.setSharePair(resp.getSharePair());
+        obj.setCornerKickPair(resp.getCornerKickPair());
+        obj.setFreeKickPair((resp.getFreeKickPair()));
 
+        obj.setGoalList(resp.getGoalList());
+        obj.setAssistList(resp.getAssistList());
+        obj.setPassList(resp.getPassList());
+        obj.setShootingList(resp.getShootingList());
+        obj.setValidShootingList(resp.getValidShootingList());
+        obj.setFoulList(resp.getFoulList());
+        obj.setGoodDefenseList(resp.getGoodDefenseList());
+        obj.setGradeList(resp.getGradeList());
+        return obj;
+    }
 
 }

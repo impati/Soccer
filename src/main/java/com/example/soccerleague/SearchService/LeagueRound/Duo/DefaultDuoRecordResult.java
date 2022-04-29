@@ -1,4 +1,4 @@
-package com.example.soccerleague.SearchService;
+package com.example.soccerleague.SearchService.LeagueRound.Duo;
 
 import com.example.soccerleague.EntityRepository.DuoEntityRepository;
 import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
-public class DuoRecordResult implements SearchResult{
+public class DefaultDuoRecordResult implements DuoRecordResult {
     private final DuoEntityRepository duoEntityRepository;
     private final PlayerEntityRepository playerEntityRepository;
     @Override
@@ -45,5 +45,27 @@ public class DuoRecordResult implements SearchResult{
             ret.add(obj);
         }
         return ret;
+    }
+
+    @Override
+    public List<DataTransferObject> searchList(DataTransferObject dataTransferObject) {
+        DuoRecordResultRequest req = (DuoRecordResultRequest) dataTransferObject;
+        List<DataTransferObject> resp = new ArrayList<>();
+
+        duoEntityRepository.findByRoundId(req.getRoundId())
+                .stream()
+                .forEach(ele ->{
+                    Player scorer = (Player)playerEntityRepository.findById(ele.getGoalPlayerId()).orElse(null);
+                    Player assistant = (Player)playerEntityRepository.findById(ele.getAssistPlayerId()).orElse(null);
+                    String scorerName = "-";
+                    String assistantName = "-";
+                    if(scorer!=null)scorerName = scorer.getName();
+                    if(assistant != null)assistantName = assistant.getName();
+
+                    DuoRecordResultDto obj = DuoRecordResultDto.create(scorerName,assistantName,ele.getGoalType());
+                    resp.add(obj);
+                });
+
+        return resp;
     }
 }

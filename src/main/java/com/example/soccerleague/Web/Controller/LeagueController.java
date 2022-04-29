@@ -1,21 +1,34 @@
 package com.example.soccerleague.Web.Controller;
 
 import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
+import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
+import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
+import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameRegister;
 import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpDto;
 import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpRegister;
+import com.example.soccerleague.SearchService.LeagueRound.Duo.DuoRecordResult;
+import com.example.soccerleague.SearchService.LeagueRound.Duo.DuoRecordResultRequest;
+import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameRequest;
+import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
+import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameSearch;
+import com.example.soccerleague.SearchService.LeagueRound.GameResult.LeagueRoundGameResult;
+import com.example.soccerleague.SearchService.LeagueRound.GameResult.LeagueRoundGameResultPlayerResponse;
+import com.example.soccerleague.SearchService.LeagueRound.GameResult.LeagueRoundGameResultRequest;
+import com.example.soccerleague.SearchService.LeagueRound.GameResult.LeagueRoundGameResultTeamResponse;
 import com.example.soccerleague.SearchService.LeagueRound.LeagueRoundInfo;
 import com.example.soccerleague.SearchService.LeagueRound.LeagueRoundInfoRequest;
 import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpRequest;
 import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpResponse;
 import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpSearch;
+import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
+import com.example.soccerleague.SearchService.LeagueRound.strategy.*;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplay;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplayRequest;
 import com.example.soccerleague.Service.DuoService;
 import com.example.soccerleague.Service.RoundService;
 import com.example.soccerleague.Web.dto.League.*;
-import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
-import com.example.soccerleague.Web.newDto.duo.DuoRecordResultDto;
+import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
 import com.example.soccerleague.Web.newDto.league.*;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
@@ -23,6 +36,8 @@ import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Season;
+import com.example.soccerleague.domain.record.GoalType;
+import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -31,6 +46,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  *
  *  
@@ -49,7 +66,15 @@ public class  LeagueController {
     private final LeagueRoundLineUpSearch leagueRoundLineUpSearch;
     private final LeagueRoundLineUpRegister leagueRoundLineUpRegister;
     private final RoundEntityRepository roundEntityRepository;
-
+    private final LeagueRoundGameSearch leagueRoundGameSearch;
+    private final LeagueRoundGameRegister leagueRoundGameRegister;
+    private final LeagueRoundGameResult  leagueRoundGameResult;
+    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
+    private final DuoRecordRegister duoRecordRegister;
+    private final DuoRecordResult duoRecordResult;
+    private final ShowDown showDown;
+    private final LeagueRoundSeasonTeam leagueRoundSeasonTeam;
+    private final LeagueRoundTopPlayer leagueRoundTopPlayer;
     /**
      * 해당 리그에 해당하는 팀을 레이팅 순으로 나열한것.
      */
@@ -116,134 +141,118 @@ public class  LeagueController {
      *
      * RoundStatus.YET 일 떄 경기전입니다 라는 페이지를 리턴
      * RoundStatus.ING 일 떄 경기결과를 post 할 수 있는 페이지를 리턴
-     * RoundStatus.DONE 일때 경기 결과페이지를 리턴
+     * RoundStatus.record 일때 경기결과 , 듀오 페이지
+     * RoundStatus.DONE 일때 경기결과 + 듀오 결과
      */
     @GetMapping("/round/{roundId}/game")
     public String game(@PathVariable Long roundId,Model model){
         Round round = (Round) roundEntityRepository.findById(roundId).orElse(null);
         model.addAttribute("round",roundId);
-        if(round.getRoundStatus() == RoundStatus.YET){
+        if(round.getRoundStatus().equals(RoundStatus.YET)){
             return "/league/BeforeGame";
         }
-        else if(round.getRoundStatus() == RoundStatus.ING){
-
-            LeagueRoundGameDto leagueRoundGameDto = (LeagueRoundGameDto)roundService.getGameForm(roundId);
-            model.addAttribute("leagueRoundGameDto",leagueRoundGameDto);
-
+        else if(round.getRoundStatus().equals(RoundStatus.ING)){
+            model.addAttribute("leagueRoundGameResponse",leagueRoundGameSearch.search(new LeagueRoundGameRequest(roundId)).orElse(null));
             return "/league/game";
         }
+        else if(round.getRoundStatus().equals(RoundStatus.RECORD)){
+
+            gameResult(round,model);
+
+            List<LineUpPlayer> playerList = new ArrayList<>();
+            playerLeagueRecordEntityRepository.findByRoundId(roundId)
+                    .stream()
+                    .map(ele->(PlayerLeagueRecord)ele)
+                    .map(ele->ele.getPlayer())
+                    .forEach(ele->playerList.add(
+                            LineUpPlayer.create(ele.getId(),ele.getName(),ele.getPosition())));
+            playerList.add(LineUpPlayer.create(0L,"없음",Position.AM));
+
+            model.addAttribute("playerList",playerList);
+            model.addAttribute("goalTypeList", GoalType.values());
+            model.addAttribute("duoRecordDto",new DuoRecordDto());
+
+            return "/league/gameRecord";
+        }
         else{
-            gameResult(roundId,model);
-            List<DataTransferObject> dto = duoService.gameGoalResult(roundId);
-            List<DuoRecordResultDto> gameGoalResultList = new ArrayList<>();
-            dto.stream().forEach(ele->gameGoalResultList.add((DuoRecordResultDto)ele));
-            model.addAttribute("gameGoalResultList",gameGoalResultList);
+
+            gameResult(round,model);
+            model.addAttribute("duoResultResponse",duoRecordResult.searchList(new DuoRecordResultRequest(roundId)));
             return "/league/gameResult";
         }
-
     }
+    private void gameResult(Round round ,Model model){
+        List<LeagueRoundGameResultPlayerResponse> playerAResp =
+                leagueRoundGameResult
+                        .searchPlayerResult(new LeagueRoundGameResultRequest(round.getId(),round.getHomeTeamId()))
+                        .stream()
+                        .map(ele->(LeagueRoundGameResultPlayerResponse)ele)
+                        .collect(Collectors.toList());
 
+        List<LeagueRoundGameResultPlayerResponse > playerBResp =
+                leagueRoundGameResult.searchPlayerResult(new LeagueRoundGameResultRequest(round.getId(),round.getAwayTeamId()))
+                        .stream()
+                        .map(ele->(LeagueRoundGameResultPlayerResponse)ele)
+                        .collect(Collectors.toList());
+
+
+        List<LeagueRoundGameResultTeamResponse> teamResp =
+                leagueRoundGameResult.searchTeamResult(new LeagueRoundGameResultRequest(round.getId()))
+                        .stream()
+                        .map(ele->(LeagueRoundGameResultTeamResponse)ele)
+                        .collect(Collectors.toList());
+
+        model.addAttribute("teamA",teamResp.get(0));
+        model.addAttribute("teamB",teamResp.get(1));
+        model.addAttribute("playerA",playerAResp);
+        model.addAttribute("playerB",playerBResp);
+        model.addAttribute("count" , teamResp.get(0).getScore() + teamResp.get(1).getScore());
+    }
     /**
      * 경기결과를 저장.
-     *
-     * @param roundId
-     * @param leagueRoundGameDto
-     * @return
+
      */
     @PostMapping("/round/{roundId}/game")
-    public String gameSave(@PathVariable Long roundId,@ModelAttribute LeagueRoundGameDto leagueRoundGameDto){
-        roundService.gameResultSave(roundId,leagueRoundGameDto);
-        return "redirect:/league/round/" + roundId  + "/game-goal";
-    }
-    private void gameResult(Long roundId, Model model){
-        Integer count = 0;
-        List<DataTransferObject> teams = roundService.gameTeamResult(roundId);
-        List<DataTransferObject> players = roundService.gamePlayerResult(roundId);
-        LeagueRoundGameTeamResultDto teamADto = (LeagueRoundGameTeamResultDto) teams.get(0);
-        count += teamADto.getScore();
-        LeagueRoundGameTeamResultDto teamBDto = (LeagueRoundGameTeamResultDto) teams.get(1);
-        count += teamBDto.getScore();
+    public String gameSave(@PathVariable Long roundId,@ModelAttribute LeagueRoundGameResponse leagueRoundGameResponse){
 
-        List<LeagueRoundGamePlayerResultDto> playerADto = new ArrayList<>();
-        for(int i =0;i<players.size();i++){
-            LeagueRoundGamePlayerResultDto tmp = (LeagueRoundGamePlayerResultDto) players.get(i);
-            if(tmp.getTeamId() == teamADto.getTeamId()){
-                playerADto.add(tmp);
-            }
+        LeagueRoundGameDto leagueRoundGameDto = LeagueRoundGameDto.of(leagueRoundGameResponse);
+        leagueRoundGameDto.setRoundId(roundId);
+        leagueRoundGameRegister.register(leagueRoundGameDto);
 
-        }
-
-        List<LeagueRoundGamePlayerResultDto> playerBDto = new ArrayList<>();
-        for(int i =0;i<players.size();i++){
-            LeagueRoundGamePlayerResultDto tmp = (LeagueRoundGamePlayerResultDto) players.get(i);
-            if(tmp.getTeamId() == teamBDto.getTeamId()){
-                playerBDto.add(tmp);
-            }
-
-        }
-
-
-        model.addAttribute("teamADto",teamADto);
-        model.addAttribute("teamBDto",teamBDto);
-        model.addAttribute("playerADto",playerADto);
-        model.addAttribute("playerBDto",playerBDto);
-
-        model.addAttribute("count",count);
+        return "redirect:/league/round/" + roundId  + "/game";
     }
 
     /**
-     * goal - assist 결과 저장
+     * 듀오결과저장
      */
-    @GetMapping("/round/{roundId}/game-goal")
-    public String gameGoal(@PathVariable Long roundId,Model model){
-        gameResult(roundId,model);
-        DuoRecordDto duoRecord = (DuoRecordDto)duoService.gameGoalPage(roundId);
-        log.info("duoRecordDto [{}]",duoRecord);
-        model.addAttribute("duoRecord",duoRecord);
-        return "/league/gameGoal";
-    }
-    @PostMapping("/round/{roundId}/game-goal")
-    public String gameGoalSave(@PathVariable Long roundId,@ModelAttribute DuoRecordDto duoRecord){
-        duoService.gameGoalSave(roundId,duoRecord);
-        log.info("duoRecordDto [{}]",duoRecord);
+
+    @PostMapping("/round/{roundId}/game-record")
+    public String gameDuoSave(@PathVariable Long roundId,@ModelAttribute DuoRecordDto duoRecordDto){
+        duoRecordDto.setRoundId(roundId);
+        duoRecordRegister.register(duoRecordDto);
         return "redirect:/league/round/" + roundId  + "/game";
     }
 
 
+
+
+
+
+
+
+
     @GetMapping("/round/{roundId}/strategy")
     public String gameStrategy(@PathVariable Long roundId,Model model){
-        List<DataTransferObject> dataTransferObjects = roundService.seasonTeamGameResultWithStrategy(roundId);
-        LeagueRoundStrategyDto teamAResult = (LeagueRoundStrategyDto)dataTransferObjects.get(0);
-        LeagueRoundStrategyDto teamBResult = (LeagueRoundStrategyDto)dataTransferObjects.get(1);
 
-        dataTransferObjects = roundService.RecentShowDownWithStrategy(roundId);
-
-        List<ShowDownDto> recentShowDown = new ArrayList<>();
-        for(var ele :dataTransferObjects){
-            recentShowDown.add((ShowDownDto)ele);
-        }
-
-        List<DataTransferObject> A = roundService.seasonTopPlayerWithStrategy(roundId, "A");
-        List<LeagueRoundTopPlayerDto> teamATopPlayer = new ArrayList<>();
-        for(var ele : A){
-            teamATopPlayer.add((LeagueRoundTopPlayerDto) ele);
-        }
-
-        List<DataTransferObject> B = roundService.seasonTopPlayerWithStrategy(roundId, "B");
-        List<LeagueRoundTopPlayerDto> teamBTopPlayer = new ArrayList<>();
-        for(var ele : B){
-            teamBTopPlayer.add((LeagueRoundTopPlayerDto) ele);
-        }
-
-
+        Round round = (Round) roundEntityRepository.findById(roundId).orElse(null);
 
 
         model.addAttribute("round",roundId);
-        model.addAttribute("teamAResult",teamAResult);
-        model.addAttribute("teamBResult",teamBResult);
-        model.addAttribute("recentShowDown",recentShowDown);
-        model.addAttribute("teamATopPlayer",teamATopPlayer);
-        model.addAttribute("teamBTopPlayer",teamBTopPlayer);
+        model.addAttribute("teamAResult",leagueRoundSeasonTeam.search(new LeagueRoundSeasonTeamRequest(roundId,round.getHomeTeamId())).orElse(null));
+        model.addAttribute("teamBResult",leagueRoundSeasonTeam.search(new LeagueRoundSeasonTeamRequest(roundId,round.getAwayTeamId())).orElse(null));
+        model.addAttribute("recentShowDown",showDown.searchList(new ShowDownRequest(roundId)));
+        model.addAttribute("teamATopPlayer",leagueRoundTopPlayer.search(new LeagueRoundTopPlayerRequest(roundId,round.getHomeTeamId())));
+        model.addAttribute("teamBTopPlayer",leagueRoundTopPlayer.search(new LeagueRoundTopPlayerRequest(roundId,round.getAwayTeamId())));
         return "league/strategy";
     }
 

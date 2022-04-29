@@ -4,7 +4,7 @@ import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpDto;
 import com.example.soccerleague.RegisterService.RegisterResolver;
 import com.example.soccerleague.SearchService.SearchResolver;
-import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
+import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
 import com.example.soccerleague.Web.newDto.duo.DuoRecordResultDto;
 import com.example.soccerleague.Web.newDto.league.*;
 import com.example.soccerleague.domain.Player.Position;

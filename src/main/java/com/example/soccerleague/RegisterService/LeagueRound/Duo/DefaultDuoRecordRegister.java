@@ -1,8 +1,8 @@
-package com.example.soccerleague.RegisterService;
+package com.example.soccerleague.RegisterService.LeagueRound.Duo;
 
 import com.example.soccerleague.EntityRepository.*;
+import com.example.soccerleague.RegisterService.LeagueSeasonTable;
 import com.example.soccerleague.Web.dto.League.LeagueRoundSeasonResult;
-import com.example.soccerleague.Web.newDto.duo.DuoRecordDto;
 import com.example.soccerleague.Web.newDto.league.LeagueSeasonTableDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
@@ -53,7 +53,6 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
             Duo duo = Duo.create(scorer,assistant,goalType,leagueRound);
             duoEntityRepository.save(duo);
         }
-        log.info("leagueRound  : {}",leagueRound);
         leagueRound.setRoundStatus(RoundStatus.DONE);
         rankMake(leagueRound);
         if(roundEntityRepository.currentRoundIsDone(leagueRound)){
