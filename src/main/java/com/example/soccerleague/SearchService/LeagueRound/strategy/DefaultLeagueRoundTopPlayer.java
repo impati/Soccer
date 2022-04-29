@@ -4,9 +4,6 @@ import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
-import com.example.soccerleague.SearchService.SearchResult;
-import com.example.soccerleague.Web.newDto.cmp.LeagueRoundTopPlayerCmpByAttackPoint;
-import com.example.soccerleague.Web.newDto.league.LeagueRoundTopPlayerDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Round.Round;
@@ -32,29 +29,9 @@ public class DefaultLeagueRoundTopPlayer implements LeagueRoundTopPlayer {
     private final RoundEntityRepository roundEntityRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
-        return dto instanceof LeagueRoundTopPlayerDto;
+        return dto instanceof LeagueRoundTopPlayerRequest;
     }
 
-    @Override
-    public List<DataTransferObject> searchResultList(DataTransferObject dto) {
-        LeagueRoundTopPlayerDto topPlayer = (LeagueRoundTopPlayerDto)dto;
-        List<LeagueRoundTopPlayerDto> ret = new ArrayList<>();
-
-        Team team = (Team) teamEntityRepository.findById(topPlayer.getTeamId()).orElse(null);
-        List<Player> players = playerEntityRepository.findByTeam(team);
-
-
-        for(var player : players){
-            LeagueRoundTopPlayerDto leagueRoundTopPlayerDto = new LeagueRoundTopPlayerDto(player.getName());
-            playerLeagueRecordEntityRepository.findBySeasonAndPlayer(topPlayer.getRound(),player.getId())
-                    .stream()
-                    .forEach(ele->leagueRoundTopPlayerDto.update(ele.getGoal(),ele.getAssist()));
-            ret.add(leagueRoundTopPlayerDto);
-            if(ret.size() == 5)break;
-        }
-        ret.sort(new LeagueRoundTopPlayerCmpByAttackPoint());
-        return ret.stream().map(ele->(DataTransferObject)ele).collect(Collectors.toList());
-    }
 
     @Override
     public List<DataTransferObject> search(DataTransferObject dataTransferObject) {

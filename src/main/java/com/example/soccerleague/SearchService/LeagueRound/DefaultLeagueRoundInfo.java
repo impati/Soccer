@@ -4,11 +4,9 @@ import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamLeagueRecordEntityRepository;
-import com.example.soccerleague.Web.newDto.league.LeagueRoundInfoDto;
-import com.example.soccerleague.Web.newDto.league.LeagueRoundSearchDto;
+
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
-import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;
@@ -31,43 +29,10 @@ public class DefaultLeagueRoundInfo implements LeagueRoundInfo {
     private final LeagueEntityRepository leagueEntityRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
-        return dto instanceof LeagueRoundSearchDto;
+        return dto instanceof LeagueRoundInfoRequest;
     }
 
-    @Override
-    public List<DataTransferObject> searchResultList(DataTransferObject dto) {
-        LeagueRoundSearchDto leagueRoundSearchDto = (LeagueRoundSearchDto)dto;
-        int season = leagueRoundSearchDto.getSeason();
-        int roundSt = leagueRoundSearchDto.getRoundSt();
-        List<DataTransferObject> ret = new ArrayList<>();
-        for(Long i = 1L; i<=4L;i++){
-            List<Round> roundList = roundEntityRepository
-                    .findByLeagueAndSeasonAndRoundSt(i,season, roundSt);
 
-            LeagueRoundSearchDto element = new LeagueRoundSearchDto();
-
-            for (var round : roundList) {
-                Team teamA  = (Team)teamEntityRepository.findById(round.getHomeTeamId()).orElse(null);
-                Team teamB  = (Team)teamEntityRepository.findById(round.getAwayTeamId()).orElse(null);
-                LeagueRoundInfoDto info = null;
-                if(round.getRoundStatus() == RoundStatus.DONE) {
-                    TeamLeagueRecord record = (TeamLeagueRecord)teamLeagueRecordEntityRepository.findByRoundId(round.getId()).stream().findFirst().orElse(null);
-                    if(record.getTeam().getId().equals(teamA.getId())) info = LeagueRoundInfoDto.create(round.getId(),teamA.getName(),teamB.getName(),record.getScore(),record.getOppositeScore());
-                    else info = LeagueRoundInfoDto.create(round.getId(),teamA.getName(),teamB.getName(),record.getOppositeScore(),record.getScore());
-                }
-                else{
-                    info = LeagueRoundInfoDto.create(round.getId(),teamA.getName(),teamB.getName());
-                }
-                element.setLeagueName(teamA.getLeague().getName());
-                element.getLeagueRoundInfoList().add(info);
-
-            }
-            ret.add(element);
-
-
-        }
-        return ret;
-    }
 
     @Override
     public List<DataTransferObject> searchList(DataTransferObject dataTransferObject) {

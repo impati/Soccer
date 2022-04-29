@@ -1,7 +1,4 @@
 package com.example.soccerleague.SearchService.TeamDisplay.Total;
-
-import com.example.soccerleague.Web.dto.record.league.RecordTeamLeagueDto;
-import com.example.soccerleague.Web.newDto.Team.TeamTotalRecordDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.MatchResult;
@@ -10,7 +7,6 @@ import com.example.soccerleague.domain.record.TeamRecord;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor

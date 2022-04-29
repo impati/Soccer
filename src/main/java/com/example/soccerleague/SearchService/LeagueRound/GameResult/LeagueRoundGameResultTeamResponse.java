@@ -1,6 +1,5 @@
 package com.example.soccerleague.SearchService.LeagueRound.GameResult;
 
-import com.example.soccerleague.Web.newDto.league.LeagueRoundGameTeamResultDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;

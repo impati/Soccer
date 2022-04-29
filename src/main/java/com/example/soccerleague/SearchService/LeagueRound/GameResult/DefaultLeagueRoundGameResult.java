@@ -2,8 +2,6 @@ package com.example.soccerleague.SearchService.LeagueRound.GameResult;
 
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamLeagueRecordEntityRepository;
-import com.example.soccerleague.Web.newDto.league.LeagueRoundGamePlayerResultDto;
-import com.example.soccerleague.Web.newDto.league.LeagueRoundGameTeamResultDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;

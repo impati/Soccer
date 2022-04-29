@@ -1,6 +1,7 @@
 package com.example.soccerleague.EntityRepository;
 
 import com.example.soccerleague.domain.Round.Round;
+import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.Record;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;
@@ -93,9 +94,13 @@ public class TeamLeagueRecordEntityRepositoryIml implements TeamLeagueRecordEnti
 
     @Override
     public List<TeamRecord> findBySeasonAndTeam(int season, Long teamId) {
-        return em.createQuery("select tlr from TeamLeagueRecord tlr join tlr.team t on t.id =:teamId where tlr .season = :season ")
+        return em.createQuery("select tlr from TeamLeagueRecord tlr " +
+                        " join tlr.team t on t.id =:teamId  " +
+                        " join tlr.round r on r.roundStatus = :roundStatus " +
+                        " where tlr .season = :season ")
                 .setParameter("teamId",teamId)
                 .setParameter("season",season)
+                .setParameter("roundStatus", RoundStatus.DONE)
                 .getResultList();
     }
 }

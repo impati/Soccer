@@ -5,16 +5,11 @@ import com.example.soccerleague.SearchService.LeagueRecord.Player.LeaguePlayerRe
 import com.example.soccerleague.SearchService.LeagueRecord.Player.LeaguePlayerRecordRequest;
 import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecord;
 import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordRequest;
-import com.example.soccerleague.Service.LeagueService;
-import com.example.soccerleague.Service.PlayerLeagueRecordService;
-import com.example.soccerleague.Service.TeamLeagueRecordService;
-import com.example.soccerleague.Web.dto.record.league.RecordPlayerLeagueDto;
-import com.example.soccerleague.Web.dto.record.league.RecordTeamLeagueDto;
-import com.example.soccerleague.domain.DataTransferObject;
+
 import com.example.soccerleague.domain.Direction;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.SortType;
-import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -36,8 +31,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecordController {
 
-    private final PlayerLeagueRecordService playerLeagueRecordService;
-    private final LeagueService leagueService;
     private final LeagueEntityRepository leagueEntityRepository;
     private final LeagueTeamRecord leagueTeamRecord;
     private final LeaguePlayerRecord leaguePlayerRecord;

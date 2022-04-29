@@ -2,8 +2,8 @@ package com.example.soccerleague.RegisterService.LeagueRound.Duo;
 
 import com.example.soccerleague.EntityRepository.*;
 import com.example.soccerleague.RegisterService.LeagueSeasonTable;
-import com.example.soccerleague.Web.dto.League.LeagueRoundSeasonResult;
-import com.example.soccerleague.Web.newDto.league.LeagueSeasonTableDto;
+import com.example.soccerleague.RegisterService.LeagueSeasonTableDto;
+import com.example.soccerleague.RegisterService.LeagueRound.LeagueRoundSeasonResult;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
@@ -64,8 +64,6 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
             }
             leagueEntityRepository.findAll().stream().map(ele->(League)ele).forEach(ele->{ele.setCurrentSeason(Season.CURRENTSEASON); ele.setCurrentRoundSt(Season.CURRENTLEAGUEROUND);});
         }
-
-
     }
 
     private void rankMake(Round round) {

@@ -6,8 +6,6 @@ import com.example.soccerleague.SearchService.SearchResult;
 import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeagueDisplay;
 import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeagueDisplayRequest;
 import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeagueDisplayResponse;
-import com.example.soccerleague.Web.newDto.cmp.LeagueTeamRecordCmpByRank;
-import com.example.soccerleague.Web.newDto.record.LeagueTeamRecordDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Season;
@@ -27,52 +25,10 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class DefaultLeagueTeamRecord implements LeagueTeamRecord {
     private final TeamLeagueDisplay teamLeagueDisPlay;
-    private final LeagueEntityRepository leagueEntityRepository;
     private final TeamEntityRepository teamEntityRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
-        return dto instanceof LeagueTeamRecordDto;
-    }
-
-
-    @Override
-    public List<DataTransferObject> searchResultList(DataTransferObject dto) {
-        LeagueTeamRecordDto teamRecordDto = (LeagueTeamRecordDto) dto;
-        if(teamRecordDto.getLeagueId() == null) teamRecordDto.setLeagueId(1L);
-        if(teamRecordDto.getSeason() == null) teamRecordDto.setSeason(Season.CURRENTSEASON);
-        League league = (League)leagueEntityRepository.findById(teamRecordDto.getLeagueId()).orElse(null);
-
-        log.info("teamRecordDto {}",teamRecordDto);
-        teamRecordDto.setLeagueName(league.getName());
-
-        List<LeagueTeamRecordDto> ret = new ArrayList<>();
-
-        List<Team> teams = teamEntityRepository.findByLeagueId(teamRecordDto.getLeagueId());
-        for (Team team : teams) {
-            TeamLeagueDisplayRequest element = new TeamLeagueDisplayRequest(team.getId(),teamRecordDto.getSeason());
-
-
-            TeamLeagueDisplayResponse  teamLeagueDisplayResponse =  (TeamLeagueDisplayResponse) teamLeagueDisPlay.search(element);
-            ret.add(LeagueTeamRecordDto.create(
-                    team.getName(),teamLeagueDisplayResponse.getGame(),teamLeagueDisplayResponse.getWin(),
-                    teamLeagueDisplayResponse.getDraw(),teamLeagueDisplayResponse.getLose(),teamLeagueDisplayResponse.getGain(),teamLeagueDisplayResponse.getLost()
-                    ));
-
-        }
-        for(int i = 0 ;i<ret.size();i++){
-            int r = 1;
-            LeagueTeamRecordDto cur = (LeagueTeamRecordDto)ret.get(i);
-            for(int k =0;k<ret.size();k++){
-                LeagueTeamRecordDto nxt = (LeagueTeamRecordDto)ret.get(k);
-                if(cur.getPoint() < nxt.getPoint())r++;
-                else if(cur.getPoint() == nxt.getPoint() && cur.getDiff() < nxt.getDiff())r++;
-
-            }
-            cur.update(r);
-        }
-        ret.sort(new LeagueTeamRecordCmpByRank());
-
-        return ret.stream().map(ele->(DataTransferObject)ele).collect(Collectors.toList());
+        return dto instanceof LeagueTeamRecordRequest;
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.example.soccerleague.RegisterService;
 
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
-import com.example.soccerleague.Web.newDto.league.LeagueSeasonTableDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Team;

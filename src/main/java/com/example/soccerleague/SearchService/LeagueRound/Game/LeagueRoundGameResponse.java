@@ -1,14 +1,12 @@
 package com.example.soccerleague.SearchService.LeagueRound.Game;
 
 import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
-import com.example.soccerleague.Web.newDto.league.LeagueRoundGameDto;
+
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NegativeOrZero;
 import java.util.ArrayList;
 import java.util.List;
 

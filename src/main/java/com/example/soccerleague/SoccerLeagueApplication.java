@@ -1,6 +1,5 @@
 package com.example.soccerleague;
 
-import com.example.soccerleague.Service.LeagueService;
 import com.example.soccerleague.support.ApplicationContextProvider;
 import com.example.soccerleague.support.PostData;
 import com.example.soccerleague.support.testData.NewGameResultTestData;

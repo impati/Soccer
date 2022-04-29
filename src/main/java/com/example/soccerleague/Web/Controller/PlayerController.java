@@ -13,7 +13,6 @@ import com.example.soccerleague.SearchService.PlayerDisplay.Total.PlayerTotalReq
 import com.example.soccerleague.SearchService.PlayerSearch.PlayerSearch;
 import com.example.soccerleague.SearchService.PlayerSearch.PlayerSearchRequest;
 import com.example.soccerleague.SearchService.playerEdit.PlayerEditSearch;
-import com.example.soccerleague.Service.*;
 import com.example.soccerleague.RegisterService.PlayerEdit.PlayerEditDto;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Season;
@@ -28,8 +27,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/player")
 @RequiredArgsConstructor
 public class PlayerController {
-    private final PlayerService playerService;
-    private final PlayerLeagueRecordService playerLeagueRecordService;
     private final PlayerSearch playerSearch;
     private final PlayerRegister playerRegister;
     private final LeagueEntityRepository leagueEntityRepository;

@@ -1,6 +1,5 @@
 package com.example.soccerleague.EntityRepository;
 
-import com.example.soccerleague.Repository.LeagueRepository;
 import com.example.soccerleague.domain.League;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

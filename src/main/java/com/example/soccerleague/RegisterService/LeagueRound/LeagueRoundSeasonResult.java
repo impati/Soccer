@@ -1,4 +1,4 @@
-package com.example.soccerleague.Web.dto.League;
+package com.example.soccerleague.RegisterService.LeagueRound;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Team;

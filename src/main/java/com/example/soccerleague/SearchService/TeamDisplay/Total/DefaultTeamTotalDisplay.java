@@ -1,9 +1,6 @@
 package com.example.soccerleague.SearchService.TeamDisplay.Total;
 
 import com.example.soccerleague.EntityRepository.TeamRecordEntityRepository;
-import com.example.soccerleague.SearchService.SearchResult;
-import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeaguePlayerResponse;
-import com.example.soccerleague.Web.newDto.Team.TeamTotalRecordDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.TeamRecord;
@@ -23,23 +20,8 @@ public class DefaultTeamTotalDisplay implements TeamTotalDisplay {
     private final List<TeamRecordEntityRepository> teamRecordEntityRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
-        return dto instanceof TeamTotalRecordDto;
+        return dto instanceof TeamTotalRequest;
     }
-
-    @Override
-    public Optional<DataTransferObject> searchResult(DataTransferObject dto) {
-        TeamTotalRecordDto teamTotalRecordDto = (TeamTotalRecordDto) dto;
-        for(var record: teamRecordEntityRepository){
-            for(int i = 0 ;i<=Season.CURRENTSEASON;i++){
-                List<TeamRecord> teamRecordList = record.findBySeasonAndTeam(i, teamTotalRecordDto.getTeamId());
-                teamRecordList.stream().forEach(ele->{teamTotalRecordDto.update(ele);});
-
-            }
-        }
-        return Optional.ofNullable(teamTotalRecordDto);
-    }
-
-
     @Override
     public DataTransferObject search(DataTransferObject dataTransferObject) {
         TeamTotalRequest req = (TeamTotalRequest) dataTransferObject;

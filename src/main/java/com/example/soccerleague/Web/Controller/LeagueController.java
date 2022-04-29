@@ -4,6 +4,7 @@ import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
+import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
 import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameRegister;
 import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpDto;
 import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpRegister;
@@ -25,12 +26,7 @@ import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
 import com.example.soccerleague.SearchService.LeagueRound.strategy.*;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplay;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplayRequest;
-import com.example.soccerleague.Service.DuoService;
-import com.example.soccerleague.Service.RoundService;
-import com.example.soccerleague.Web.dto.League.*;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
-import com.example.soccerleague.Web.newDto.league.*;
-import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Round.Round;
@@ -58,8 +54,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/league")
 public class  LeagueController {
-    private final RoundService roundService;
-    private final DuoService duoService;
     private final TeamDisplay teamDisplay;
     private final LeagueEntityRepository leagueEntityRepository;
     private final LeagueRoundInfo leagueRoundInfo;

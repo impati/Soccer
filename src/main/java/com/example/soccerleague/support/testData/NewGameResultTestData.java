@@ -4,13 +4,15 @@ import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityReposit
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
+import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
 import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpRegister;
 import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameRegister;
-import com.example.soccerleague.SearchService.DuoRecordSearch;
+
+import com.example.soccerleague.SearchService.LeagueRound.Duo.DuoRecordResult;
 import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameSearch;
 import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpSearch;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
-import com.example.soccerleague.Web.newDto.league.LeagueRoundGameDto;
+
 import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpDto;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Season;
@@ -32,10 +34,10 @@ public class NewGameResultTestData {
     private final LeagueRoundGameRegister leagueRoundGameRegister;
     private final LeagueRoundGameSearch leagueRoundGameSearch;
     private final DuoRecordRegister duoRecordRegister;
-    private final DuoRecordSearch duoRecordSearch;
     private final LeagueRoundLineUpSearch leagueRoundLineUpSearch;
     private final TeamEntityRepository teamEntityRepository;
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
+    private final DuoRecordResult duoRecordResult;
     public void isNotDoneGame(){
         log.info(" season :{} , round :{}",Season.CURRENTSEASON,Season.CURRENTLEAGUEROUND);
         List<Round> notDoneGame = roundEntityRepository.findNotDoneGame(Season.CURRENTSEASON, Season.CURRENTLEAGUEROUND);
@@ -48,7 +50,7 @@ public class NewGameResultTestData {
              */
             leagueLineUpRegister.register(dto);
 
-            LeagueRoundGameDto gameDto = LeagueRoundGameDto.create(round.getId());
+            LeagueRoundGameDto gameDto = new LeagueRoundGameDto(round.getId());
             leagueRoundGameSearch.searchResult(gameDto);
 
             /**
@@ -97,7 +99,7 @@ public class NewGameResultTestData {
 
 
             DuoRecordDto duoRecordDto = DuoRecordDto.create(round.getId());
-            duoRecordSearch.searchResult(duoRecordDto);
+            duoRecordResult.searchList(duoRecordDto);
             /**
              *임의의 데이터를 넣어줌
              */

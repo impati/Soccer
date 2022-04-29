@@ -1,6 +1,5 @@
 package com.example.soccerleague.SearchService.LeagueRound.strategy;
 
-import com.example.soccerleague.Web.newDto.league.LeagueRoundSeasonTeamDto;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.record.MatchResult;
 import lombok.Data;

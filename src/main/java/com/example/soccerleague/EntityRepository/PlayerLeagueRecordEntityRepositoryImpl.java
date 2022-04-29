@@ -70,38 +70,8 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
                 .setParameter("roundId",roundId).getResultList();
     }
 
-    /**
-     *  넘어오는 시즌 그리고 이전의 라운드 ,team에 속한 선수의 경기결과를 name,goal,assist 내려준다.
-     * @param round
-     * @param team
-     * @return
-     */
-    @Override
-    public List<Object[]> TopPlayerSeasonAndRoundStWithStrategy(Round round, Team team) {
-        StringBuilder s = new StringBuilder(" select p.name , sum(plr.goal) , sum(plr.assist) from player_league_record plr ");
-        s.append(" join player p on p.player_id =  plr.player_id ");
-        s.append(" join team t on t.team_id =  p.team_id ");
-        s.append(" join round r on r.round_id = plr.round_id ");
-        s.append(" where plr.season = ? and r.round_st < ? and p.team_id = ?");
-        s.append(" group by p.name ");
-
-        String sql = String.valueOf(s);
-
-        Query nativeQuery = em.createNativeQuery(sql);
-        nativeQuery.setParameter(1,round.getSeason());
-        nativeQuery.setParameter(2,round.getRoundSt());
-        nativeQuery.setParameter(3,team.getId());
-        return nativeQuery.getResultList();
-    }
 
 
-    @Override
-    public List<PlayerLeagueRecord> findBySeasonAndLeague(int season, Long leagueId) {
-        return em.createQuery("select plr from PlayerLeagueRecord plr join plr.team t on t.league.id =:leagueId where plr.season = :season")
-                .setParameter("leagueId",leagueId)
-                .setParameter("season",season)
-                .getResultList();
-    }
 
     /**
      * 가장 최근의 경기 하나만을 가져온다.
@@ -125,7 +95,7 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
      */
     @Override
     public List<Object[]> findSeasonAndTeam(int season, Long teamId) {
-        StringBuilder  s = new StringBuilder(" SELECT p.name,count(plr.player_id) ,p.rating ,max(plr.position) FROM PLAYER_LEAGUE_RECORD plr ");
+        StringBuilder  s = new StringBuilder(" SELECT p.name,count(plr.player_id) ,p.rating ,p.position FROM PLAYER_LEAGUE_RECORD plr ");
         s.append(" join player p on p.player_id = plr.player_id ");
         s.append(" where plr.team_id = ? and plr.season = ? ");
         s.append(" group by plr.player_id ");
