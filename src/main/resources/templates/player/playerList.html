@@ -178,7 +178,7 @@
             <div class="row g-4">
                 <div class="col-xl-12 col-xl-6">
                     <div class="bg-light rounded h-100 p-4">
-                        <form th:action="@{/player/player-list}" th:object="${playerSearchDto}" method="post">
+                        <form th:action="@{/player/player-list}" th:object="${playerSearchRequest}" method="post">
 
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="floatingInput" th:field="*{name}" placeholder="name@example.com">
@@ -237,11 +237,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="player : ${playerList}">
+                            <tr th:each="player : ${playerSearchResponse}">
                                 <td th:text="${player.id}"></td>
                                 <td ><a th:text="${player.name}" th:href="@{|/player/${player.id}|}" ></a></td>
-                                <td th:if ="${player.team} " th:text="${player.team.name}"></td>
-                                <td th:unless="${player.team} " th:text="${player.team}"></td>
+                                <td  th:text="${player.teamName}"></td>
                                 <td th:text="${player.position}"></td>
                                 <td><a th:href="@{|/player/edit/${player.id}|}" th:text="|선수 수정|"></a></td>
                             </tr>

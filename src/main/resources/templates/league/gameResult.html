@@ -193,26 +193,26 @@
 
                     <div class="col-xl-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4 align-items-center">
-                            <input type="text" th:placeholder="${teamADto.name}" disabled class="col-xl-4"/>
+                            <input type="text" th:placeholder="${teamA.name}" disabled class="col-xl-4"/>
                             <input type="text" th:placeholder="_" disabled class="col-sm-3"/>
-                            <input type="text"  th:placeholder="${teamBDto.name}" disabled class="col-xl-4"/>
+                            <input type="text"  th:placeholder="${teamB.name}" disabled class="col-xl-4"/>
 
-                            <input type="number"   th:placeholder="${teamADto.score}"  disabled class="col-xxl-4"/>
+                            <input type="number"   th:placeholder="${teamA.score}"  disabled class="col-xxl-4"/>
                             <input type="text" th:placeholder="스코어" disabled class="col-sm-3"/>
-                            <input type="number"   th:placeholder="${teamBDto.score}"  disabled class="col-xxl-4"/>
+                            <input type="number"   th:placeholder="${teamB.score}"  disabled class="col-xxl-4"/>
 
-                            <input type="number"   th:placeholder="${teamADto.share}"  disabled class="col-xxl-4"/>
+                            <input type="number"   th:placeholder="${teamA.share}"  disabled class="col-xxl-4"/>
                             <input type="text" th:placeholder="점유율" disabled class="col-sm-3"/>
-                            <input type="number"   th:placeholder="${teamBDto.share}"  disabled class="col-xxl-4"/>
+                            <input type="number"   th:placeholder="${teamB.share}"  disabled class="col-xxl-4"/>
 
 
-                            <input type="number"   th:placeholder="${teamADto.cornerKick}"  disabled class="col-xxl-4"/>
+                            <input type="number"   th:placeholder="${teamA.cornerKick}"  disabled class="col-xxl-4"/>
                             <input type="text" th:placeholder="코너킥" disabled class="col-sm-3"/>
-                            <input type="number"   th:placeholder="${teamBDto.cornerKick}"  disabled class="col-xxl-4"/>
+                            <input type="number"   th:placeholder="${teamB.cornerKick}"  disabled class="col-xxl-4"/>
 
-                            <input type="number"   th:placeholder="${teamADto.freeKick}"  disabled class="col-xxl-4"/>
+                            <input type="number"   th:placeholder="${teamA.freeKick}"  disabled class="col-xxl-4"/>
                             <input type="text" th:placeholder="프리킥" disabled class="col-sm-3"/>
-                            <input type="number"   th:placeholder="${teamBDto.freeKick}"  disabled class="col-xxl-4"/>
+                            <input type="number"   th:placeholder="${teamB.freeKick}"  disabled class="col-xxl-4"/>
 
                         </div>
                     </div>
@@ -220,9 +220,9 @@
 
                     <div class="col-xl-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4" >
-                            <span th:text="${teamADto.name}"></span>
+                            <span th:text="${teamA.name}"></span>
                             <br>
-                            <div th:each="player,i: ${playerADto}">
+                            <div th:each="player,i: ${playerA}">
                                 <div th:if="${i.index == 0}">
                                     <input type="text" th:placeholder="선수명" disabled class="col-2"/>
                                     <input type="text" th:placeholder="포지션" disabled class="col-1"/>
@@ -259,9 +259,9 @@
 
                     <div class="col-xl-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4" >
-                            <span th:text="${teamBDto.name}"></span>
+                            <span th:text="${teamB.name}"></span>
                             <br>
-                            <div th:each="player,i: ${playerBDto}">
+                            <div th:each="player,i: ${playerB}">
                                 <div th:if="${i.index == 0}">
                                     <input type="text" th:placeholder="선수명" disabled class="col-2"/>
                                     <input type="text" th:placeholder="포지션" disabled class="col-1"/>
@@ -295,25 +295,25 @@
                 </form>
 
                 <form class="form-inline" method="post"  disabled>
-                    <div th:each ="gameGoalResult : ${gameGoalResultList}">
+                    <div th:each ="Response : ${duoResultResponse}">
                         <div class="col-xl-12 col-xl-6">
                             <div class="bg-light rounded h-100 p-4 align-items-center">
 
                                 <div class="form-floating mb-3 d-sm-inline">
 
                                     <select class="form-select d-sm-inline"   disabled aria-label="Floating label select example">
-                                        <option th:text="${gameGoalResult.scorer}">===득점===</option>
+                                        <option th:text="${Response.scorer}">===득점===</option>
                                     </select>
 
 
                                     <select class="form-select d-sm-inline"   disabled aria-label="Floating label select example">
-                                        <option th:text="${gameGoalResult.assistant}">===득점===</option>
+                                        <option th:text="${Response.assistant}">===득점===</option>
                                     </select>
 
 
 
                                     <select class="form-select d-sm-inline"   disabled aria-label="Floating label select example">
-                                        <option th:text="${gameGoalResult.goalType}">===득점===</option>
+                                        <option th:text="${Response.goalType}">===득점===</option>
                                     </select>
 
 

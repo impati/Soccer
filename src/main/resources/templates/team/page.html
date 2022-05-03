@@ -178,7 +178,7 @@
         <nav>
             <div>
                 <span   th:each ="n : ${#numbers.sequence(0,Seasons)}">
-                <button type="button" class="btn btn-outline-info m-2" th:text="|Season  ${n}|" th:onclick="|location.href='@{/team/{teamId}(teamId=${team.id},season=${n})}'|"></button>
+                <button type="button" class="btn btn-outline-info m-2" th:text="|Season  ${n}|" th:onclick="|location.href='@{/team/{teamId}(teamId=${teamDisplayResponse.teamId},season=${n})}'|"></button>
                 </span>
             </div>
 
@@ -190,7 +190,7 @@
             <div class="row g-4">
                 <div class="col-sm-12 col-xl-12">
                     <div class="bg-light rounded h-100 p-4">
-                        <h4 class="mb-4" th:text="${team.name}"></h4>
+                        <h4 class="mb-4" th:text="${teamDisplayResponse.name}"></h4>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
@@ -202,9 +202,9 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td th:text="${team.name}"></td>
-                                    <td th:text ="${team.leagueName}"></td>
-                                    <td th:text="${team.rating}"></td>
+                                    <td th:text="${teamDisplayResponse.name}"></td>
+                                    <td th:text ="${teamDisplayResponse.leagueName}"></td>
+                                    <td th:text="${teamDisplayResponse.rating}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -233,15 +233,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td th:text="${teamSeasonInfo.rank}"></td>
-                                    <td th:text="${teamSeasonInfo.game}"></td>
-                                    <td th:text="${teamSeasonInfo.point}"></td>
-                                    <td th:text="${teamSeasonInfo.win}"></td>
-                                    <td th:text="${teamSeasonInfo.draw}"></td>
-                                    <td th:text="${teamSeasonInfo.lose}"></td>
-                                    <td th:text="${teamSeasonInfo.gain}"></td>
-                                    <td th:text="${teamSeasonInfo.gain}"></td>
-                                    <td th:text="${teamSeasonInfo.diff}"></td>
+                                    <td th:text="${teamLeagueDisplayResponse.rank}"></td>
+                                    <td th:text="${teamLeagueDisplayResponse.game}"></td>
+                                    <td th:text="${teamLeagueDisplayResponse.point}"></td>
+                                    <td th:text="${teamLeagueDisplayResponse.win}"></td>
+                                    <td th:text="${teamLeagueDisplayResponse.draw}"></td>
+                                    <td th:text="${teamLeagueDisplayResponse.lose}"></td>
+                                    <td th:text="${teamLeagueDisplayResponse.gain}"></td>
+                                    <td th:text="${teamLeagueDisplayResponse.lost}"></td>
+                                    <td th:text="${teamLeagueDisplayResponse.diff}"></td>
 
                                 </tr>
                                 </tbody>
@@ -261,7 +261,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="ele : ${TeamLeaguePlayerList}">
+                                <tr th:each="ele : ${teamLeaguePlayerResponse}">
                                     <td th:text="${ele.name}"></td>
                                     <td th:text="${ele.position}"></td>
                                     <td th:text="${ele.game}"></td>
@@ -292,12 +292,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <td th:text="${teamTotalRecord.win}"></td>
-                                    <td th:text="${teamTotalRecord.draw}"></td>
-                                    <td th:text="${teamTotalRecord.lose}"></td>
-                                    <td th:text="${teamTotalRecord.gain}"></td>
-                                    <td th:text="${teamTotalRecord.lost}"></td>
-                                    <td th:text="${teamTotalRecord.diff}"></td>
+                                    <td th:text="${teamTotalResponse.win}"></td>
+                                    <td th:text="${teamTotalResponse.draw}"></td>
+                                    <td th:text="${teamTotalResponse.lose}"></td>
+                                    <td th:text="${teamTotalResponse.gain}"></td>
+                                    <td th:text="${teamTotalResponse.lost}"></td>
+                                    <td th:text="${teamTotalResponse.diff}"></td>
                                 </tbody>
                             </table>
                         </div>
@@ -318,10 +318,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <td th:text="${teamTotalRecord.first}"></td>
-                                    <td th:text="${teamTotalRecord.second}"></td>
-                                    <td th:text="${teamTotalRecord.threePlace}"></td>
-                                    <td th:text="${teamTotalRecord.fourth}"></td>
+                                    <td th:text="${teamTotalResponse.first}"></td>
+                                    <td th:text="${teamTotalResponse.second}"></td>
+                                    <td th:text="${teamTotalResponse.threePlace}"></td>
+                                    <td th:text="${teamTotalResponse.fourth}"></td>
                                 </tbody>
                             </table>
                         </div>

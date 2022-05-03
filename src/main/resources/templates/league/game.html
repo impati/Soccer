@@ -177,7 +177,8 @@
 
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <button class="nav-link btn btn-lg btn-secondary m-2" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/strategy(roundId=${round})}'|" >전력</button>
+                        aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/strategy(roundId=${round
+                        })}'|" >전력</button>
                 <button class="nav-link  btn btn-lg btn-secondary m-2" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
                         aria-selected="true" th:onclick="|location.href='@{/league/round/{roundId}/line-up(roundId=${round})}'|">라인업</button>
                 <button class="nav-link btn btn-lg btn-secondary m-2" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
@@ -188,7 +189,7 @@
         <!-- 컨텐츠 시작 -->
 
         <div class="container-fluid pt-xxl-5 px-xxl-5" >
-            <form  class="form-inline" method="post" th:object="${leagueRoundGameDto}">
+            <form  class="form-inline" method="post" th:object="${leagueRoundGameResponse}">
                     <div class="row g-4">
 
                         <div class="col-xl-12 col-xl-6">
@@ -230,7 +231,7 @@
                                         <input type="number"  th:placeholder="도움" disabled class="col-1"/>
                                         <input type="number"  th:placeholder="패스" disabled class="col-1"/>
                                         <input type="number"  th:placeholder="슈팅" disabled class="col-1"/>
-                                        <input type="number" th:placeholder="|유효 슈팅|" disabled class="col-1"/>
+                                        <input type="number" th:placeholder="|유효슈팅|" disabled class="col-1"/>
                                         <input type="number"  th:placeholder="파울" disabled class="col-1"/>
                                         <input type="number"th:placeholder="차단" disabled class="col-1"/>
                                         <input type="number"th:placeholder="평점" disabled class="col-1"/>

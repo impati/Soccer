@@ -24,7 +24,7 @@ public class PlayerLeagueRecord extends PlayerRecord{
     @Column(name = "player_league_record_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="round_id")
     private LeagueRound leagueRound;
 

@@ -14,8 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class
-PlayerLeagueRecordRepositoryImplTest {
+class PlayerLeagueRecordRepositoryImplTest {
 
     @Autowired
     private PlayerLeagueRecordRepository playerLeagueRecordRepository;

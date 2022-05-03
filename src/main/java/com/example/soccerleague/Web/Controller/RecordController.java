@@ -1,13 +1,15 @@
 package com.example.soccerleague.Web.Controller;
 
-import com.example.soccerleague.Service.LeagueService;
-import com.example.soccerleague.Service.PlayerLeagueRecordService;
-import com.example.soccerleague.Service.TeamLeagueRecordService;
-import com.example.soccerleague.Web.dto.record.league.RecordPlayerLeagueDto;
-import com.example.soccerleague.Web.dto.record.league.RecordTeamLeagueDto;
-import com.example.soccerleague.domain.DataTransferObject;
+import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
+import com.example.soccerleague.SearchService.LeagueRecord.Player.LeaguePlayerRecord;
+import com.example.soccerleague.SearchService.LeagueRecord.Player.LeaguePlayerRecordRequest;
+import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecord;
+import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordRequest;
+
+import com.example.soccerleague.domain.Direction;
 import com.example.soccerleague.domain.Season;
-import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.domain.SortType;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -28,63 +30,50 @@ import java.util.List;
 @RequestMapping("/record")
 @RequiredArgsConstructor
 public class RecordController {
-    private final TeamLeagueRecordService teamLeagueRecordService;
-    private final PlayerLeagueRecordService playerLeagueRecordService;
-    private final LeagueService leagueService;
 
+    private final LeagueEntityRepository leagueEntityRepository;
+    private final LeagueTeamRecord leagueTeamRecord;
+    private final LeaguePlayerRecord leaguePlayerRecord;
     /**
      * 리그의 팀 시즌 기록!
-     * @param leagueId
-     * @param season
-     * @param model
-     * @return
      */
     @GetMapping(value ={"/team/league/{leagueId}","/team/league"})
-    public String recordTeamLeague(@PathVariable(required = false) Long leagueId,@RequestParam(required = false) Integer season, Model model){
+    public String recordTeamLeague(@PathVariable(required = false) Long leagueId,
+                                   @RequestParam(required = false) Integer season,
+                                   Model model){
         if(leagueId == null)leagueId = 1L;
         if(season == null) season = Season.CURRENTSEASON;
 
-        List<DataTransferObject> ret = teamLeagueRecordService.searchSeasonAndLeague(leagueId, season);
-        List<RecordTeamLeagueDto> recordTeamLeagueDto = new ArrayList<>();
-        ret.stream().forEach(ele->recordTeamLeagueDto.add((RecordTeamLeagueDto) ele));
-
-        model.addAttribute("recordTeamLeagueDto",recordTeamLeagueDto);
         model.addAttribute("Seasons", Season.CURRENTSEASON);
         model.addAttribute("season",season);
-        model.addAttribute("league",leagueService.searchLeague(leagueId).orElse(null));
-
+        model.addAttribute("league",leagueEntityRepository.findById(leagueId).orElse(null));
+        model.addAttribute("leagueTeamRecordResponse",leagueTeamRecord.searchList(new LeagueTeamRecordRequest(leagueId,season)));
         return "record/league/recordteamLeague";
     }
 
     /**
      * 리그의 선수  시즌 개인 기록
-     * TODO : 페이징
-     * @param leagueId
-     * @param season
-     * @param sortType
-     * @param model
-     * @return
+     * TODO : 페이징 , ASC 기능 추가.
      */
     @GetMapping(value={"/player/league/{leagueId}","player/league"})
     public String recordPlayerLeague(@PathVariable(required = false) Long leagueId ,
                                      @RequestParam(required = false) Integer season,
-                                     @RequestParam(required = false) String sortType,
+                                     @RequestParam(required = false) SortType sortType,
+                                     @RequestParam(required = false) Direction direction,
                                      Model model){
         if(leagueId == null)leagueId = 1L;
         if(season == null) season = Season.CURRENTSEASON;
-        if(sortType == null) sortType = new String("Goal");
+        if(sortType == null) sortType = SortType.GOAL;
+        if(direction == null) direction = Direction.DESC;
 
-
-        List<DataTransferObject> list = playerLeagueRecordService.searchSeasonAndPlayer(season, leagueId, sortType);
-        List<RecordPlayerLeagueDto> recordPlayerLeagueDtoList = new ArrayList<>();
-        list.stream().forEach(ele->recordPlayerLeagueDtoList.add((RecordPlayerLeagueDto) ele));
-
-
-        model.addAttribute("recordPlayerLeagueDtoList",recordPlayerLeagueDtoList);
         model.addAttribute("sortType",sortType);
+        model.addAttribute("direction",direction);
         model.addAttribute("Seasons", Season.CURRENTSEASON);
         model.addAttribute("season",season);
-        model.addAttribute("league",leagueService.searchLeague(leagueId).orElse(null));
+        model.addAttribute("league",leagueEntityRepository.findById(leagueId).orElse(null));
+        model.addAttribute("leaguePlayerRecordResponse",leaguePlayerRecord.searchList(new LeaguePlayerRecordRequest(season,leagueId,sortType,direction)));
+
+
         return "record/league/recordPlayerLeague";
     }
 

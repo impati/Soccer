@@ -1,9 +1,11 @@
 package com.example.soccerleague.support;
 
 
-import com.example.soccerleague.Repository.LeagueRepository;
-import com.example.soccerleague.Repository.PlayerRepository;
-import com.example.soccerleague.Repository.TeamRepository;
+import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
+import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
+import com.example.soccerleague.EntityRepository.TeamEntityRepository;
+import com.example.soccerleague.RegisterService.LeagueSeasonTable;
+import com.example.soccerleague.RegisterService.LeagueSeasonTableDto;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -31,13 +34,14 @@ import java.util.StringTokenizer;
 @Transactional
 @RequiredArgsConstructor
 public class PostData {
-    private final LeagueRepository leagueRepository;
-    private final TeamRepository teamRepository;
-    private final PlayerRepository playerRepository;
+    private final LeagueEntityRepository leagueRepository;
+    private final TeamEntityRepository teamRepository;
+    private final PlayerEntityRepository playerRepository;
+    private final LeagueSeasonTable leagueSeasonTable;
     private String path = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\";
 
     public void init() throws IOException {
-        League league = leagueRepository.findById(1L).orElse(null);
+        League league = (League)leagueRepository.findById(1L).orElse(null);
         if(league == null){
             createLeague();
             createTeam();
@@ -46,6 +50,11 @@ public class PostData {
             assignMidFielder();
             assignDefender();
             assignGoalKeeper();
+
+            leagueSeasonTable.register(new LeagueSeasonTableDto(1L,Season.CURRENTSEASON));
+            leagueSeasonTable.register(new LeagueSeasonTableDto(2L,Season.CURRENTSEASON));
+            leagueSeasonTable.register(new LeagueSeasonTableDto(3L,Season.CURRENTSEASON));
+            leagueSeasonTable.register(new LeagueSeasonTableDto(4L,Season.CURRENTSEASON));
         }
         else{
             Season.CURRENTSEASON = league.getCurrentSeason();
@@ -58,7 +67,7 @@ public class PostData {
 
         String pathGoalKeeper = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\GoalKeeper.txt";
         BufferedReader cin = new BufferedReader(new FileReader(pathGoalKeeper));
-        List<Team> teamList = teamRepository.findAll();
+        List<Team> teamList = teamRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList());
         int pos = 0;
         while(pos < 64) {
             String temp = cin.readLine();
@@ -81,7 +90,7 @@ public class PostData {
         String pathDefender = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\DefenderList.txt";
         BufferedReader cin = new BufferedReader(new FileReader(pathDefender));
         Position positionList [] = {Position.LB ,Position.LWB,Position.CB,Position.RB,Position.RWB};
-        List<Team> teamList = teamRepository.findAll();
+        List<Team> teamList = teamRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList());
         int pos = 0;
         int count = 0;
         while(pos < 64) {
@@ -113,7 +122,7 @@ public class PostData {
         String pathMidfielder = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\MidfielderPlayer.txt";
         BufferedReader cin = new BufferedReader(new FileReader(pathMidfielder));
         Position positionList [] = {Position.AM ,Position.CM,Position.DM,Position.LM,Position.RM};
-        List<Team> teamList = teamRepository.findAll();
+        List<Team> teamList = teamRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList());
         int pos = 0;
         int count = 0;
         while(pos < 64) {
@@ -143,7 +152,7 @@ public class PostData {
         String pathStriker = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\StrikerPlayerList.txt";
         BufferedReader cin = new BufferedReader(new FileReader(pathStriker));
         Position positionList [] = {Position.CF ,Position.ST,Position.RF,Position.LF};
-        List<Team> teamList = teamRepository.findAll();
+        List<Team> teamList = teamRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList());
         int pos = 0;
         int count = 0;
         while(pos < 64) {
@@ -192,7 +201,7 @@ public class PostData {
                 if (tmp == null) break;
                 list.add(tmp);
             }
-            League league = leagueRepository.findById(i+1).orElse(null);
+            League league = (League)leagueRepository.findById(i+1).orElse(null);
             for (var ele : list) {
                 Team team = Team.createTeam(league, ele);
                 teamRepository.save(team);

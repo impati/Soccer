@@ -1,16 +1,13 @@
 package com.example.soccerleague.Web.Controller;
 
-import com.example.soccerleague.Service.TeamLeagueRecordService;
-import com.example.soccerleague.Service.TeamLeagueRecordServiceImpl;
-import com.example.soccerleague.Service.TeamService;
-import com.example.soccerleague.Web.dto.Team.TeamLeaguePlayerListDto;
-import com.example.soccerleague.Web.dto.Team.TeamPageDto;
-import com.example.soccerleague.Web.dto.Team.TeamTotalRecordDto;
-import com.example.soccerleague.Web.dto.record.league.RecordTeamLeagueDto;
-import com.example.soccerleague.domain.DataTransferObject;
+import com.example.soccerleague.EntityRepository.TeamEntityRepository;
+import com.example.soccerleague.SearchService.TeamDisplay.League.*;
+import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplay;
+import com.example.soccerleague.SearchService.TeamDisplay.Total.TeamTotalDisplay;
+import com.example.soccerleague.SearchService.TeamDisplay.Total.TeamTotalRequest;
+
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
-import com.example.soccerleague.domain.record.TeamLeagueRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -28,34 +25,26 @@ import java.util.List;
 @Controller
 @RequestMapping("/team")
 public class TeamController {
-    private final TeamService teamService;
-    private final TeamLeagueRecordService teamLeagueRecordService;
-
+    private final TeamEntityRepository teamEntityRepository;
+    private final TeamDisplay teamDisplay;
+    private final TeamLeagueDisplay teamLeagueDisplay;
+    private final TeamLeaguePlayer teamLeaguePlayer;
+    private final TeamTotalDisplay teamTotalDisplay;
 
     @GetMapping("/{teamId}")
     public String teamPage(@PathVariable Long teamId,
                            @RequestParam(required = false) Integer season,
                            Model model){
-        if(season == null){
-            season = Season.CURRENTSEASON;
-        }
-        Team team = teamService.searchTeam(teamId);
-        TeamPageDto teamPageDto = TeamPageDto.create(team.getId(),team.getLeague().getId(),team.getLeague().getName(),team.getName(),team.getRating());
+        if(season == null) season = Season.CURRENTSEASON;
 
-        List<DataTransferObject> playerList = teamLeagueRecordService.seasonPlayerList(season, teamId);
-        List<TeamLeaguePlayerListDto> teamLeaguePlayerList = new ArrayList<>();
-        playerList.stream().forEach(ele->teamLeaguePlayerList.add((TeamLeaguePlayerListDto) ele));
-
-
-        //TODO: 챔피언스리그,유로파...
-
-
-
-        model.addAttribute("team",teamPageDto);
         model.addAttribute("Seasons",Season.CURRENTSEASON);
-        model.addAttribute("teamSeasonInfo",(RecordTeamLeagueDto)teamLeagueRecordService.searchSeasonInfo(teamId,season));
-        model.addAttribute("TeamLeaguePlayerList",teamLeaguePlayerList);
-        model.addAttribute("teamTotalRecord",(TeamTotalRecordDto)teamLeagueRecordService.totalRecord(teamId));
+        Team team = (Team)teamEntityRepository.findById(teamId).orElse(null);
+        model.addAttribute("teamDisplayResponse",teamDisplay.searchOne(teamId));
+        model.addAttribute("teamLeagueDisplayResponse",teamLeagueDisplay.search(new TeamLeagueDisplayRequest(teamId,season)));
+        model.addAttribute("teamLeaguePlayerResponse",teamLeaguePlayer.search(new TeamLeaguePlayerRequest(teamId,season)));
+        //TODO:챔피언스리그 , 유로파
+        model.addAttribute("teamTotalResponse",teamTotalDisplay.search(new TeamTotalRequest(teamId)));
+
         return "team/page";
     }
 }
