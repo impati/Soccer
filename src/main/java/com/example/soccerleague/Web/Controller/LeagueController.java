@@ -93,6 +93,7 @@ public class  LeagueController {
         model.addAttribute("season",season);
         model.addAttribute("roundSt",roundSt);
         model.addAttribute("Seasons",Season.CURRENTSEASON);
+        model.addAttribute("currentRound",Season.CURRENTLEAGUEROUND);
 
         model.addAttribute("GLeague",leagueRoundInfo.searchList(new LeagueRoundInfoRequest(season,roundSt,1L)));
         model.addAttribute("LLeague",leagueRoundInfo.searchList(new LeagueRoundInfoRequest(season,roundSt,2L)));
@@ -112,6 +113,7 @@ public class  LeagueController {
      */
     @GetMapping("/round/{roundId}/line-up")
     public String gameLineUpPage(@PathVariable Long roundId,Model model){
+
         model.addAttribute("leagueRoundLineUpResponse",leagueRoundLineUpSearch.search(new LeagueRoundLineUpRequest(roundId)).orElse(null));
         model.addAttribute("round",roundEntityRepository.findById(roundId).orElse(null));
         model.addAttribute("positionList", Position.values());

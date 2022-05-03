@@ -31,6 +31,7 @@ public class LeagueRoundGameResponse extends DataTransferObject {
     private List<Integer> goalList = new ArrayList<>();
     private List<Integer> assistList = new ArrayList<>();
     private List<Integer> passList = new ArrayList<>();
+
     private List<Integer> shootingList = new ArrayList<>();
     private List<Integer> validShootingList = new ArrayList<>();
     private List<Integer> foulList = new ArrayList<>();

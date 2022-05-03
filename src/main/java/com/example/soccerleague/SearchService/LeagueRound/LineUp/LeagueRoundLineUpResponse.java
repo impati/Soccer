@@ -19,11 +19,8 @@ public class LeagueRoundLineUpResponse extends DataTransferObject {
     private List<LineUpPlayer> playerListA = new ArrayList<>();
     private List<LineUpPlayer> playerListB = new ArrayList<>();
 
-    //받아올 데이터
     private List<Long> joinPlayer = new ArrayList<>();
     private List<Position> joinPosition = new ArrayList<>();
-
-
     public LeagueRoundLineUpResponse(String teamA, String teamB) {
         this.teamA = teamA;
         this.teamB = teamB;

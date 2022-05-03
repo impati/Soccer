@@ -49,4 +49,10 @@ public class PlayerEntityRepositoryImpl implements PlayerEntityRepository{
                 .setParameter("leagueId",leagueId)
                 .getResultList();
     }
+
+    @Override
+    public List<Player> findByTeamId(Long teamId) {
+        return em.createQuery("select p from Player p join p.team t on  t.id = :team")
+                .setParameter("team",teamId).getResultList();
+    }
 }

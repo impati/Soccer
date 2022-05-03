@@ -184,6 +184,7 @@
                 <button type="button" class="btn btn-outline-link m-2" th:text="| <- |" th:unless="${roundSt == 1}"  th:onclick="|location.href='@{/league/round (season=${season},roundSt=${roundSt-1})}'|"></button>
                 <button type="button" class="btn btn-outline-dark m-2" disabled th:text="|${roundSt} 라운드|"></button>
                 <button type="button" class="btn btn-outline-link m-2"th:text="| -> |" th:unless="${roundSt == LastRound}"  th:onclick="|location.href='@{/league/round (season=${season},roundSt=${roundSt+1})}'|"></button>
+                <button type="button" class="btn btn-primary m-2" th:text="|Auto|" th:if="${roundSt == currentRound && season == Seasons}" th:onclick="|location.href='@{/auto-game}'|"></button>
             </div>
         </div>
         <div class="container-fluid pt-4 px-4">

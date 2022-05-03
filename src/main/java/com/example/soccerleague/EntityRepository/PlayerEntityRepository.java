@@ -14,4 +14,5 @@ public interface PlayerEntityRepository extends EntityRepository{
     List<Player> findByName(String name);
     List<Player> findByTeam(Team team);
     List<Player> findByLeague(Long leagueId);
+    List<Player> findByTeamId(Long teamId);
 }

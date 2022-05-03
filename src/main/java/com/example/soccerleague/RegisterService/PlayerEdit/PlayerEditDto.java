@@ -3,6 +3,7 @@ package com.example.soccerleague.RegisterService.PlayerEdit;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 // 조회 기능 , 저장 기능.
@@ -11,6 +12,10 @@ import lombok.NoArgsConstructor;
 public class PlayerEditDto extends DataTransferObject {
     private Long playerId;
 
+    public PlayerEditDto(Long playerId, Long teamId) {
+        this.playerId = playerId;
+        this.teamId = teamId;
+    }
 
     // 받을 데이터
     private String name;
@@ -27,7 +32,6 @@ public class PlayerEditDto extends DataTransferObject {
     // 패스
     private int ballControl; // 볼컨
     private int crosses;// 크로스
-
     private int pass; // 패스
     private int longPass; //롱 패스
 
@@ -55,9 +59,7 @@ public class PlayerEditDto extends DataTransferObject {
     private int visualRange; // 시야
     private int sense; // 센스
 
-    public PlayerEditDto(Long playerId) {
-        this.playerId = playerId;
-    }
+
     public void fillData(Player player){
         this.setName(player.getName());
         this.setTeamId(player.getTeam().getId());

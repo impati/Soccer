@@ -36,7 +36,7 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
         LeagueRound leagueRound = (LeagueRound)roundEntityRepository.findById(leagueRoundGameDto.getRoundId()).orElse(null);
 
         List<PlayerLeagueRecord> playerRecordsA = playerLeagueRecordEntityRepository.
-                findByRoundAndTeam(leagueRound.getId(),leagueRound.getHomeTeamId()).stream().map(ele->(PlayerLeagueRecord)ele).collect(Collectors.toList());
+                findByRoundAndTeam(leagueRound.getId(),leagueRound.getHomeTeamId());
 
         playerRecordsA.sort((o1, o2) -> {
                 if(o1.getPosition().ordinal() > o2.getPosition().ordinal())return 1;
@@ -48,7 +48,7 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
 
 
         List<PlayerLeagueRecord> playerRecordsB = playerLeagueRecordEntityRepository.
-                findByRoundAndTeam(leagueRound.getId(),leagueRound.getAwayTeamId()).stream().map(ele->(PlayerLeagueRecord)ele).collect(Collectors.toList());
+                findByRoundAndTeam(leagueRound.getId(),leagueRound.getAwayTeamId());
 
         playerRecordsB.sort((o1, o2) -> {
             if(o1.getPosition().ordinal() > o2.getPosition().ordinal())return 1;
@@ -131,7 +131,8 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
                 playerLeagueRecord.update(goal, assist, pass, shooting, validShooting, foul, goodDefense, grade, matchResult, isBest,rating);
             }
         }
-        avgGrade /= count;
+        if(count != 0)
+            avgGrade /= count;
         teamLeagueRecord.update(
                 dto.getScorePair().get(idx),dto.getScorePair().get(idx ^ 1),
                 dto.getSharePair().get(idx),dto.getCornerKickPair().get(idx),
