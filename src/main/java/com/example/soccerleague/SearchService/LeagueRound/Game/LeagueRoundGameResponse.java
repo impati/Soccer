@@ -22,20 +22,20 @@ public class LeagueRoundGameResponse extends DataTransferObject {
 
 
     //팀
-    private List<Integer> scorePair = new ArrayList<>();
-    private List<Integer> sharePair = new ArrayList<>();
-    private List<Integer> cornerKickPair = new ArrayList<>();
-    private List<Integer> freeKickPair = new ArrayList<>();
+    private List<Integer> scorePair = new ArrayList<>(); //*
+    private List<Integer> sharePair = new ArrayList<>(); //*
+    private List<Integer> cornerKickPair = new ArrayList<>(); //*
+    private List<Integer> freeKickPair = new ArrayList<>();//*
 
     // 선수
     private List<Integer> goalList = new ArrayList<>();
     private List<Integer> assistList = new ArrayList<>();
-    private List<Integer> passList = new ArrayList<>();
+    private List<Integer> passList = new ArrayList<>(); //*
 
-    private List<Integer> shootingList = new ArrayList<>();
-    private List<Integer> validShootingList = new ArrayList<>();
-    private List<Integer> foulList = new ArrayList<>();
-    private List<Integer> goodDefenseList = new ArrayList<>();
+    private List<Integer> shootingList = new ArrayList<>(); //*
+    private List<Integer> validShootingList = new ArrayList<>();//*
+    private List<Integer> foulList = new ArrayList<>(); //*
+    private List<Integer> goodDefenseList = new ArrayList<>();//*
     private List<Integer> gradeList = new ArrayList<>(); // 100점 만점.
 
     public LeagueRoundGameResponse(RoundStatus roundStatus, String teamA, String teamB) {

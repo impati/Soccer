@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Slf4j
-@Component
 @Transactional
 @RequiredArgsConstructor
 public class SimpleGameDataPosting implements GameDataPosting{
