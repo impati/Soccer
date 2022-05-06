@@ -598,13 +598,6 @@ public class StatBaseGameDataPosting implements GameDataPosting{
         if(arr[d]) return GoalType.NOMAL;
         else return GoalType.HEADING;
     }
-    @Data
-    @AllArgsConstructor
-    static class DuoInfo{
-        Player player;
-        Long goal;
-        Long assist;
-        GoalType goalType;
-    }
+
 
 }
