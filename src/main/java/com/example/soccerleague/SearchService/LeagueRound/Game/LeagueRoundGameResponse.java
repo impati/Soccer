@@ -22,7 +22,7 @@ public class LeagueRoundGameResponse extends DataTransferObject {
 
 
     //팀
-    private List<Integer> scorePair = new ArrayList<>(); //*
+    private List<Integer> scorePair = new ArrayList<>();
     private List<Integer> sharePair = new ArrayList<>(); //*
     private List<Integer> cornerKickPair = new ArrayList<>(); //*
     private List<Integer> freeKickPair = new ArrayList<>();//*

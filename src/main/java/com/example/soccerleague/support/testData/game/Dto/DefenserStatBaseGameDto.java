@@ -1,0 +1,11 @@
+package com.example.soccerleague.support.testData.game.Dto;
+
+
+import com.example.soccerleague.domain.Player.Position;
+import com.example.soccerleague.domain.Player.Stat;
+
+public class DefenserStatBaseGameDto extends StatBaseGameDto{
+    public DefenserStatBaseGameDto(Long playerId, Long teamId, double percent, Stat stat, Position position) {
+        super(playerId, teamId, percent, stat, position);
+    }
+}

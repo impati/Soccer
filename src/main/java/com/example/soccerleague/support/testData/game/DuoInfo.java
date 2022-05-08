@@ -12,4 +12,10 @@ public class DuoInfo{
     Long goal;
     Long assist;
     GoalType goalType;
+
+    public DuoInfo(Long goal, Long assist, GoalType goalType) {
+        this.goal = goal;
+        this.assist = assist;
+        this.goalType = goalType;
+    }
 }

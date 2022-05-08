@@ -6,6 +6,7 @@ import com.example.soccerleague.domain.Round.RoundStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class LeagueRoundGameDto extends DataTransferObject {
     private Long roundId;
     private RoundStatus roundStatus;
@@ -51,6 +53,8 @@ public class LeagueRoundGameDto extends DataTransferObject {
         obj.setFoulList(resp.getFoulList());
         obj.setGoodDefenseList(resp.getGoodDefenseList());
         obj.setGradeList(resp.getGradeList());
+
+
         return obj;
     }
 }

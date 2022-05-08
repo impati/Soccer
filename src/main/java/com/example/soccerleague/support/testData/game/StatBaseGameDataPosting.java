@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 // condition 0 ~ 100
 @Slf4j
-@Component
+//@Component
 @Transactional
 @RequiredArgsConstructor
 public class StatBaseGameDataPosting implements GameDataPosting{
