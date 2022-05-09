@@ -60,6 +60,17 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
         int goalKeeperAbilityA = 0;
         int goalKeeperAbilityB = 0;
 
+
+        GameAvgDto gameAvgDto = gameResultRepository.findByAvgProjection();
+
+
+        if(gameAvgDto.getCount() < 30 * 22){
+            gameAvgDto.setShooting(2);
+            gameAvgDto.setGoodDefense(9);
+            gameAvgDto.setPass(25);
+        }
+
+
         Round round = (Round)roundEntityRepository.findById(roundId).orElse(null);
 
 
@@ -180,15 +191,16 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
         playerA.stream().forEach(ele->as.put(ele.getId(),0));
         playerB.stream().forEach(ele->as.put(ele.getId(),0));
         as.put(0L,0);
+
         for(int k = 0;k<playerA.size();k++){
             StatBaseGameDto element = mappedPlayerA.get(playerA.get(k).getId());
             resp.getPassList().add(element.getPass());
             resp.getShootingList().add(element.getShooting());
             resp.getValidShootingList().add(element.getValidShooting());
             resp.getFoulList().add(element.getFoul());
-            resp.getGoodDefenseList().add(element.getGoodDefense());
             resp.getGoalList().add(element.getDuoResult().size());
-
+            if(k == 10) resp.getGoodDefenseList().add(superSaveA);
+            else resp.getGoodDefenseList().add(element.getGoodDefense());
             element.getDuoResult().stream().forEach(ele->{
                 duoRecordDto.getScorer().add(ele.getGoal());
                 duoRecordDto.getAssistant().add(ele.getAssist());
@@ -207,9 +219,9 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
             resp.getShootingList().add(element.getShooting());
             resp.getValidShootingList().add(element.getValidShooting());
             resp.getFoulList().add(element.getFoul());
-            resp.getGoodDefenseList().add(element.getGoodDefense());
             resp.getGoalList().add(element.getDuoResult().size());
-
+            if(k == 10) resp.getGoodDefenseList().add(superSaveB);
+            else resp.getGoodDefenseList().add(element.getGoodDefense());
             element.getDuoResult().stream().forEach(ele->{
                 duoRecordDto.getScorer().add(ele.getGoal());
                 duoRecordDto.getAssistant().add(ele.getAssist());
@@ -221,15 +233,6 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
         }
         resp.getScorePair().add(duoRecordDto.getScorer().size() - resp.getScorePair().get(0));
 
-
-        GameAvgDto gameAvgDto = gameResultRepository.findByAvgProjection();
-
-
-        if(gameAvgDto.getCount() < 30 * 22){
-            gameAvgDto.setShooting(2);
-            gameAvgDto.setGoodDefense(9);
-            gameAvgDto.setPass(25);
-        }
 
 
         for(int k = 0;k<playerA.size();k++){
@@ -260,12 +263,11 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
                 element.setMatchResult(MatchResult.WIN);
             else
                 element.setMatchResult(MatchResult.DRAW);
+
             resp.getGradeList().add(gradeDecision.grade(gameAvgDto,element,superSaveB));
             resp.getAssistList().add(as.get(playerB.get(k).getId()));
         }
 
-        resp.getGoodDefenseList().add(10,superSaveA);
-        resp.getGoodDefenseList().add(21,superSaveB);
 
 
 
@@ -274,7 +276,8 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
 
 
 
-
+        if(resp.getTeamA().equals("도르트문트"))
+            log.info("resp :{}",resp);
 
         LeagueRoundGameDto leagueRoundGameDto = LeagueRoundGameDto.of(resp);
         leagueRoundGameDto.setRoundId(roundId);

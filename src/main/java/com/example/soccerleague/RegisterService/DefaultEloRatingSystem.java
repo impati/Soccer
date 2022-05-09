@@ -28,7 +28,6 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
     private static Integer VI = 400;
     private static Integer K = 20;
-
     @Override
     public void ratingCalc(List<PlayerLeagueRecord> plrA, List<PlayerLeagueRecord> plrB) {
 
@@ -81,7 +80,7 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
             }
             double r = myRating + K * (w - we);
             r += 3*((myGrade / avgGrade) - 1);
-
+            r = Math.round(r * 100) / 100.0;
             playerA.get(i).setRating(r);
         }
 
@@ -104,12 +103,9 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
             }
             double r = myRating + K * (w - we);
             r += 3*((myGrade / avgGrade) - 1);
+            r = Math.round(r * 100) / 100.0;
             playerB.get(i).setRating(r);
         }
-
-
-
-
 
 
 

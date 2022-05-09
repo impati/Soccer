@@ -1,5 +1,7 @@
 package com.example.soccerleague.support.testData.game.feature;
 
+import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
+import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.support.testData.game.Dto.DefenserStatBaseGameDto;
 import com.example.soccerleague.support.testData.game.Dto.MidFielderStatBaseGameDto;
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class DefaultGradeDecision implements  GradeDecision{
-
+    private final PlayerEntityRepository playerEntityRepository;
     @Override
     public int grade(GameAvgDto avgDto , StatBaseGameDto req ,int superSave) {
 
@@ -42,16 +44,14 @@ public class DefaultGradeDecision implements  GradeDecision{
 
         double ret = 0;
 
-        if(goal == 1)ret = 100;
-        else if(goal == 2) ret = 140;
-        else if(goal == 3) ret = 170;
-        else if(goal > 3) ret = 200;
+        int attackPoint = goal + assist ;
+        if(attackPoint == 1) ret = 200;
+        else if(attackPoint == 2) ret = 250;
+        else if(attackPoint == 3) ret = 270;
+        else if(attackPoint == 4) ret = 300;
+        else if(attackPoint == 5) ret = 350;
+        else if(attackPoint > 5) ret = 400;
 
-        if(assist == 1) ret += 40;
-        else if(assist == 2) ret += 80;
-        else if(assist == 3) ret += 120;
-        else if(assist == 4) ret += 150;
-        else if(assist > 4) ret += 200;
 
 
 
@@ -96,16 +96,13 @@ public class DefaultGradeDecision implements  GradeDecision{
 
         double ret = 0;
 
-        if(goal == 1)ret = 100;
-        else if(goal == 2) ret = 140;
-        else if(goal == 3) ret = 170;
-        else if(goal > 3) ret = 200;
-
-        if(assist == 1) ret += 40;
-        else if(assist == 2) ret += 80;
-        else if(assist == 3) ret += 120;
-        else if(assist == 4) ret += 150;
-        else if(assist > 4) ret += 200;
+        int attackPoint = goal + assist ;
+        if(attackPoint == 1) ret = 200;
+        else if(attackPoint == 2) ret = 250;
+        else if(attackPoint == 3) ret = 270;
+        else if(attackPoint == 4) ret = 300;
+        else if(attackPoint == 5) ret = 350;
+        else if(attackPoint > 5) ret = 400;
 
 
         double passScore = (((pass / passAvg))  * 200)/2;
@@ -145,24 +142,24 @@ public class DefaultGradeDecision implements  GradeDecision{
 
         double ret = 0;
 
-        if(goal == 1)ret = 40;
-        else if(goal == 2) ret = 50;
-        else if(goal == 3) ret = 70;
-        else if(goal > 3) ret = 100;
-
-        if(assist == 1) ret += 40;
-        else if(assist == 2) ret += 50;
-        else if(assist == 3) ret += 60;
-        else if(assist == 4) ret += 80;
-        else if(assist > 4) ret += 100;
+        int attackPoint = goal + assist ;
+        if(attackPoint == 1) ret = 150;
+        else if(attackPoint == 2) ret = 180;
+        else if(attackPoint == 3) ret = 210;
+        else if(attackPoint == 4) ret = 240;
+        else if(attackPoint == 5) ret = 270;
+        else if(attackPoint > 5) ret = 300;
 
         double passScore = (((pass / passAvg)) * 200)/2;
         ret += passScore >= 200 ? 200 : passScore;
         double shootingScore = (((shooting / shootingAvg)) * 25) / 2;
         ret += shootingScore > 25 ? 25:shootingScore;
-        double defenseScore = (((defense / defenseAvg)) * 400) /2;
-        ret += defenseScore >= 400 ? 400 : defenseScore;
-
+        double defenseScore = (((defense / defenseAvg)) * 800) /2;
+        ret += defenseScore >= 800 ? 800 : defenseScore;
+        if(req.getTeamId().equals(2L)) {
+            Player player = (Player) playerEntityRepository.findById(req.getPlayerId()).orElse(null);
+            log.info(" {} {}  {}", player.getName(), defense, ret / 10);
+        }
         if(validShooting == 1) ret += 3;
         else if(validShooting == 2) ret += 6;
         else if(validShooting == 3) ret += 9;

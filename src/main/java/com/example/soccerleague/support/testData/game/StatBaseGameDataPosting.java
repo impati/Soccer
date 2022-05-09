@@ -206,6 +206,7 @@ public class StatBaseGameDataPosting implements GameDataPosting{
                 idx += o;
             }
         }
+
         resp.getGoodDefenseList().set(idx,superSaveB);
 
 
