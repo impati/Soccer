@@ -62,7 +62,7 @@ public class PlayerLeagueRecord extends PlayerRecord{
     public void update(
             int goal,int assist ,int pass,
             int shooting,int validShooting,int foul,
-            int goodDefense,int grade,MatchResult matchResult,boolean best,int rating
+            int goodDefense,int grade,MatchResult matchResult,boolean best,double rating
     ){
         this.setLocalDateTime(now());
         this.setGoal(goal);

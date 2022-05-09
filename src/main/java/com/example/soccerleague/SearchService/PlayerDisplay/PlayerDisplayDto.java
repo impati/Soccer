@@ -14,7 +14,7 @@ public class PlayerDisplayDto extends DataTransferObject {
     private String name;
     private Team team;
     private Position position;
-    private int rating;
+    private double rating;
 
 
     public static PlayerDisplayDto createById(Long id){

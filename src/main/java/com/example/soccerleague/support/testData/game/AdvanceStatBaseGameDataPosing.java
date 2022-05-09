@@ -3,6 +3,7 @@ package com.example.soccerleague.support.testData.game;
 import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
+import com.example.soccerleague.RegisterService.DefaultLeagueSeasonTable;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
 import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
@@ -12,8 +13,11 @@ import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Player.Stat;
 import com.example.soccerleague.domain.Round.Round;
+import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.support.testData.game.Dto.*;
+import com.example.soccerleague.support.testData.game.Repository.GameAvgDto;
+import com.example.soccerleague.support.testData.game.Repository.GameResultRepository;
 import com.example.soccerleague.support.testData.game.feature.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +45,8 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
     private final FoulAndDefenseReturn foulAndDefenseReturn;
     private final FreeKickChance freeKickChance;
     private final ShootGoal shootGoal;
-
+    private final GameResultRepository gameResultRepository;
+    private final GradeDecision gradeDecision;
     @Override
     public void calculation(Long roundId, LeagueRoundGameResponse resp) {
         // 공유 변수
@@ -159,7 +164,7 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
         }
 
 
-        // TODO
+
         // 수퍼 세이브
         int superSaveA = 0,superSaveB =0;
         for(var s: mappedPlayerA.keySet()){
@@ -168,9 +173,6 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
         for(var s: mappedPlayerB.keySet()){
             superSaveA += mappedPlayerB.get(s).getOppSuperSave();
         }
-
-
-
 
         DuoRecordDto duoRecordDto = DuoRecordDto.create(roundId);
 
@@ -187,7 +189,6 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
             resp.getGoodDefenseList().add(element.getGoodDefense());
             resp.getGoalList().add(element.getDuoResult().size());
 
-            resp.getGradeList().add(0);
             element.getDuoResult().stream().forEach(ele->{
                 duoRecordDto.getScorer().add(ele.getGoal());
                 duoRecordDto.getAssistant().add(ele.getAssist());
@@ -208,7 +209,7 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
             resp.getFoulList().add(element.getFoul());
             resp.getGoodDefenseList().add(element.getGoodDefense());
             resp.getGoalList().add(element.getDuoResult().size());
-            resp.getGradeList().add(0); // TODO
+
             element.getDuoResult().stream().forEach(ele->{
                 duoRecordDto.getScorer().add(ele.getGoal());
                 duoRecordDto.getAssistant().add(ele.getAssist());
@@ -220,14 +221,58 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
         }
         resp.getScorePair().add(duoRecordDto.getScorer().size() - resp.getScorePair().get(0));
 
+
+        GameAvgDto gameAvgDto = gameResultRepository.findByAvgProjection();
+
+
+        if(gameAvgDto.getCount() < 30 * 22){
+            gameAvgDto.setShooting(2);
+            gameAvgDto.setGoodDefense(9);
+            gameAvgDto.setPass(25);
+        }
+
+
         for(int k = 0;k<playerA.size();k++){
+            StatBaseGameDto element = mappedPlayerA.get(playerA.get(k).getId());
+            element.setAssist(as.get(playerA.get(k).getId()));
+
+
+            if(resp.getScorePair().get(0) > resp.getScorePair().get(1))
+                element.setMatchResult(MatchResult.WIN);
+            else if(resp.getScorePair().get(0) < resp.getScorePair().get(1))
+                element.setMatchResult(MatchResult.LOSE);
+            else
+                element.setMatchResult(MatchResult.DRAW);
+
+            resp.getGradeList().add(gradeDecision.grade(gameAvgDto,element,superSaveA));
+
             resp.getAssistList().add(as.get(playerA.get(k).getId()));
+
         }
         for(int k = 0;k<playerB.size();k++){
+            StatBaseGameDto element = mappedPlayerB.get(playerB.get(k).getId());
+            element.setAssist(as.get(playerB.get(k).getId()));
+
+
+            if(resp.getScorePair().get(0) > resp.getScorePair().get(1))
+                element.setMatchResult(MatchResult.LOSE);
+            else if(resp.getScorePair().get(0) < resp.getScorePair().get(1))
+                element.setMatchResult(MatchResult.WIN);
+            else
+                element.setMatchResult(MatchResult.DRAW);
+            resp.getGradeList().add(gradeDecision.grade(gameAvgDto,element,superSaveB));
             resp.getAssistList().add(as.get(playerB.get(k).getId()));
         }
 
-        log.info("rest : [{}]",resp);
+        resp.getGoodDefenseList().add(10,superSaveA);
+        resp.getGoodDefenseList().add(21,superSaveB);
+
+
+
+
+
+
+
 
 
 

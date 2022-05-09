@@ -134,5 +134,10 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
                 .getResultList();
     }
 
+    @Override
+    public Double avgGrade() {
+        return (Double)em.createQuery("select avg(plr.grade) from  PlayerLeagueRecord plr").getSingleResult();
+    }
+
 
 }

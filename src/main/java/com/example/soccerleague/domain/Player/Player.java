@@ -23,7 +23,7 @@ public class Player {
     @Enumerated(EnumType.STRING)
     private Position position;
 
-    private int rating;
+    private double rating;
 
     @ManyToOne
     @JoinColumn(name ="team_id")

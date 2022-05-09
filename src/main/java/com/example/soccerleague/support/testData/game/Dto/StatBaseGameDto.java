@@ -2,6 +2,7 @@ package com.example.soccerleague.support.testData.game.Dto;
 
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Player.Stat;
+import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.support.testData.game.DuoInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class StatBaseGameDto {
     private Stat stat;
     private Position position ;
     private List<DuoInfo> duoResult = new ArrayList<>();
+    private MatchResult matchResult;
 
     private int goal;
     private int assist;

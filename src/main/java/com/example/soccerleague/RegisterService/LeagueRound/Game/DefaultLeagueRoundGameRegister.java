@@ -4,6 +4,7 @@ import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityReposit
 import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamLeagueRecordEntityRepository;
 
+import com.example.soccerleague.RegisterService.EloRatingSystem;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.RoundStatus;
@@ -24,6 +25,7 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
     private final RoundEntityRepository roundEntityRepository;
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
     private final TeamLeagueRecordEntityRepository teamLeagueRecordEntityRepository;
+    private final EloRatingSystem eloRatingSystem;
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
         return dataTransferObject instanceof LeagueRoundGameDto;
@@ -92,6 +94,7 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
         recordSave(sz,sz + playerRecordsB.size(),1,bestGrade,matchResultB,playerRecordsB,leagueRoundGameDto,teams.get(1));
 
 
+        eloRatingSystem.ratingCalc(playerRecordsA,playerRecordsB);
 
 
 
@@ -119,7 +122,7 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
                 int foul = dto.getFoulList().get(i);
                 int goodDefense = dto.getGoodDefenseList().get(i);
                 int grade = dto.getGradeList().get(i);
-                int rating = playerLeagueRecord.getPlayer().getRating();
+                double rating = playerLeagueRecord.getPlayer().getRating();
                 boolean isBest = grade == bestGrade ? true : false;
                 count +=1;
                 sumPass += pass;

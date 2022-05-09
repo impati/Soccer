@@ -21,7 +21,7 @@ public class DefaultPassReturn implements PassReturn {
 
         int passStat = (int) (stat.getPass() * percent * 4);
         passStat += (int) (stat.getLongPass() * percent * 3);
-        passStat += (int)(stat.getCrosses());
+        passStat += (int)(stat.getCrosses()* percent);
         passStat += (int)(stat.getVisualRange()*percent);
         passStat += (int)(stat.getSense()*percent);
         passStat -= (defenseAvg);
@@ -32,22 +32,20 @@ public class DefaultPassReturn implements PassReturn {
                 position.equals(Position.LM) ||
                 position.equals(Position.DM)
         ){
-            s = passStat / 25;
-            i = (2 * passStat / 25);
+            s = passStat / 15;
+            i = (passStat / 15);
         }
         else{
-            s = passStat / 45;
-            i = (3 * passStat / 45);
+            s = passStat / 25;
+            i = (passStat / 25);
         }
 
 
-        int start = (int)(Math.random() * s);
-        int increase = (int)(Math.random() * s) + i;
-        int rn = (int)(Math.random() * increase) + start;
+        int rn = (int)(Math.random() * i) + s;
         int count = rn;
         while(count != 0){
             int rx = (int)(Math.random()*rn);
-            if(rx > rn * 0.3) pass+=1;
+            if(rx > rn / 6) pass+=1;
             count -= 1;
         }
 

@@ -14,7 +14,7 @@ public class DefaultFoulAndDefenseReturn implements FoulAndDefenseReturn {
         Stat stat = req.getStat();
         double percent = req.getPercent();
         Position position = req.getPosition();
-
+        if(position.equals(Position.GK)) return 0;
         int defenseStat  = (int)(stat.getDefense() * percent * 2);
         defenseStat += stat.getTackle() * percent;
         defenseStat += stat.getIntercepting() * percent * 2;

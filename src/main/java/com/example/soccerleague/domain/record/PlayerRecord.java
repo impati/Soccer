@@ -40,7 +40,7 @@ public abstract class PlayerRecord extends Record{
     //선방
     protected int goodDefense;
 
-    protected int rating;
+    protected double rating;
 
 
 

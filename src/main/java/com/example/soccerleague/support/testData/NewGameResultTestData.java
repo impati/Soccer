@@ -50,20 +50,14 @@ public class NewGameResultTestData {
             //====데이터 채우기====
             LeagueRoundLineUpDto lineUpDto = lineUpDataPosting.calculation(rounds.get(i).getId(),resp);
             //===================
-
             leagueLineUpRegister.register(lineUpDto);
+
+            // 게임 기록 저장.
+            LeagueRoundGameResponse leagueRoundGameResponse  =(LeagueRoundGameResponse) leagueRoundGameSearch.search(new LeagueRoundGameRequest(rounds.get(i).getId())).orElse(null);
+            gameDataPosting.calculation(rounds.get(i).getId(),leagueRoundGameResponse);
         }
 
-        // 경기기록 , 듀오기록 을 저장
 
-        for(int i =0; i<rounds.size(); i++){
-            LeagueRoundGameResponse resp  =(LeagueRoundGameResponse) leagueRoundGameSearch.search(new LeagueRoundGameRequest(rounds.get(i).getId())).orElse(null);
-
-            //====데이터 채우기====
-             gameDataPosting.calculation(rounds.get(i).getId(),resp);
-            //===================
-
-        }
 
 
 

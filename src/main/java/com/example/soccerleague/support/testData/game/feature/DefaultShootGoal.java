@@ -102,19 +102,18 @@ public class DefaultShootGoal implements ShootGoal {
 
         while(rn != 0){
             int r = (int)(Math.random()*100);
-            if(r > possible) continue;
-            req.setShooting(req.getShooting() + 1);
-            int rx = (int)(Math.random() * midStat);
-            if(rx > 500){
-                req.setValidShooting(req.getValidShooting() + 1);
-
-                if(!superSave.save(req)){
-
-                    Long as = req.getPlayerId();
-                    while(as.equals(req.getPlayerId())){
-                        as = assistant(mappedPlayer);
+            if(r < possible) {
+                req.setShooting(req.getShooting() + 1);
+                int rx = (int) (Math.random() * midStat);
+                if (rx > 500 && rx % 3 == 0) {
+                    req.setValidShooting(req.getValidShooting() + 1);
+                    if (!superSave.save(req)) {
+                        Long as = req.getPlayerId();
+                        while (as.equals(req.getPlayerId())) {
+                            as = assistant(mappedPlayer);
+                        }
+                        req.getDuoResult().add(new DuoInfo(req.getPlayerId(), as, GoalType.LONGKICK));
                     }
-                    req.getDuoResult().add(new DuoInfo(req.getPlayerId(),as, GoalType.LONGKICK));
                 }
             }
 
@@ -139,20 +138,35 @@ public class DefaultShootGoal implements ShootGoal {
 
         possible = (int)(Math.random() * (shootStat / 20)) + shootStat / 20;
 
+        if(position.equals(Position.ST) || position.equals(Position.RF)
+                ||position.equals(Position.LF) || position.equals(Position.CF)
+        ){
+            possible *= 1.5;
+        }
+        else if(position.equals(Position.AM) || position.equals(Position.LM)
+                ||position.equals(Position.RM) || position.equals(Position.CM)
+        ){
+            possible *= 1.3;
+        }
+        else{
+            possible *= 0.2;
+        }
+
         while(rn != 0){
-            int r = (int)(Math.random()*100);
-            if(r > possible) continue;
-            req.setShooting(req.getShooting() + 1);
-            int rx = (int)(Math.random() * shootStat);
-            if(rx > 500 && rx % 2 == 0){
-                req.setValidShooting(req.getValidShooting() + 1);
-                if(!superSave.save(req)){
-                    Long as = req.getPlayerId();
-                    while(as.equals(req.getPlayerId())){
-                        as = assistant(mappedPlayer);
+            int r = (int)(Math.random()*(100));
+            if(r < possible) {
+                req.setShooting(req.getShooting() + 1);
+                int rx = (int) (Math.random() * shootStat);
+                if (rx > 500 ) {
+                    req.setValidShooting(req.getValidShooting() + 1);
+                    if (!superSave.save(req)) {
+                        Long as = req.getPlayerId();
+                        while (as.equals(req.getPlayerId())) {
+                            as = assistant(mappedPlayer);
+                        }
+                        // 헤딩 , 노말,
+                        req.getDuoResult().add(new DuoInfo(req.getPlayerId(), as, goalTypeDecision(req)));
                     }
-                    // 헤딩 , 노말,
-                    req.getDuoResult().add(new DuoInfo(req.getPlayerId(),as, goalTypeDecision(req)));
                 }
             }
 

@@ -13,4 +13,5 @@ public interface PlayerLeagueRecordEntityRepository extends PlayerRecordEntityRe
     Optional<PlayerLeagueRecord> findByLast(int season, Long playerId);
     List<PlayerLeagueRecord> findByRoundAndTeam(Long roundId,Long teamId);
     List<PlayerLeagueRecord> findBySeasonAndPlayer(Round round,Long playerId);
+    Double avgGrade();
 }
