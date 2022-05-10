@@ -5,5 +5,6 @@ import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import java.util.List;
 
 public interface EloRatingSystem {
-    void ratingCalc(List<PlayerLeagueRecord> plrA , List<PlayerLeagueRecord> plrB);
+    void LeagueRatingCalc(List<PlayerLeagueRecord> plrA , List<PlayerLeagueRecord> plrB);
+    void LeagueSeasonResultCalc(Long leagueId);
 }

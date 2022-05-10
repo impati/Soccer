@@ -98,7 +98,7 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
 
         gradeDecision.LeagueGradeDecision(playerRecordsA);
         gradeDecision.LeagueGradeDecision(playerRecordsB);
-        eloRatingSystem.ratingCalc(playerRecordsA,playerRecordsB);
+        eloRatingSystem.LeagueRatingCalc(playerRecordsA,playerRecordsB);
 
 
 

@@ -49,7 +49,7 @@ public class TeamLeagueRecord extends TeamRecord{
             int score,int oppositeScore,int share,
             int cornerKick,int freeKick,int pass,
             int shooting,int validShooting,int foul,
-            int goodDefense,double grade,MatchResult matchResult,int rating
+            int goodDefense,double grade,MatchResult matchResult,double rating
     ){
         this.setLocalDateTime(now());
         this.setScore(score);

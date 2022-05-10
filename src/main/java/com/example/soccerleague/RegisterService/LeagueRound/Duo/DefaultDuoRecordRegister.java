@@ -1,6 +1,7 @@
 package com.example.soccerleague.RegisterService.LeagueRound.Duo;
 
 import com.example.soccerleague.EntityRepository.*;
+import com.example.soccerleague.RegisterService.EloRatingSystem;
 import com.example.soccerleague.RegisterService.LeagueSeasonTable;
 import com.example.soccerleague.RegisterService.LeagueSeasonTableDto;
 import com.example.soccerleague.RegisterService.LeagueRound.LeagueRoundSeasonResult;
@@ -35,6 +36,7 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
     private final PlayerEntityRepository playerEntityRepository;
     private final TeamEntityRepository teamEntityRepository;
+    private final EloRatingSystem eloRatingSystem;
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
         return dataTransferObject instanceof DuoRecordDto;
@@ -55,9 +57,14 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
         }
         leagueRound.setRoundStatus(RoundStatus.DONE);
         rankMake(leagueRound);
+
+
         if(roundEntityRepository.currentRoundIsDone(leagueRound)){
             Season.CURRENTLEAGUEROUND += 1;
             if(Season.CURRENTLEAGUEROUND > Season.LASTLEAGUEROUND){
+                for(Long i = 1L ; i<=4L;i++){
+                    eloRatingSystem.LeagueSeasonResultCalc(i);
+                }
                 Season.CURRENTSEASON += 1;
                 Season.CURRENTLEAGUEROUND = 1;
                 leagueEntityRepository.findAll().stream().map(ele->(League)ele).forEach(ele->leagueSeasonTable.register(new LeagueSeasonTableDto(ele.getId(),Season.CURRENTSEASON)));

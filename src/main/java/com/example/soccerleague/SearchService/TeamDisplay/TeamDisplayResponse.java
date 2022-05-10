@@ -10,5 +10,5 @@ public class TeamDisplayResponse extends DataTransferObject {
     private Long teamId;
     private String leagueName;
     private String name;
-    private int rating;
+    private double rating;
 }

@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class DefaultLeagueTeamRecord implements LeagueTeamRecord {
     private final TeamLeagueDisplay teamLeagueDisPlay;
     private final TeamEntityRepository teamEntityRepository;
@@ -41,6 +41,7 @@ public class DefaultLeagueTeamRecord implements LeagueTeamRecord {
             TeamLeagueDisplayRequest element = new TeamLeagueDisplayRequest(team.getId(),req.getSeason());
             TeamLeagueDisplayResponse  teamLeagueDisplayResponse =  (TeamLeagueDisplayResponse) teamLeagueDisPlay.search(element);
             resp.add(new LeagueTeamRecordResponse(
+                    team.getId(),
                     team.getName(),teamLeagueDisplayResponse.getGame(),
                     teamLeagueDisplayResponse.getWin(), teamLeagueDisplayResponse.getDraw(),
                     teamLeagueDisplayResponse.getLose(),teamLeagueDisplayResponse.getGain(), teamLeagueDisplayResponse.getLost()
@@ -62,4 +63,8 @@ public class DefaultLeagueTeamRecord implements LeagueTeamRecord {
         return resp.stream().map(ele->(DataTransferObject)ele).collect(Collectors.toList());
 
     }
+
+
+
+
 }

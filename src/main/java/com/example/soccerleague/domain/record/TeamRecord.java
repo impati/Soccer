@@ -41,6 +41,6 @@ public abstract class TeamRecord extends Record{
     // 팀의 평점 . 선수들의 평균 평점.
     protected double grade;
 
-    protected int rating;
+    protected double rating;
     protected int rank;
 }

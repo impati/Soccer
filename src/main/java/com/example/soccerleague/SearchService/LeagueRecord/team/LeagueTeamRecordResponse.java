@@ -10,6 +10,7 @@ public class LeagueTeamRecordResponse extends DataTransferObject {
 
     private int rank;
     private String teamName;
+    private Long teamId;
     private int gameNumber;
     private int point;
     private int win;
@@ -20,7 +21,7 @@ public class LeagueTeamRecordResponse extends DataTransferObject {
     private int diff;
 
 
-    public LeagueTeamRecordResponse(String teamName, int gameNumber,
+    public LeagueTeamRecordResponse(Long teamId,String teamName, int gameNumber,
                                     int win, int draw, int lose,
                                     int gain, int lost) {
         this.teamName = teamName;

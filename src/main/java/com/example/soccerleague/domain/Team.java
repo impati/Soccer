@@ -18,7 +18,7 @@ public class Team {
     @Column(name ="team_id")
     private Long id;
     private String name;
-    private int rating;
+    private double rating;
     @ManyToOne
     @JoinColumn(name ="league_id")
     private League league;
