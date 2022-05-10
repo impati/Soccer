@@ -5,6 +5,7 @@ import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.EntityRepository.TeamLeagueRecordEntityRepository;
 
 import com.example.soccerleague.RegisterService.EloRatingSystem;
+import com.example.soccerleague.RegisterService.GradeDecision;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.RoundStatus;
@@ -26,6 +27,7 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
     private final TeamLeagueRecordEntityRepository teamLeagueRecordEntityRepository;
     private final EloRatingSystem eloRatingSystem;
+    private final GradeDecision gradeDecision;
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
         return dataTransferObject instanceof LeagueRoundGameDto;
@@ -94,6 +96,8 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
         recordSave(sz,sz + playerRecordsB.size(),1,bestGrade,matchResultB,playerRecordsB,leagueRoundGameDto,teams.get(1));
 
 
+        gradeDecision.LeagueGradeDecision(playerRecordsA);
+        gradeDecision.LeagueGradeDecision(playerRecordsB);
         eloRatingSystem.ratingCalc(playerRecordsA,playerRecordsB);
 
 

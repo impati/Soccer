@@ -1,9 +1,7 @@
 package com.example.soccerleague.EntityRepository;
 
-import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeaguePlayerResponse;
-import com.example.soccerleague.domain.DataTransferObject;
+import com.example.soccerleague.RegisterService.AvgDto;
 import com.example.soccerleague.domain.Round.Round;
-import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.PlayerRecord;
 import com.example.soccerleague.domain.record.Record;
@@ -12,10 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -132,6 +128,12 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
                 .setParameter("roundSt",round.getRoundSt())
                 .setParameter("season",round.getSeason())
                 .getResultList();
+    }
+
+    @Override
+    public AvgDto findByGameAvg() {
+        return em.createQuery("select new com.example.soccerleague.RegisterService.AvgDto(avg(plr.pass) , avg(plr.shooting) , avg(plr.goodDefense) )" +
+                " from PlayerLeagueRecord plr", AvgDto.class).getResultList().stream().findFirst().orElse(new AvgDto(25,2,8));
     }
 
     @Override

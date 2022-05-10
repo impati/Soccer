@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
+@Component(value = "autoGradeDecision")
 @RequiredArgsConstructor
 public class DefaultGradeDecision implements  GradeDecision{
     private final PlayerEntityRepository playerEntityRepository;
@@ -34,6 +34,9 @@ public class DefaultGradeDecision implements  GradeDecision{
 
 
     private int striker(double passAvg , double shootingAvg , double defenseAvg ,StatBaseGameDto req){
+
+
+
         int goal = req.getDuoResult().size();
         int assist = req.getAssist();
         int shooting = req.getShooting();
@@ -55,11 +58,11 @@ public class DefaultGradeDecision implements  GradeDecision{
 
 
 
-        double passScore = (((pass / passAvg))  * 100)/2;
+        double passScore = (((pass / passAvg))  * 150)/2;
         ret += passScore >= 100 ? 100 : passScore;
-        double shootingScore = (((shooting / shootingAvg)) * 150)/2;
+        double shootingScore = (((shooting / shootingAvg)) * 200)/2;
         ret += shootingScore > 150 ? 150:shootingScore;
-        double defenseScore = (((defense / defenseAvg)) * 50)/2;
+        double defenseScore = (((defense / defenseAvg)) * 100)/2;
         ret += defenseScore >= 50 ? 50 : defenseScore;
 
 
@@ -107,9 +110,9 @@ public class DefaultGradeDecision implements  GradeDecision{
 
         double passScore = (((pass / passAvg))  * 200)/2;
         ret += passScore >= 200 ? 200 : passScore;
-        double shootingScore = (((shooting / shootingAvg)) * 100) / 2;
+        double shootingScore = (((shooting / shootingAvg)) * 150) / 2;
         ret += shootingScore > 100 ? 100:shootingScore;
-        double defenseScore = (((defense / defenseAvg)) * 150) / 2;
+        double defenseScore = (((defense / defenseAvg)) * 200) / 2;
         ret += defenseScore >= 150 ? 150 : defenseScore;
 
         if(validShooting == 1) ret += 20;
@@ -152,20 +155,17 @@ public class DefaultGradeDecision implements  GradeDecision{
 
         double passScore = (((pass / passAvg)) * 200)/2;
         ret += passScore >= 200 ? 200 : passScore;
-        double shootingScore = (((shooting / shootingAvg)) * 25) / 2;
+        double shootingScore = (((shooting / shootingAvg)) * 50) / 2;
         ret += shootingScore > 25 ? 25:shootingScore;
-        double defenseScore = (((defense / defenseAvg)) * 800) /2;
-        ret += defenseScore >= 800 ? 800 : defenseScore;
-        if(req.getTeamId().equals(2L)) {
-            Player player = (Player) playerEntityRepository.findById(req.getPlayerId()).orElse(null);
-            log.info(" {} {}  {}", player.getName(), defense, ret / 10);
-        }
-        if(validShooting == 1) ret += 3;
-        else if(validShooting == 2) ret += 6;
-        else if(validShooting == 3) ret += 9;
-        else if(validShooting == 4) ret += 15;
-        else if(validShooting == 5) ret += 20;
-        else if(validShooting > 5) ret += 25;
+        double defenseScore = (((defense / defenseAvg)) * 400) /2;
+        ret += defenseScore >= 400 ? 400 : defenseScore;
+
+        if(validShooting == 1) ret += 5;
+        else if(validShooting == 2) ret += 12;
+        else if(validShooting == 3) ret += 21;
+        else if(validShooting == 4) ret += 32;
+        else if(validShooting == 5) ret += 41;
+        else if(validShooting > 5) ret += 50;
 
         if(foul <= 1) ret -= 0;
         else if(foul <= 3) ret -= 10;

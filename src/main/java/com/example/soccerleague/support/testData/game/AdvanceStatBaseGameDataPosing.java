@@ -276,8 +276,7 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
 
 
 
-        if(resp.getTeamA().equals("도르트문트"))
-            log.info("resp :{}",resp);
+
 
         LeagueRoundGameDto leagueRoundGameDto = LeagueRoundGameDto.of(resp);
         leagueRoundGameDto.setRoundId(roundId);
