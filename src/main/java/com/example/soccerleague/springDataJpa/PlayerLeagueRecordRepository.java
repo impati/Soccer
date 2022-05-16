@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PlayerLeagueRecordRepository extends JpaRepository<PlayerLeagueRecord , Long> ,PlayerRecordRepository{
+public interface PlayerLeagueRecordRepository extends JpaRepository<PlayerLeagueRecord , Long>{
 
     //가장 최근의 경기 하나만을 가져온다.
     @Query("select plr from PlayerLeagueRecord plr join plr.player p on p.id = :playerId " +
@@ -43,6 +43,16 @@ public interface PlayerLeagueRecordRepository extends JpaRepository<PlayerLeague
 
     @Query("select avg(plr.grade) from  PlayerLeagueRecord plr")
     Double avgGrade();
+
+
+
+    @Query(" Select plr from PlayerLeagueRecord plr join plr.leagueRound lr on lr.season = :season " +
+            " join plr.player p on p.id = :playerId ")
+    List<PlayerLeagueRecord> findBySeasonAndPlayer(@Param("playerId") Long playerId ,@Param("season") int season);
+
+
+    @Query("select plr from PlayerLeagueRecord plr where plr.leagueRound.id = :roundId order by plr.id")
+    List<PlayerLeagueRecord> findByRoundId(@Param("roundId") Long roundId);
 
 
 
