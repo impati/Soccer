@@ -16,7 +16,7 @@ public class DefaultGradeDecision implements GradeDecision{
     private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
     @Override
     public void LeagueGradeDecision(List<PlayerLeagueRecord> plr) {
-        AvgDto avg = playerLeagueRecordEntityRepository.findByGameAvg();
+        GameAvgDto avg = playerLeagueRecordEntityRepository.findByGameAvg();
         mappedMid(avg.getPassAvg(),avg.getShootingAvg(),avg.getDefenseAvg(),plr);
         mappedDefenser(avg.getPassAvg(),avg.getShootingAvg(),avg.getDefenseAvg(),plr);
         mappedStriker(avg.getPassAvg(),avg.getShootingAvg(),avg.getDefenseAvg(),plr);

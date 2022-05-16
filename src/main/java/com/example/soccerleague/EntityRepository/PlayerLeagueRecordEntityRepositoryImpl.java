@@ -1,6 +1,6 @@
 package com.example.soccerleague.EntityRepository;
 
-import com.example.soccerleague.RegisterService.AvgDto;
+import com.example.soccerleague.RegisterService.GameAvgDto;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.PlayerRecord;
@@ -131,9 +131,9 @@ public class PlayerLeagueRecordEntityRepositoryImpl implements PlayerLeagueRecor
     }
 
     @Override
-    public AvgDto findByGameAvg() {
-        return em.createQuery("select new com.example.soccerleague.RegisterService.AvgDto(avg(plr.pass) , avg(plr.shooting) , avg(plr.goodDefense) )" +
-                " from PlayerLeagueRecord plr", AvgDto.class).getResultList().stream().findFirst().orElse(new AvgDto(25,2,8));
+    public GameAvgDto findByGameAvg() {
+        return em.createQuery("select new com.example.soccerleague.RegisterService.GameAvgDto(avg(plr.pass) , avg(plr.shooting) , avg(plr.goodDefense) )" +
+                " from PlayerLeagueRecord plr", GameAvgDto.class).getResultList().stream().findFirst().orElse(new GameAvgDto(25,2,8));
     }
 
     @Override

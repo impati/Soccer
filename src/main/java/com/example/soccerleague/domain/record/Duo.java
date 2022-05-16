@@ -1,10 +1,7 @@
 package com.example.soccerleague.domain.record;
 
 import com.example.soccerleague.domain.Round.Round;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of ={"goalPlayerId","assistPlayerId","goalType"})
 public class Duo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

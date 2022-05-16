@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AvgDto {
+public class GameAvgDto {
     private double passAvg;
     private double shootingAvg;
     private  double defenseAvg;
