@@ -1,10 +1,10 @@
 package com.example.soccerleague.RegisterService.PlayerEdit;
 
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Team;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
+import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "PlayerEditRegister")
 @Transactional
 public class DefaultPlayerEditRegister implements PlayerEditRegister {
-    private final PlayerEntityRepository playerEntityRepository;
-    private final TeamEntityRepository teamEntityRepository;
+    private final PlayerRepository playerRepository;
+    private final TeamRepository teamRepository;
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
         return dataTransferObject instanceof PlayerEditDto;
@@ -25,8 +25,8 @@ public class DefaultPlayerEditRegister implements PlayerEditRegister {
     @Override
     public void register(DataTransferObject dataTransferObject) {
         PlayerEditDto playerEditDto = (PlayerEditDto)dataTransferObject;
-        Team team = (Team) teamEntityRepository.findById(playerEditDto.getTeamId()).orElse(null);
-        Player player = (Player) playerEntityRepository.findById(playerEditDto.getPlayerId()).orElse(null);
+        Team team = teamRepository.findById(playerEditDto.getTeamId()).orElse(null);
+        Player player = playerRepository.findById(playerEditDto.getPlayerId()).orElse(null);
         player.update(
                 playerEditDto.getName(),playerEditDto.getPosition(),team,
                 playerEditDto.getAcceleration(),playerEditDto.getSpeed(),playerEditDto.getPhysicalFight(),

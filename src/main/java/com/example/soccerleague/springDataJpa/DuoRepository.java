@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface DuoRepository extends JpaRepository<Duo, Long> {
     @Query("select d from Duo d join d.round r on r.id = :roundId")
-    List<Duo> findByRoundID(@Param("roundId") Long roundId);
+    List<Duo> findByRoundId(@Param("roundId") Long roundId);
 }

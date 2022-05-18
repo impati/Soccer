@@ -1,5 +1,6 @@
 package com.example.soccerleague.springDataJpa;
 
+import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;
 import com.example.soccerleague.domain.record.TeamRecord;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,7 @@ public interface TeamLeagueRecordRepository extends JpaRepository<TeamLeagueReco
             " join tlr.team t on t.id =:teamId " +
             " join tlr.round r on r.roundStatus = :roundStatus " +
             " where tlr .season = :season ")
-    List<TeamRecord> findBySeasonAndTeam(@Param("teamId") Long teamId,@Param("season") int season);
+    List<TeamRecord> findBySeasonAndTeam(@Param("teamId") Long teamId,@Param("season") int season,@Param("roundStatus") RoundStatus roundStatus);
 
 
 }

@@ -1,13 +1,13 @@
 package com.example.soccerleague.SearchService.LeagueRound.strategy;
 
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.EntityRepository.RoundEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Team;
+import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
+import com.example.soccerleague.springDataJpa.RoundRepository;
+import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,18 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DefaultLeagueRoundTopPlayer implements LeagueRoundTopPlayer {
-    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
-    private final PlayerEntityRepository playerEntityRepository;
-    private final TeamEntityRepository teamEntityRepository;
-    private final RoundEntityRepository roundEntityRepository;
+    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
+    private final PlayerRepository playerRepository;
+    private final TeamRepository teamRepository;
+    private final RoundRepository roundRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
         return dto instanceof LeagueRoundTopPlayerRequest;
@@ -39,14 +38,14 @@ public class DefaultLeagueRoundTopPlayer implements LeagueRoundTopPlayer {
         List<LeagueRoundTopPlayerResponse> resp = new ArrayList<>();
 
 
-        Round round = (Round)roundEntityRepository.findById(req.getRoundId()).orElse(null);
-        Team team = (Team) teamEntityRepository.findById(req.getTeamId()).orElse(null);
-        List<Player> players = playerEntityRepository.findByTeam(team);
+        Round round = roundRepository.findById(req.getRoundId()).orElse(null);
+        Team team = teamRepository.findById(req.getTeamId()).orElse(null);
+        List<Player> players = playerRepository.findByTeam(team);
 
 
         for(var player : players){
             LeagueRoundTopPlayerResponse topPlayer = new LeagueRoundTopPlayerResponse(player.getName());
-            playerLeagueRecordEntityRepository.findBySeasonAndPlayer(round,player.getId())
+            playerLeagueRecordRepository.findBySeasonAndPlayer(player.getId(),round.getSeason(),round.getRoundSt())
                     .stream()
                     .forEach(ele->topPlayer.update(ele.getGoal(),ele.getAssist()));
             resp.add(topPlayer);

@@ -1,15 +1,11 @@
 package com.example.soccerleague.SearchService.LeagueRecord.team;
 
-import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
-import com.example.soccerleague.SearchService.SearchResult;
 import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeagueDisplay;
 import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeagueDisplayRequest;
 import com.example.soccerleague.SearchService.TeamDisplay.League.TeamLeagueDisplayResponse;
 import com.example.soccerleague.domain.DataTransferObject;
-import com.example.soccerleague.domain.League;
-import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
+import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +21,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class DefaultLeagueTeamRecord implements LeagueTeamRecord {
     private final TeamLeagueDisplay teamLeagueDisPlay;
-    private final TeamEntityRepository teamEntityRepository;
+    private final TeamRepository teamRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
         return dto instanceof LeagueTeamRecordRequest;
@@ -36,7 +32,7 @@ public class DefaultLeagueTeamRecord implements LeagueTeamRecord {
         LeagueTeamRecordRequest req = (LeagueTeamRecordRequest) dataTransferObject;
         List<LeagueTeamRecordResponse> resp = new ArrayList<>();
 
-        List<Team> teams = teamEntityRepository.findByLeagueId(req.getLeagueId());
+        List<Team> teams = teamRepository.findByLeagueId(req.getLeagueId());
         for (Team team : teams) {
             TeamLeagueDisplayRequest element = new TeamLeagueDisplayRequest(team.getId(),req.getSeason());
             TeamLeagueDisplayResponse  teamLeagueDisplayResponse =  (TeamLeagueDisplayResponse) teamLeagueDisPlay.search(element);

@@ -10,10 +10,14 @@ import java.util.List;
 
 public interface TeamRepository extends JpaRepository<Team,Long> {
 
-    @Query("select t from Team t join t.league l on l.id =:leagueId")
+    @Query("select t from Team t join t.league l on l.id =:leagueId order by  t.rating desc")
     List<Team> findByLeagueId(@Param("leagueId") Long leagueId);
 
-    @Query("select t from Team t join t.league l on l.id =:leagueId ")
+    
+    // 리그 페이지에 쓰일 팀 정보
+    @Query("select t from Team t join t.league l on l.id =:leagueId order by t.rating desc")
     List<Team> findByLeagueId(@Param("leagueId") Long leagueId, Pageable pageable);
+
+
 
 }

@@ -1,10 +1,10 @@
 package com.example.soccerleague.support.testData;
 
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
 import com.example.soccerleague.RegisterService.PlayerEdit.PlayerEditDto;
 import com.example.soccerleague.RegisterService.PlayerEdit.PlayerEditRegister;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PlayerStatConfig {
-    private final PlayerEntityRepository playerEntityRepository;
+    private final PlayerRepository playerEntityRepository;
     private final PlayerEditRegister playerEditRegister;
     public void playerStatConfig(){
         playerEntityRepository.findAll()

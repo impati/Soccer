@@ -24,6 +24,7 @@ public class LeagueTeamRecordResponse extends DataTransferObject {
     public LeagueTeamRecordResponse(Long teamId,String teamName, int gameNumber,
                                     int win, int draw, int lose,
                                     int gain, int lost) {
+        this.teamId = teamId;
         this.teamName = teamName;
         this.gameNumber = gameNumber;
         this.win = win;

@@ -1,8 +1,6 @@
 package com.example.soccerleague.Web.Controller;
 
-import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.EntityRepository.RoundEntityRepository;
+
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
 import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
 import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameRegister;
@@ -27,13 +25,15 @@ import com.example.soccerleague.SearchService.LeagueRound.strategy.*;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplay;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplayRequest;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
-import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.GoalType;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.springDataJpa.LeagueRepository;
+import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.RoundRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -55,15 +55,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/league")
 public class  LeagueController {
     private final TeamDisplay teamDisplay;
-    private final LeagueEntityRepository leagueEntityRepository;
+    private final LeagueRepository leagueRepository;
     private final LeagueRoundInfo leagueRoundInfo;
     private final LeagueRoundLineUpSearch leagueRoundLineUpSearch;
     private final LeagueRoundLineUpRegister leagueRoundLineUpRegister;
-    private final RoundEntityRepository roundEntityRepository;
+    private final RoundRepository roundRepository;
     private final LeagueRoundGameSearch leagueRoundGameSearch;
     private final LeagueRoundGameRegister leagueRoundGameRegister;
     private final LeagueRoundGameResult  leagueRoundGameResult;
-    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
+    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
     private final DuoRecordRegister duoRecordRegister;
     private final DuoRecordResult duoRecordResult;
     private final ShowDown showDown;
@@ -74,7 +74,7 @@ public class  LeagueController {
      */
     @GetMapping("/{leagueId}")
     public String LeaguePage(@PathVariable Long leagueId, Model model){
-        model.addAttribute("leagueName",leagueEntityRepository.findById(leagueId).map(ele->(League)ele).orElse(null).getName());
+        model.addAttribute("leagueName",leagueRepository.findById(leagueId).orElse(null).getName());
         model.addAttribute("teamDisplayResponse",teamDisplay.search(new TeamDisplayRequest(leagueId)));
         return "league/page";
     }
@@ -115,7 +115,7 @@ public class  LeagueController {
     public String gameLineUpPage(@PathVariable Long roundId,Model model){
 
         model.addAttribute("leagueRoundLineUpResponse",leagueRoundLineUpSearch.search(new LeagueRoundLineUpRequest(roundId)).orElse(null));
-        model.addAttribute("round",roundEntityRepository.findById(roundId).orElse(null));
+        model.addAttribute("round",roundRepository.findById(roundId).orElse(null));
         model.addAttribute("positionList", Position.values());
         return "league/lineup";
     }
@@ -142,7 +142,7 @@ public class  LeagueController {
      */
     @GetMapping("/round/{roundId}/game")
     public String game(@PathVariable Long roundId,Model model){
-        Round round = (Round) roundEntityRepository.findById(roundId).orElse(null);
+        Round round = roundRepository.findById(roundId).orElse(null);
         model.addAttribute("round",roundId);
         if(round.getRoundStatus().equals(RoundStatus.YET)){
             return "/league/BeforeGame";
@@ -156,9 +156,8 @@ public class  LeagueController {
             gameResult(round,model);
 
             List<LineUpPlayer> playerList = new ArrayList<>();
-            playerLeagueRecordEntityRepository.findByRoundId(roundId)
+            playerLeagueRecordRepository.findByRoundId(roundId)
                     .stream()
-                    .map(ele->(PlayerLeagueRecord)ele)
                     .map(ele->ele.getPlayer())
                     .forEach(ele->playerList.add(
                             LineUpPlayer.create(ele.getId(),ele.getName(),ele.getPosition())));
@@ -240,7 +239,7 @@ public class  LeagueController {
     @GetMapping("/round/{roundId}/strategy")
     public String gameStrategy(@PathVariable Long roundId,Model model){
 
-        Round round = (Round) roundEntityRepository.findById(roundId).orElse(null);
+        Round round = roundRepository.findById(roundId).orElse(null);
 
 
         model.addAttribute("round",roundId);

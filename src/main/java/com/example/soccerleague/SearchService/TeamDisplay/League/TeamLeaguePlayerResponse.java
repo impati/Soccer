@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TeamLeaguePlayerResponse extends DataTransferObject {
     private String name;
-    private int game;
-    private int rating;
+    private Long game;
+    private double rating;
     private Position position;
 }

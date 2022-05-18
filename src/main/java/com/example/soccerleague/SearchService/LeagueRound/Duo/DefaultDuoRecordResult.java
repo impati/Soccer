@@ -1,11 +1,10 @@
 package com.example.soccerleague.SearchService.LeagueRound.Duo;
 
-import com.example.soccerleague.EntityRepository.DuoEntityRepository;
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 
+import com.example.soccerleague.springDataJpa.DuoRepository;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,8 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class DefaultDuoRecordResult implements DuoRecordResult {
-    private final DuoEntityRepository duoEntityRepository;
-    private final PlayerEntityRepository playerEntityRepository;
+    private final DuoRepository duoRepository;
+    private final PlayerRepository playerRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
         return dto instanceof DuoRecordResultRequest;
@@ -32,11 +31,11 @@ public class DefaultDuoRecordResult implements DuoRecordResult {
         DuoRecordResultRequest req = (DuoRecordResultRequest) dataTransferObject;
         List<DataTransferObject> resp = new ArrayList<>();
 
-        duoEntityRepository.findByRoundId(req.getRoundId())
+        duoRepository.findByRoundId(req.getRoundId())
                 .stream()
                 .forEach(ele ->{
-                    Player scorer = (Player)playerEntityRepository.findById(ele.getGoalPlayerId()).orElse(null);
-                    Player assistant = (Player)playerEntityRepository.findById(ele.getAssistPlayerId()).orElse(null);
+                    Player scorer = playerRepository.findById(ele.getGoalPlayerId()).orElse(null);
+                    Player assistant = playerRepository.findById(ele.getAssistPlayerId()).orElse(null);
                     String scorerName = "-";
                     String assistantName = "-";
                     if(scorer!=null)scorerName = scorer.getName();

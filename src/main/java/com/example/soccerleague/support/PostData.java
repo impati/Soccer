@@ -1,9 +1,5 @@
 package com.example.soccerleague.support;
 
-
-import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.RegisterService.LeagueSeasonTable;
 import com.example.soccerleague.RegisterService.LeagueSeasonTableDto;
 import com.example.soccerleague.domain.League;
@@ -12,6 +8,9 @@ import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Player.Stat;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
+import com.example.soccerleague.springDataJpa.LeagueRepository;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
+import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,9 +33,9 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class PostData {
-    private final LeagueEntityRepository leagueRepository;
-    private final TeamEntityRepository teamRepository;
-    private final PlayerEntityRepository playerRepository;
+    private final LeagueRepository leagueRepository;
+    private final TeamRepository teamRepository;
+    private final PlayerRepository playerRepository;
     private final LeagueSeasonTable leagueSeasonTable;
     private String path = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\";
 

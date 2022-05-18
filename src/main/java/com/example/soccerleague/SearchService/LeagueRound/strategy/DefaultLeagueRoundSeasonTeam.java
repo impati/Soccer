@@ -1,11 +1,12 @@
 package com.example.soccerleague.SearchService.LeagueRound.strategy;
-
-import com.example.soccerleague.EntityRepository.*;
-
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.Round;
+import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.*;
+import com.example.soccerleague.springDataJpa.RoundRepository;
+import com.example.soccerleague.springDataJpa.TeamLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DefaultLeagueRoundSeasonTeam implements  LeagueRoundSeasonTeam {
-    private final TeamLeagueRecordEntityRepository teamLeagueRecordEntityRepository;
-    private final RoundEntityRepository roundEntityRepository;
-    private final TeamEntityRepository teamEntityRepository;
+    private final TeamLeagueRecordRepository teamLeagueRecordRepository;
+    private final RoundRepository roundRepository;
+    private final TeamRepository teamRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
         return dto instanceof LeagueRoundSeasonTeamRequest;
@@ -31,12 +32,12 @@ public class DefaultLeagueRoundSeasonTeam implements  LeagueRoundSeasonTeam {
     @Override
     public Optional<DataTransferObject> search(DataTransferObject dataTransferObject) {
         LeagueRoundSeasonTeamRequest req = (LeagueRoundSeasonTeamRequest) dataTransferObject;
-        Round round = (Round)roundEntityRepository.findById(req.getRoundId()).orElse(null);
-        Team team = (Team)teamEntityRepository.findById(req.getTeamId()).orElse(null);
+        Round round = roundRepository.findById(req.getRoundId()).orElse(null);
+        Team team = teamRepository.findById(req.getTeamId()).orElse(null);
 
         LeagueRoundSeasonTeamResponse resp = LeagueRoundSeasonTeamResponse.create(team.getName(),"League");
-        List<TeamLeagueRecord> teamRecordList = teamLeagueRecordEntityRepository
-                .findBySeasonAndTeam(round.getSeason(), team.getId()).stream().map(ele->(TeamLeagueRecord)ele).collect(Collectors.toList());
+        List<TeamLeagueRecord> teamRecordList = teamLeagueRecordRepository
+                .findBySeasonAndTeam(team.getId(),round.getSeason(), RoundStatus.DONE).stream().map(ele->(TeamLeagueRecord)ele).collect(Collectors.toList());
 
         int sz = teamRecordList.size();
         int count  = 0;

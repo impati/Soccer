@@ -1,9 +1,5 @@
 package com.example.soccerleague.RegisterService.LeagueRound.Game;
 
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.EntityRepository.RoundEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamLeagueRecordEntityRepository;
-
 import com.example.soccerleague.RegisterService.EloRatingSystem;
 import com.example.soccerleague.RegisterService.GradeDecision;
 import com.example.soccerleague.domain.DataTransferObject;
@@ -11,6 +7,9 @@ import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.record.*;
 
+import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.RoundRepository;
+import com.example.soccerleague.springDataJpa.TeamLeagueRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,9 +22,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
-    private final RoundEntityRepository roundEntityRepository;
-    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
-    private final TeamLeagueRecordEntityRepository teamLeagueRecordEntityRepository;
+    private final RoundRepository roundRepository;
+    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
+    private final TeamLeagueRecordRepository teamLeagueRecordRepository;
     private final EloRatingSystem eloRatingSystem;
     private final GradeDecision gradeDecision;
     @Override
@@ -37,9 +36,9 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
     public void register(DataTransferObject dataTransferObject) {
         LeagueRoundGameDto leagueRoundGameDto = (LeagueRoundGameDto)dataTransferObject;
 
-        LeagueRound leagueRound = (LeagueRound)roundEntityRepository.findById(leagueRoundGameDto.getRoundId()).orElse(null);
+        LeagueRound leagueRound = (LeagueRound)roundRepository.findById(leagueRoundGameDto.getRoundId()).orElse(null);
 
-        List<PlayerLeagueRecord> playerRecordsA = playerLeagueRecordEntityRepository.
+        List<PlayerLeagueRecord> playerRecordsA = playerLeagueRecordRepository.
                 findByRoundAndTeam(leagueRound.getId(),leagueRound.getHomeTeamId());
 
         playerRecordsA.sort((o1, o2) -> {
@@ -51,7 +50,7 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
 
 
 
-        List<PlayerLeagueRecord> playerRecordsB = playerLeagueRecordEntityRepository.
+        List<PlayerLeagueRecord> playerRecordsB = playerLeagueRecordRepository.
                 findByRoundAndTeam(leagueRound.getId(),leagueRound.getAwayTeamId());
 
         playerRecordsB.sort((o1, o2) -> {
@@ -88,8 +87,8 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
         }
 
 
-        List<TeamLeagueRecord> teams = teamLeagueRecordEntityRepository
-                .findByRoundId(leagueRoundGameDto.getRoundId()).stream().map(ele->(TeamLeagueRecord)ele).collect(Collectors.toList());
+        List<TeamLeagueRecord> teams = teamLeagueRecordRepository
+                .findByRoundId(leagueRoundGameDto.getRoundId()).stream().collect(Collectors.toList());
 
         int sz = playerRecordsA.size();
         recordSave(0,sz,0,bestGrade,matchResultA,playerRecordsA,leagueRoundGameDto,teams.get(0));

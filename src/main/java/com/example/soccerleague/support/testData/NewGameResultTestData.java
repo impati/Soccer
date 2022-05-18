@@ -1,14 +1,8 @@
 package com.example.soccerleague.support.testData;
 
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.EntityRepository.RoundEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
-import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpRegister;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameRegister;
 
-import com.example.soccerleague.SearchService.LeagueRound.Duo.DuoRecordResult;
+import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpRegister;
+
 import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameRequest;
 import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
 import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameSearch;
@@ -18,11 +12,14 @@ import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLine
 
 import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpDto;
 import com.example.soccerleague.domain.Round.Round;
+import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Season;
+import com.example.soccerleague.springDataJpa.RoundRepository;
 import com.example.soccerleague.support.testData.LineUp.LineUpDataPosting;
 import com.example.soccerleague.support.testData.game.GameDataPosting;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class NewGameResultTestData {
-    private final RoundEntityRepository roundEntityRepository;
+    private final RoundRepository roundEntityRepository;
     private final LeagueRoundLineUpRegister leagueLineUpRegister;
     private final LeagueRoundGameSearch leagueRoundGameSearch;
     private final LeagueRoundLineUpSearch leagueRoundLineUpSearch;;
@@ -41,7 +38,6 @@ public class NewGameResultTestData {
     public void isNotDoneGame(){
         log.info("season : [{}] ,round : [{}]",Season.CURRENTSEASON,Season.CURRENTLEAGUEROUND);
         List<Round>  rounds = roundEntityRepository.findNotDoneGame(Season.CURRENTSEASON,Season.CURRENTLEAGUEROUND);
-
 
         // 라인업을 저장
         for(int i = 0;i<rounds.size() ; i ++ ){
@@ -56,12 +52,6 @@ public class NewGameResultTestData {
             LeagueRoundGameResponse leagueRoundGameResponse  =(LeagueRoundGameResponse) leagueRoundGameSearch.search(new LeagueRoundGameRequest(rounds.get(i).getId())).orElse(null);
             gameDataPosting.calculation(rounds.get(i).getId(),leagueRoundGameResponse);
         }
-
-
-
-
-
-
 
 
 

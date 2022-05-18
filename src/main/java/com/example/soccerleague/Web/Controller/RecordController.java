@@ -1,6 +1,4 @@
 package com.example.soccerleague.Web.Controller;
-
-import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
 import com.example.soccerleague.SearchService.LeagueRecord.Player.LeaguePlayerRecord;
 import com.example.soccerleague.SearchService.LeagueRecord.Player.LeaguePlayerRecordRequest;
 import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecord;
@@ -10,6 +8,7 @@ import com.example.soccerleague.domain.Direction;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.SortType;
 
+import com.example.soccerleague.springDataJpa.LeagueRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,9 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *  리그 ,유로파, 챔피언스리그 등등의 전체적인 기록을 관리하는 컨트롤러
@@ -31,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecordController {
 
-    private final LeagueEntityRepository leagueEntityRepository;
+    private final LeagueRepository leagueRepository;
     private final LeagueTeamRecord leagueTeamRecord;
     private final LeaguePlayerRecord leaguePlayerRecord;
     /**
@@ -46,7 +42,7 @@ public class RecordController {
 
         model.addAttribute("Seasons", Season.CURRENTSEASON);
         model.addAttribute("season",season);
-        model.addAttribute("league",leagueEntityRepository.findById(leagueId).orElse(null));
+        model.addAttribute("league",leagueRepository.findById(leagueId).orElse(null));
         model.addAttribute("leagueTeamRecordResponse",leagueTeamRecord.searchList(new LeagueTeamRecordRequest(leagueId,season)));
         return "record/league/recordteamLeague";
     }
@@ -70,7 +66,7 @@ public class RecordController {
         model.addAttribute("direction",direction);
         model.addAttribute("Seasons", Season.CURRENTSEASON);
         model.addAttribute("season",season);
-        model.addAttribute("league",leagueEntityRepository.findById(leagueId).orElse(null));
+        model.addAttribute("league",leagueRepository.findById(leagueId).orElse(null));
         model.addAttribute("leaguePlayerRecordResponse",leaguePlayerRecord.searchList(new LeaguePlayerRecordRequest(season,leagueId,sortType,direction)));
 
 

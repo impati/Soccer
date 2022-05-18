@@ -19,14 +19,14 @@ public interface RoundRepository extends JpaRepository<Round,Long> {
     List<Round> findByLeagueAndSeasonAndRoundSt(
             @Param("leagueId") Long leagueId, @Param("season") int season,@Param("roundSt") int roundSt);
 
-    @Query(value = "select count(r) from Round r where r.roundSt = :roundSt and r.roundStatus <> :status")
-    Long currentRoundIsDone(@Param("roundSt") int roundSt, @Param("status") RoundStatus roundStatus);
+    @Query(value = "select count(r) from Round r where r.roundSt = :roundSt and r.roundStatus <> com.example.soccerleague.domain.Round.RoundStatus.DONE")
+    Long currentRoundIsDone(@Param("roundSt") int roundSt);
 
     @Query(value = "select count(r) from Round r where r.leagueId =:leagueId and r.season = :season")
     Long findByLeagueSeason(@Param("leagueId") Long leagueId ,@Param("season") int season);
 
-    @Query(value ="select r from Round r where r.season = :season and r.roundSt = :roundSt and r.roundStatus <> :status")
-    List<Round> findNotDoneGame (@Param("season")int season,@Param("roundSt") int roundSt,@Param("status")RoundStatus roundStatus);
+    @Query(value ="select r from Round r where r.season = :season and r.roundSt = :roundSt and r.roundStatus <> com.example.soccerleague.domain.Round.RoundStatus.DONE")
+    List<Round> findNotDoneGame (@Param("season")int season,@Param("roundSt") int roundSt);
 
 
 }

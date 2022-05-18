@@ -1,8 +1,5 @@
 package com.example.soccerleague.support.testData.game;
 
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.EntityRepository.RoundEntityRepository;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
 import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
@@ -14,6 +11,9 @@ import com.example.soccerleague.domain.Player.Stat;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.record.GoalType;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
+import com.example.soccerleague.springDataJpa.RoundRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +35,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class StatBaseGameDataPosting implements GameDataPosting{
     private final DuoRecordRegister duoRecordRegister;
     private final LeagueRoundGameRegister leagueRoundGameRegister;
-    private final PlayerEntityRepository playerEntityRepository;
-    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
-    private final RoundEntityRepository roundEntityRepository;
+    private final PlayerRepository playerEntityRepository;
+    private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
+    private final RoundRepository roundEntityRepository;
     private List<DuoInfo> goalAssist = new ArrayList<>();
     @Override
     public void calculation(Long roundId, LeagueRoundGameResponse resp) {

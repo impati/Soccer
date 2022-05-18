@@ -1,6 +1,5 @@
 package com.example.soccerleague.RegisterService.LeagueRound.Duo;
 
-import com.example.soccerleague.EntityRepository.*;
 import com.example.soccerleague.RegisterService.EloRatingSystem;
 import com.example.soccerleague.RegisterService.LeagueSeasonTable;
 import com.example.soccerleague.RegisterService.LeagueSeasonTableDto;
@@ -14,8 +13,10 @@ import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.*;
+import com.example.soccerleague.springDataJpa.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,14 +29,14 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class DefaultDuoRecordRegister implements DuoRecordRegister{
-    private final DuoEntityRepository duoEntityRepository;
-    private final RoundEntityRepository roundEntityRepository;
+    private final DuoRepository duoRepository;
+    private final RoundRepository roundRepository;
     private final LeagueSeasonTable leagueSeasonTable;
-    private final LeagueEntityRepository leagueEntityRepository;
-    private final TeamLeagueRecordEntityRepository teamLeagueRecordEntityRepository;
-    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
-    private final PlayerEntityRepository playerEntityRepository;
-    private final TeamEntityRepository teamEntityRepository;
+    private final LeagueRepository leagueRepository;
+    private final TeamLeagueRecordRepository teamLeagueRecordRepository;
+    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
+    private final PlayerRepository playerRepository;
+    private final TeamRepository teamRepository;
     private final EloRatingSystem eloRatingSystem;
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
@@ -46,20 +47,20 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
     public void register(DataTransferObject dataTransferObject) {
 
         DuoRecordDto duoRecordDto = (DuoRecordDto)dataTransferObject;
-        LeagueRound leagueRound =  (LeagueRound) roundEntityRepository.findById(duoRecordDto.getRoundId()).orElse(null);
+        LeagueRound leagueRound =  (LeagueRound) roundRepository.findById(duoRecordDto.getRoundId()).orElse(null);
         int sz = duoRecordDto.getScorer().size();
         for(int i = 0;i < sz; i++){
             Long scorer = duoRecordDto.getScorer().get(i);
             Long assistant = duoRecordDto.getAssistant().get(i);
             GoalType goalType = duoRecordDto.getGoalType().get(i);
             Duo duo = Duo.create(scorer,assistant,goalType,leagueRound);
-            duoEntityRepository.save(duo);
+            duoRepository.save(duo);
         }
         leagueRound.setRoundStatus(RoundStatus.DONE);
         rankMake(leagueRound);
 
 
-        if(roundEntityRepository.currentRoundIsDone(leagueRound)){
+        if(roundRepository.currentRoundIsDone(leagueRound.getRoundSt()) == 0L){
             Season.CURRENTLEAGUEROUND += 1;
             if(Season.CURRENTLEAGUEROUND > Season.LASTLEAGUEROUND){
                 for(Long i = 1L ; i<=4L;i++){
@@ -67,19 +68,19 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
                 }
                 Season.CURRENTSEASON += 1;
                 Season.CURRENTLEAGUEROUND = 1;
-                leagueEntityRepository.findAll().stream().map(ele->(League)ele).forEach(ele->leagueSeasonTable.register(new LeagueSeasonTableDto(ele.getId(),Season.CURRENTSEASON)));
+                leagueRepository.findAll().stream().forEach(ele->leagueSeasonTable.register(new LeagueSeasonTableDto(ele.getId(),Season.CURRENTSEASON)));
             }
-            leagueEntityRepository.findAll().stream().map(ele->(League)ele).forEach(ele->{ele.setCurrentSeason(Season.CURRENTSEASON); ele.setCurrentRoundSt(Season.CURRENTLEAGUEROUND);});
+            leagueRepository.findAll().stream().forEach(ele->{ele.setCurrentSeason(Season.CURRENTSEASON); ele.setCurrentRoundSt(Season.CURRENTLEAGUEROUND);});
         }
     }
 
     private void rankMake(Round round) {
         // roundst보다 적은 결과만을 가져옴.
-        List<Team> teamList = teamEntityRepository.findByLeagueId(round.getLeagueId());
+        List<Team> teamList = teamRepository.findByLeagueId(round.getLeagueId());
         List<LeagueRoundSeasonResult> ret = new ArrayList<>();
 
         for (var team : teamList) {
-            List<TeamLeagueRecord> teamRecord = teamLeagueRecordEntityRepository.findBySeasonAndTeam(round.getSeason(), team.getId()).stream().map(ele -> (TeamLeagueRecord) ele).collect(Collectors.toList());
+            List<TeamLeagueRecord> teamRecord = teamLeagueRecordRepository.findBySeasonAndTeam(team.getId(),round.getSeason(),RoundStatus.DONE).stream().map(ele -> (TeamLeagueRecord) ele).collect(Collectors.toList());
             int win = 0, draw = 0, lose = 0, gain = 0, lost = 0;
             for (var record : teamRecord) {
                 if (record.getRound().getRoundStatus().equals(RoundStatus.DONE)) {
@@ -108,14 +109,13 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
         }
 
         for (var element : ret) {
-            TeamLeagueRecord tlr = teamLeagueRecordEntityRepository.findByLastRecord(round.getSeason(), element.getTeam().getId()).orElse(null);
+            TeamLeagueRecord tlr =  teamLeagueRecordRepository.findByLastRecord(element.getTeam().getId(),round.getSeason(), PageRequest.of(0,1)).stream().findFirst().orElse(null);
             if (tlr == null) continue;
-
             tlr.setRank(element.getRank());
 
-            List<Player> playerList = playerEntityRepository.findByTeam(element.getTeam());
+            List<Player> playerList = playerRepository.findByTeam(element.getTeam());
             for (var player : playerList) {
-                PlayerLeagueRecord plr = playerLeagueRecordEntityRepository.findByLast(round.getSeason(), player.getId()).orElse(null);
+                PlayerLeagueRecord plr = playerLeagueRecordRepository.findFirstByLast(player.getId(),round.getSeason(),PageRequest.of(0,1)).stream().findFirst().orElse(null);
                 if (plr == null) continue;
                 plr.setRank(element.getRank());
             }

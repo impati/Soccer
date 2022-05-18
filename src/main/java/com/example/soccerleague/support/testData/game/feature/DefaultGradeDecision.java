@@ -1,8 +1,7 @@
 package com.example.soccerleague.support.testData.game.feature;
 
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.record.MatchResult;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
 import com.example.soccerleague.support.testData.game.Dto.DefenserStatBaseGameDto;
 import com.example.soccerleague.support.testData.game.Dto.MidFielderStatBaseGameDto;
 import com.example.soccerleague.support.testData.game.Dto.StatBaseGameDto;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component(value = "autoGradeDecision")
 @RequiredArgsConstructor
 public class DefaultGradeDecision implements  GradeDecision{
-    private final PlayerEntityRepository playerEntityRepository;
+    private final PlayerRepository playerRepository;
     @Override
     public int grade(GameAvgDto avgDto , StatBaseGameDto req ,int superSave) {
 

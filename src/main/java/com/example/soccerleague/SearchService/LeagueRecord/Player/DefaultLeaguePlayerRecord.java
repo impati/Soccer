@@ -1,8 +1,5 @@
 package com.example.soccerleague.SearchService.LeagueRecord.Player;
 
-import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.SearchService.PlayerDisplay.League.PlayerLeagueDisplay;
 
 import com.example.soccerleague.SearchService.PlayerDisplay.League.PlayerLeagueDisplayRequest;
@@ -10,6 +7,8 @@ import com.example.soccerleague.SearchService.PlayerDisplay.League.PlayerLeagueD
 
 import com.example.soccerleague.domain.*;
 import com.example.soccerleague.domain.Player.Player;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
+import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,8 +25,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class DefaultLeaguePlayerRecord implements LeaguePlayerRecord {
     private final PlayerLeagueDisplay playerLeagueDisplay;
-    private final TeamEntityRepository teamEntityRepository;
-    private final PlayerEntityRepository playerEntityRepository;
+    private final TeamRepository teamRepository;
+    private final PlayerRepository playerRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
         return dto instanceof LeaguePlayerRecordRequest;
@@ -41,9 +40,9 @@ public class DefaultLeaguePlayerRecord implements LeaguePlayerRecord {
 
 
 
-        List<Team> teams = teamEntityRepository.findByLeagueId(req.getLeagueId());
+        List<Team> teams = teamRepository.findByLeagueId(req.getLeagueId());
         for (Team team : teams) {
-            List<Player> players = playerEntityRepository.findByTeam(team);
+            List<Player> players = playerRepository.findByTeam(team);
             for (Player player : players) {
                 LeaguePlayerRecordResponse leaguePlayerRecordResponse = new LeaguePlayerRecordResponse(
                         req.getSortType(),req.getDirection(),

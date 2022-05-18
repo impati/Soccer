@@ -1,9 +1,5 @@
 package com.example.soccerleague.RegisterService;
 
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamLeagueRecordEntityRepository;
 import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecord;
 import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordRequest;
 import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordResponse;
@@ -14,10 +10,8 @@ import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
-import com.example.soccerleague.support.testData.game.Dto.DefenserStatBaseGameDto;
-import com.example.soccerleague.support.testData.game.Dto.GoalKeeperStatBaseGameDto;
-import com.example.soccerleague.support.testData.game.Dto.MidFielderStatBaseGameDto;
-import com.example.soccerleague.support.testData.game.Dto.StrikerStatBaseGameDto;
+import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,8 +26,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class DefaultEloRatingSystem implements EloRatingSystem {
-    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
-    private final TeamEntityRepository teamEntityRepository;
+    private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
+    private final TeamRepository teamEntityRepository;
     private final LeagueTeamRecord leagueTeamRecord;
     private static Integer VI = 400;
     private static Integer K = 20;
@@ -104,14 +98,14 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
 
         int value = 100;
         for(int i= 0 ;i<6;i++){
-            Team team = (Team)teamEntityRepository.findById(resp.get(i).getTeamId()).orElse(null);
+            Team team = teamEntityRepository.findById(resp.get(i).getTeamId()).orElse(null);
             team.setRating(team.getRating() + value);
             value /=2;
         }
 
         value = -2;
         for(int i =10;i<resp.size();i++){
-            Team team = (Team)teamEntityRepository.findById(resp.get(i).getTeamId()).orElse(null);
+            Team team = teamEntityRepository.findById(resp.get(i).getTeamId()).orElse(null);
             team.setRating(team.getRating() + value);
             value *=2;
         }

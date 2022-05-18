@@ -1,15 +1,14 @@
 package com.example.soccerleague.SearchService.LeagueRound.LineUp;
 
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.EntityRepository.RoundEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpDto;
+
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
-import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
+import com.example.soccerleague.springDataJpa.RoundRepository;
+import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,10 +21,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DefaultLeagueRoundLineUp implements LeagueRoundLineUpSearch {
-    private final RoundEntityRepository roundEntityRepository;
-    private final TeamEntityRepository teamEntityRepository;
-    private final PlayerEntityRepository playerEntityRepository;
-    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
+    private final RoundRepository roundRepository;
+    private final TeamRepository teamRepository;
+    private final PlayerRepository playerRepository;
+    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
         return dto instanceof LeagueRoundLineUpRequest;
@@ -38,22 +37,22 @@ public class DefaultLeagueRoundLineUp implements LeagueRoundLineUpSearch {
 
 
 
-        Round round = (Round)roundEntityRepository.findById(req.getRoundId()).orElse(null);
-        Team teamA = (Team)teamEntityRepository.findById(round.getHomeTeamId()).orElse(null);
-        Team teamB = (Team)teamEntityRepository.findById(round.getAwayTeamId()).orElse(null);
+        Round round = roundRepository.findById(req.getRoundId()).orElse(null);
+        Team teamA = teamRepository.findById(round.getHomeTeamId()).orElse(null);
+        Team teamB = teamRepository.findById(round.getAwayTeamId()).orElse(null);
 
 
         LeagueRoundLineUpResponse resp = new LeagueRoundLineUpResponse(teamA.getName(),teamB.getName());
 
         if(round.getRoundStatus().equals(RoundStatus.YET)){
             resp.setLineUpDone(false);
-            playerEntityRepository.findByTeam(teamA).stream()
+            playerRepository.findByTeam(teamA).stream()
                     .forEach(ele-> {
                         resp.getPlayerListA().add(LineUpPlayer.create(ele.getId(), ele.getName(), ele.getPosition()));
                         resp.getJoinPlayer().add(ele.getId());
                     });
 
-            playerEntityRepository.findByTeam(teamB).stream()
+            playerRepository.findByTeam(teamB).stream()
                     .forEach(ele-> {
                         resp.getPlayerListB().add(LineUpPlayer.create(ele.getId(), ele.getName(), ele.getPosition()));
                         resp.getJoinPlayer().add(ele.getId());
@@ -61,11 +60,11 @@ public class DefaultLeagueRoundLineUp implements LeagueRoundLineUpSearch {
         }
         else{
             resp.setLineUpDone(true);
-            playerLeagueRecordEntityRepository.findByRoundAndTeam(req.getRoundId(),teamA.getId()).stream()
+            playerLeagueRecordRepository.findByRoundAndTeam(req.getRoundId(),teamA.getId()).stream()
                     .forEach(ele->resp.getPlayerListA().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
 
 
-            playerLeagueRecordEntityRepository.findByRoundAndTeam(req.getRoundId(),teamB.getId()).stream()
+            playerLeagueRecordRepository.findByRoundAndTeam(req.getRoundId(),teamB.getId()).stream()
                     .forEach(ele->resp.getPlayerListB().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
         }
 

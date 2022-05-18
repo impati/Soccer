@@ -1,12 +1,13 @@
 package com.example.soccerleague.RegisterService;
 
-import com.example.soccerleague.EntityRepository.RoundEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Team;
+import com.example.soccerleague.springDataJpa.RoundRepository;
+import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +18,8 @@ import java.util.List;
 @Transactional
 @Service
 public class DefaultLeagueSeasonTable implements LeagueSeasonTable{
-    private final TeamEntityRepository teamEntityRepository;
-    private final RoundEntityRepository roundEntityRepository;
+    private final TeamRepository teamRepository;
+    private final RoundRepository roundRepository;
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
         return dataTransferObject instanceof LeagueSeasonTableDto;
@@ -27,8 +28,8 @@ public class DefaultLeagueSeasonTable implements LeagueSeasonTable{
     public void register(DataTransferObject dataTransferObject) {
         LeagueSeasonTableDto tableDto = (LeagueSeasonTableDto) dataTransferObject;
 
-        if(roundEntityRepository.findByLeagueSeason(tableDto.getLeagueId(), tableDto.getSeason()))return;
-        List<Team> ret = teamEntityRepository.findByLeagueTop16(tableDto.getLeagueId());
+        if(roundRepository.findByLeagueSeason(tableDto.getLeagueId(), tableDto.getSeason()) > 0L)return;
+        List<Team> ret = teamRepository.findByLeagueId(tableDto.getLeagueId(), PageRequest.of(0,16));
         int arr[] = new int[17];
         int vec[][] = new int[17][17];
         boolean posible[][] = new boolean[17][17];
@@ -55,7 +56,7 @@ public class DefaultLeagueSeasonTable implements LeagueSeasonTable{
                 posible[i][opposite] = true;
                 posible[opposite][i] = true;
                 LeagueRound round = LeagueRound.createLeagueRound(tableDto.getLeagueId(),ret.get(i).getId(),ret.get(opposite).getId(),tableDto.getSeason(),k+1);
-                roundEntityRepository.save(round);
+                roundRepository.save(round);
             }
         }
     }

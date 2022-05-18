@@ -1,9 +1,8 @@
 package com.example.soccerleague.SearchService.PlayerDisplay.League;
 
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
-import com.example.soccerleague.domain.record.PlayerRecord;
+import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,15 +14,16 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class DefaultPlayerLeagueDisplay implements PlayerLeagueDisplay{
-    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
+    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
+
     @Override
     public Optional<DataTransferObject> searchResult(DataTransferObject dto) {
         PlayerLeagueDisplayDto playerLeagueDisplayDto = (PlayerLeagueDisplayDto)dto;
-        List<PlayerRecord> plr = playerLeagueRecordEntityRepository.
-                findBySeasonAndPlayer(playerLeagueDisplayDto.getSeason(), playerLeagueDisplayDto.getPlayerId());
-        plr.stream().forEach(ele->playerLeagueDisplayDto.update((PlayerLeagueRecord) ele));
+        List<PlayerLeagueRecord> plr = playerLeagueRecordRepository.
+                findBySeasonAndPlayer(playerLeagueDisplayDto.getPlayerId(),playerLeagueDisplayDto.getSeason());
+        plr.stream().forEach(ele->playerLeagueDisplayDto.update(ele));
 
         return Optional.ofNullable(playerLeagueDisplayDto);
     }
@@ -32,9 +32,9 @@ public class DefaultPlayerLeagueDisplay implements PlayerLeagueDisplay{
     public Optional<DataTransferObject> search(DataTransferObject playerLeagueDisplayRequest) {
         PlayerLeagueDisplayRequest req = (PlayerLeagueDisplayRequest) playerLeagueDisplayRequest;
         PlayerLeagueDisplayResponse resp = new PlayerLeagueDisplayResponse();
-        List<PlayerRecord> plr = playerLeagueRecordEntityRepository.
-                findBySeasonAndPlayer(req.getSeason(), req.getPlayerId());
-        plr.stream().forEach(ele->resp.update((PlayerLeagueRecord) ele));
+        List<PlayerLeagueRecord> plr = playerLeagueRecordRepository.
+                findBySeasonAndPlayer(req.getPlayerId(),req.getSeason());
+        plr.stream().forEach(ele->resp.update(ele));
         return Optional.ofNullable(resp);
     }
 }

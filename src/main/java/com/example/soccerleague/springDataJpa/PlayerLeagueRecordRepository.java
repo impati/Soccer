@@ -46,9 +46,15 @@ public interface PlayerLeagueRecordRepository extends JpaRepository<PlayerLeague
 
 
 
-    @Query(" Select plr from PlayerLeagueRecord plr join plr.leagueRound lr on lr.season = :season " +
-            " join plr.player p on p.id = :playerId ")
-    List<PlayerLeagueRecord> findBySeasonAndPlayer(@Param("playerId") Long playerId ,@Param("season") int season);
+    @Query(" Select plr from PlayerLeagueRecord plr " +
+            " join plr.player p on p.id = :playerId " +
+            " join plr.leagueRound lr on lr.roundSt < :roundSt where plr.season = :season")
+    List<PlayerLeagueRecord> findBySeasonAndPlayer(@Param("playerId") Long playerId ,@Param("season") int season,@Param("roundSt") int roundSt);
+
+
+    @Query("Select plr from PlayerLeagueRecord plr join plr.leagueRound lr on lr.season = :season join plr.player p on p.id = :playerId")
+    List<PlayerLeagueRecord> findBySeasonAndPlayer(@Param("playerId") Long playerId,@Param("season") int season);
+
 
 
     @Query("select plr from PlayerLeagueRecord plr where plr.leagueRound.id = :roundId order by plr.id")

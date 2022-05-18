@@ -1,9 +1,9 @@
 package com.example.soccerleague.RegisterService;
 
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DefaultGradeDecision implements GradeDecision{
-    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
+    private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
     @Override
     public void LeagueGradeDecision(List<PlayerLeagueRecord> plr) {
         GameAvgDto avg = playerLeagueRecordEntityRepository.findByGameAvg();

@@ -1,9 +1,6 @@
 package com.example.soccerleague.support.testData.game;
 
-import com.example.soccerleague.EntityRepository.PlayerEntityRepository;
-import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
-import com.example.soccerleague.EntityRepository.RoundEntityRepository;
-import com.example.soccerleague.RegisterService.DefaultLeagueSeasonTable;
+
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
 import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
@@ -15,6 +12,9 @@ import com.example.soccerleague.domain.Player.Stat;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
+import com.example.soccerleague.springDataJpa.RoundRepository;
 import com.example.soccerleague.support.testData.game.Dto.*;
 import com.example.soccerleague.support.testData.game.Repository.GameAvgDto;
 import com.example.soccerleague.support.testData.game.Repository.GameResultRepository;
@@ -36,9 +36,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
     private final DuoRecordRegister duoRecordRegister;
     private final LeagueRoundGameRegister leagueRoundGameRegister;
-    private final PlayerEntityRepository playerEntityRepository;
-    private final PlayerLeagueRecordEntityRepository playerLeagueRecordEntityRepository;
-    private final RoundEntityRepository roundEntityRepository;
+    private final PlayerRepository playerEntityRepository;
+    private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
+    private final RoundRepository roundEntityRepository;
     private final DefenseReturn defenseReturn;
     private final PassReturn passReturn;
     private final CornerKickChance cornerKickChance;

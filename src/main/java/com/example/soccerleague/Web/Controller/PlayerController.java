@@ -1,7 +1,5 @@
 package com.example.soccerleague.Web.Controller;
 
-import com.example.soccerleague.EntityRepository.LeagueEntityRepository;
-import com.example.soccerleague.EntityRepository.TeamEntityRepository;
 import com.example.soccerleague.RegisterService.PlayerEdit.PlayerEditRegister;
 import com.example.soccerleague.RegisterService.PlayerRegister.PlayerRegister;
 import com.example.soccerleague.RegisterService.PlayerRegister.PlayerRegisterDto;
@@ -16,6 +14,8 @@ import com.example.soccerleague.SearchService.playerEdit.PlayerEditSearch;
 import com.example.soccerleague.RegisterService.PlayerEdit.PlayerEditDto;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Season;
+import com.example.soccerleague.springDataJpa.LeagueRepository;
+import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.*;
 public class PlayerController {
     private final PlayerSearch playerSearch;
     private final PlayerRegister playerRegister;
-    private final LeagueEntityRepository leagueEntityRepository;
-    private final TeamEntityRepository teamEntityRepository;
+    private final LeagueRepository leagueRepository;
+    private final TeamRepository teamRepository;
     private final PlayerEditSearch playerEditSearch;
     private final PlayerEditRegister playerEditRegister;
     private final PlayerDisplay playerDisplay;
@@ -42,7 +42,7 @@ public class PlayerController {
      */
     @GetMapping("/register")
     public String  playerSignUp(@ModelAttribute PlayerRegisterDto playerRegisterDto, Model model){
-        model.addAttribute("teams",teamEntityRepository.findAll());
+        model.addAttribute("teams",teamRepository.findAll());
         model.addAttribute("PositionTypes", Position.values());
         return "player/register";
     }
@@ -59,9 +59,10 @@ public class PlayerController {
     public String playerList(@ModelAttribute PlayerSearchRequest playerSearchRequest, Model model){
 
         model.addAttribute("PositionTypes",Position.values());
-        model.addAttribute("leagueList",leagueEntityRepository.findAll());
+        model.addAttribute("leagueList",leagueRepository.findAll());
         if(playerSearchRequest.getLeagueId() != null)
-            model.addAttribute("teams",teamEntityRepository.findByLeagueId(playerSearchRequest.getLeagueId()));
+            model.addAttribute("teams",teamRepository.findByLeagueId(playerSearchRequest.getLeagueId()));
+
         model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
         return "player/playerList";
     }
@@ -69,9 +70,9 @@ public class PlayerController {
     @PostMapping("/player-list")
     public String playerListResult(@ModelAttribute PlayerSearchRequest playerSearchRequest,Model model){
         model.addAttribute("PositionTypes",Position.values());
-        model.addAttribute("leagueList",leagueEntityRepository.findAll());
+        model.addAttribute("leagueList",leagueRepository.findAll());
         if(playerSearchRequest.getLeagueId() != null)
-            model.addAttribute("teams",teamEntityRepository.findByLeagueId(playerSearchRequest.getLeagueId()));
+            model.addAttribute("teams",teamRepository.findByLeagueId(playerSearchRequest.getLeagueId()));
         model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
         return "/player/playerList";
     }
@@ -83,7 +84,7 @@ public class PlayerController {
     @GetMapping("/edit/{playerId}")
     public String playerUpdate(@PathVariable Long playerId,Model model){
 
-        model.addAttribute("teams",teamEntityRepository.findAll());
+        model.addAttribute("teams",teamRepository.findAll());
         model.addAttribute("PositionTypes", Position.values());
         model.addAttribute("playerEdit",playerEditSearch.search(playerId).orElse(null));
         return "player/Edit";
