@@ -28,7 +28,6 @@
 
 
 ### TODO 
-- EntityRepository -> spring Data Jpa 
 - spring Data Jpa  -> spring Data Jpa ,QueryDsl 
 - 감독 기능 추가
 - 선수 목록 기능에 페이징 추가
