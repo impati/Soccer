@@ -1,6 +1,7 @@
 package com.example.soccerleague.domain.Player;
 
 
+import com.example.soccerleague.domain.BaseEntity;
 import com.example.soccerleague.domain.Team;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Entity
 @Getter@Setter
 @NoArgsConstructor
-public class Player {
+public class Player extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="player_id")

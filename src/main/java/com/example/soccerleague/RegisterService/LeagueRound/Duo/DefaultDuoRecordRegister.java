@@ -84,8 +84,8 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
             int win = 0, draw = 0, lose = 0, gain = 0, lost = 0;
             for (var record : teamRecord) {
                 if (record.getRound().getRoundStatus().equals(RoundStatus.DONE)) {
-                    if (record.getMathResult().equals(MatchResult.WIN)) win++;
-                    if (record.getMathResult().equals(MatchResult.DRAW)) draw++;
+                    if (record.getMatchResult().equals(MatchResult.WIN)) win++;
+                    if (record.getMatchResult().equals(MatchResult.DRAW)) draw++;
                     else lose++;
                     gain += record.getScore();
                     lost += record.getOppositeScore();

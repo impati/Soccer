@@ -42,7 +42,7 @@ public class TeamTotalResponse  extends DataTransferObject {
     }
 
     public void update(TeamRecord teamRecord){
-        MatchResult matchResult = teamRecord.getMathResult();
+        MatchResult matchResult = teamRecord.getMatchResult();
         int gain = teamRecord.getScore();
         int lost = teamRecord.getOppositeScore();
 

@@ -39,7 +39,6 @@ public class TeamLeagueRecord extends TeamRecord{
         teamLeagueRecord.setRound(round);
         teamLeagueRecord.setTeam(team);
         teamLeagueRecord.setSeason(round.getSeason());
-        teamLeagueRecord.setLocalDateTime(now());
         return teamLeagueRecord;
     }
     /**
@@ -51,7 +50,6 @@ public class TeamLeagueRecord extends TeamRecord{
             int shooting,int validShooting,int foul,
             int goodDefense,double grade,MatchResult matchResult,double rating
     ){
-        this.setLocalDateTime(now());
         this.setScore(score);
         this.setOppositeScore(oppositeScore);
         this.setPass(pass);
@@ -60,7 +58,7 @@ public class TeamLeagueRecord extends TeamRecord{
         this.setFoul(foul);
         this.setGoodDefense(goodDefense);
         this.setGrade(grade);
-        this.setMathResult(matchResult);
+        this.setMatchResult(matchResult);
         this.setRating(rating);
         this.setCornerKick(cornerKick);
         this.setFreeKick(freeKick);

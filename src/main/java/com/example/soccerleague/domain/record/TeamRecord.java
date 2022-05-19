@@ -35,7 +35,7 @@ public abstract class TeamRecord extends Record{
     protected int pass;
 
     @Enumerated(EnumType.STRING)
-    protected MatchResult mathResult;
+    protected MatchResult matchResult;
 
 
     // 팀의 평점 . 선수들의 평균 평점.

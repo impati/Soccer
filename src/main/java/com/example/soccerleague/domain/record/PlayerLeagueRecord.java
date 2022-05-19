@@ -43,7 +43,6 @@ public class PlayerLeagueRecord extends PlayerRecord{
         playerLeagueRecord.setLeagueRound(leagueround);
         playerLeagueRecord.setPosition(position);
         playerLeagueRecord.setSeason(leagueround.getSeason());
-        playerLeagueRecord.setLocalDateTime(now());
         playerLeagueRecord.setTeam(team);
         return playerLeagueRecord;
     }
@@ -64,7 +63,6 @@ public class PlayerLeagueRecord extends PlayerRecord{
             int shooting,int validShooting,int foul,
             int goodDefense,int grade,MatchResult matchResult,boolean best,double rating
     ){
-        this.setLocalDateTime(now());
         this.setGoal(goal);
         this.setAssist(assist);
         this.setPass(pass);

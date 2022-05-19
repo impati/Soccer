@@ -22,7 +22,7 @@ public abstract class PlayerRecord extends Record{
     protected Player player;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     protected Team team;
 

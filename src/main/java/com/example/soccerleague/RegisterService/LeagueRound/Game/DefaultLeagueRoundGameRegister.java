@@ -91,13 +91,21 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
                 .findByRoundId(leagueRoundGameDto.getRoundId()).stream().collect(Collectors.toList());
 
         int sz = playerRecordsA.size();
+
         recordSave(0,sz,0,bestGrade,matchResultA,playerRecordsA,leagueRoundGameDto,teams.get(0));
         recordSave(sz,sz + playerRecordsB.size(),1,bestGrade,matchResultB,playerRecordsB,leagueRoundGameDto,teams.get(1));
+
+
 
 
         gradeDecision.LeagueGradeDecision(playerRecordsA);
         gradeDecision.LeagueGradeDecision(playerRecordsB);
         eloRatingSystem.LeagueRatingCalc(playerRecordsA,playerRecordsB);
+
+
+
+
+
 
 
 

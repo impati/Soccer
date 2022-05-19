@@ -13,7 +13,7 @@ import java.util.List;
 public interface TeamLeagueRecordRepository extends JpaRepository<TeamLeagueRecord,Long>{
 
     @Query(" select tlr from TeamLeagueRecord tlr join tlr.team t on t.id = :teamId " +
-            " where tlr.season = :season and tlr.mathResult is not null " +
+            " where tlr.season = :season and tlr.matchResult is not null " +
             " order by tlr.id desc ")
     List<TeamLeagueRecord> findByLastRecord(@Param("teamId") Long teamId, @Param("season") int season, Pageable pageable);
 

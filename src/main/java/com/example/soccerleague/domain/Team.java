@@ -1,6 +1,6 @@
 package com.example.soccerleague.domain;
 
-import com.example.soccerleague.domain.League;
+import com.example.soccerleague.domain.director.Director;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Team {
+public class Team extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="team_id")
@@ -22,6 +22,10 @@ public class Team {
     @ManyToOne
     @JoinColumn(name ="league_id")
     private League league;
+
+    @OneToOne
+    @JoinColumn(name = "director_id")
+    private Director director;
 
     public static Team createTeam(League league,String name){
         Team team = new Team();

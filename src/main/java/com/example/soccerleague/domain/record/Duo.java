@@ -1,5 +1,6 @@
 package com.example.soccerleague.domain.record;
 
+import com.example.soccerleague.domain.BaseEntity;
 import com.example.soccerleague.domain.Round.Round;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of ={"goalPlayerId","assistPlayerId","goalType"})
-public class Duo {
+public class Duo extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "couple_id")

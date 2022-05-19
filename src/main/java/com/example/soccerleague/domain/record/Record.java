@@ -1,5 +1,6 @@
 package com.example.soccerleague.domain.record;
 
+import com.example.soccerleague.domain.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Record {
+public abstract class Record extends BaseEntity {
     @Nullable
     protected int season;
-    protected LocalDateTime localDateTime;
 }

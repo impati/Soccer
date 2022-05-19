@@ -44,8 +44,8 @@ public class DefaultLeagueRoundSeasonTeam implements  LeagueRoundSeasonTeam {
         for(int i = 0;i < sz ;i++){
             TeamLeagueRecord teamLeagueRecord = teamRecordList.get(i);
             if(teamLeagueRecord.getRound().getRoundSt() < round.getRoundSt()) {
-                resp.update(teamLeagueRecord.getMathResult(), teamLeagueRecord.getScore(), teamLeagueRecord.getOppositeScore(), teamLeagueRecord.getRank());
-                if (i > sz - 5) resp.recentUpdate(teamLeagueRecord.getMathResult());
+                resp.update(teamLeagueRecord.getMatchResult(), teamLeagueRecord.getScore(), teamLeagueRecord.getOppositeScore(), teamLeagueRecord.getRank());
+                if (i > sz - 5) resp.recentUpdate(teamLeagueRecord.getMatchResult());
                 count ++;
             }
         }

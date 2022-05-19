@@ -25,7 +25,7 @@ public class TeamLeagueDisplayResponse extends DataTransferObject {
     private int diff;
 
     public void update(TeamLeagueRecord tlr){
-        MatchResult matchResult = tlr.getMathResult();
+        MatchResult matchResult = tlr.getMatchResult();
         int gain = tlr.getScore();
         int lost = tlr.getOppositeScore();
 
