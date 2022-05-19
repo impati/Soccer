@@ -1,5 +1,6 @@
 package com.example.soccerleague.domain.Player;
 
+import com.example.soccerleague.domain.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Stat {
+public class Stat extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stat_id")
