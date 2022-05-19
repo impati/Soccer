@@ -22,5 +22,13 @@ public class Director extends BaseEntity {
     @JoinColumn(name ="team_Id")
     private Team team;
 
+    // 연관관계 편의 메서드
+    public void setTeam(Team team){
+        team.setDirector(this);
+        this.team = team;
+    }
 
+    public Director(String name) {
+        this.name = name;
+    }
 }

@@ -38,6 +38,7 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
     private final PlayerRepository playerRepository;
     private final TeamRepository teamRepository;
     private final EloRatingSystem eloRatingSystem;
+    private final DirectorLeagueRecordRepository directorLeagueRecordRepository;
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
         return dataTransferObject instanceof DuoRecordDto;
@@ -110,7 +111,10 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
 
         for (var element : ret) {
             TeamLeagueRecord tlr =  teamLeagueRecordRepository.findByLastRecord(element.getTeam().getId(),round.getSeason(), PageRequest.of(0,1)).stream().findFirst().orElse(null);
+            DirectorLeagueRecord directorLeagueRecord = directorLeagueRecordRepository.findByRoundAndTeam(round.getId(), element.getTeam().getId()).orElse(null);
+            if(directorLeagueRecord == null)continue;
             if (tlr == null) continue;
+            directorLeagueRecord.setRank(element.getRank());
             tlr.setRank(element.getRank());
 
             List<Player> playerList = playerRepository.findByTeam(element.getTeam());

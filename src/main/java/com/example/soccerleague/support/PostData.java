@@ -8,9 +8,8 @@ import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Player.Stat;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
-import com.example.soccerleague.springDataJpa.LeagueRepository;
-import com.example.soccerleague.springDataJpa.PlayerRepository;
-import com.example.soccerleague.springDataJpa.TeamRepository;
+import com.example.soccerleague.domain.director.Director;
+import com.example.soccerleague.springDataJpa.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
-
+// 기본적인 데이터 포스팅.
 @Component
 @Slf4j
 @Data
@@ -37,6 +36,7 @@ public class PostData {
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
     private final LeagueSeasonTable leagueSeasonTable;
+    private final DirectorRepository directorRepository;
     private String path = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\";
 
     public void init() throws IOException {
@@ -50,6 +50,9 @@ public class PostData {
             assignDefender();
             assignGoalKeeper();
 
+
+            assignDirector();
+
             leagueSeasonTable.register(new LeagueSeasonTableDto(1L,Season.CURRENTSEASON));
             leagueSeasonTable.register(new LeagueSeasonTableDto(2L,Season.CURRENTSEASON));
             leagueSeasonTable.register(new LeagueSeasonTableDto(3L,Season.CURRENTSEASON));
@@ -62,6 +65,30 @@ public class PostData {
         }
 
     }
+
+
+
+    private void assignDirector() throws IOException{
+
+        String pathDirector = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\director.txt";
+        BufferedReader cin = new BufferedReader(new FileReader(pathDirector));
+        List<Team> teams = teamRepository.findAll();
+        int pos = 0;
+        while(pos < 64){
+            String temp = cin.readLine();
+            if(temp == null) break;
+            Director director = new Director(temp);
+            director.setTeam(teams.get(pos));
+
+            directorRepository.save(director);
+            pos+=1;
+        }
+        cin.close();
+
+    }
+
+
+
     private void assignGoalKeeper() throws IOException{
 
         String pathGoalKeeper = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\GoalKeeper.txt";

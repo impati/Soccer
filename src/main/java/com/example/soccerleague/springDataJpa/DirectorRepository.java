@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DirectorRepository extends JpaRepository<Director,Long> {
     @Query("select d from Director d join d.team t on t.id = :teamId")
-    List<Director> findByTeamId(@Param("teamId") Long teamId);
+    Optional<Director> findByTeamId(@Param("teamId") Long teamId);
 }

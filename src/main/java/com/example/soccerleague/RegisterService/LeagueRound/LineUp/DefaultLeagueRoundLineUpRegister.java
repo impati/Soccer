@@ -6,6 +6,8 @@ import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
+import com.example.soccerleague.domain.director.Director;
+import com.example.soccerleague.domain.record.DirectorLeagueRecord;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;
 import com.example.soccerleague.springDataJpa.*;
@@ -27,6 +29,8 @@ public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegist
     private final RoundRepository roundRepository;
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
+    private final DirectorRepository directorRepository;
+    private final DirectorLeagueRecordRepository directorLeagueRecordRepository;
 
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
@@ -38,6 +42,7 @@ public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegist
         LeagueRoundLineUpDto lineUpDto = (LeagueRoundLineUpDto) dataTransferObject;
         LeagueRound round = (LeagueRound)roundRepository.findById(lineUpDto.getRoundId()).orElse(null);
         Team teamA = teamRepository.findById(round.getHomeTeamId()).orElse(null);
+        Director directorA = directorRepository.findByTeamId(teamA.getId()).orElse(null);
         List<Player> playerListA = playerRepository.findByTeam(teamA);
         playerListA.sort((o1, o2) -> {
             if(o1.getPosition().ordinal() > o2.getPosition().ordinal())return 1;
@@ -54,13 +59,16 @@ public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegist
                 }
             }
         }
+        DirectorLeagueRecord directorLeagueRecordA = DirectorLeagueRecord.create(round,directorA);
         TeamLeagueRecord teamLeagueRecordA = TeamLeagueRecord.create(round,teamA);
+        directorLeagueRecordRepository.save(directorLeagueRecordA);
         teamLeagueRecordRepository.save(teamLeagueRecordA);
 
 
 
         int sz = playerListA.size();
         Team teamB = teamRepository.findById(round.getAwayTeamId()).orElse(null);
+        Director directorB = directorRepository.findByTeamId(teamB.getId()).orElse(null);
         List<Player> playerListB = playerRepository.findByTeam(teamB);
         playerListB.sort((o1, o2) -> {
             if(o1.getPosition().ordinal() > o2.getPosition().ordinal())return 1;
@@ -77,7 +85,9 @@ public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegist
                 }
             }
         }
+        DirectorLeagueRecord directorLeagueRecordB = DirectorLeagueRecord.create(round,directorB);
         TeamLeagueRecord teamLeagueRecordB = TeamLeagueRecord.create(round,teamB);
+        directorLeagueRecordRepository.save(directorLeagueRecordB);
         teamLeagueRecordRepository.save(teamLeagueRecordB);
 
 

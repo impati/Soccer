@@ -5,8 +5,10 @@ import com.example.soccerleague.RegisterService.GradeDecision;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.RoundStatus;
+import com.example.soccerleague.domain.director.Director;
 import com.example.soccerleague.domain.record.*;
 
+import com.example.soccerleague.springDataJpa.DirectorLeagueRecordRepository;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
 import com.example.soccerleague.springDataJpa.RoundRepository;
 import com.example.soccerleague.springDataJpa.TeamLeagueRecordRepository;
@@ -27,6 +29,7 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
     private final TeamLeagueRecordRepository teamLeagueRecordRepository;
     private final EloRatingSystem eloRatingSystem;
     private final GradeDecision gradeDecision;
+    private final DirectorLeagueRecordRepository directorLeagueRecordRepository;
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
         return dataTransferObject instanceof LeagueRoundGameDto;
@@ -88,14 +91,19 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
 
 
         List<TeamLeagueRecord> teams = teamLeagueRecordRepository
-                .findByRoundId(leagueRoundGameDto.getRoundId()).stream().collect(Collectors.toList());
+                .findByRoundId(leagueRoundGameDto.getRoundId());
+
+
+        DirectorLeagueRecord directorLeagueRecordA = directorLeagueRecordRepository.findByRoundAndTeam(leagueRound.getId(),teams.get(0).getTeam().getId()).orElse(null);
+        DirectorLeagueRecord directorLeagueRecordB = directorLeagueRecordRepository.findByRoundAndTeam(leagueRound.getId(),teams.get(1).getTeam().getId()).orElse(null);
+
+
+
 
         int sz = playerRecordsA.size();
 
-        recordSave(0,sz,0,bestGrade,matchResultA,playerRecordsA,leagueRoundGameDto,teams.get(0));
-        recordSave(sz,sz + playerRecordsB.size(),1,bestGrade,matchResultB,playerRecordsB,leagueRoundGameDto,teams.get(1));
-
-
+        recordSave(0,sz,0,bestGrade,matchResultA,playerRecordsA,leagueRoundGameDto,teams.get(0),directorLeagueRecordA);
+        recordSave(sz,sz + playerRecordsB.size(),1,bestGrade,matchResultB,playerRecordsB,leagueRoundGameDto,teams.get(1),directorLeagueRecordB);
 
 
         gradeDecision.LeagueGradeDecision(playerRecordsA);
@@ -103,17 +111,11 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
         eloRatingSystem.LeagueRatingCalc(playerRecordsA,playerRecordsB);
 
 
-
-
-
-
-
-
         leagueRound.setRoundStatus(RoundStatus.RECORD);
     }
 
     private void recordSave(int s,int e, int idx,int bestGrade, MatchResult matchResult,List<PlayerLeagueRecord> playerRecords,
-                            LeagueRoundGameDto dto,TeamLeagueRecord teamLeagueRecord)
+                            LeagueRoundGameDto dto,TeamLeagueRecord teamLeagueRecord ,DirectorLeagueRecord directorLeagueRecord)
     {
         int count = 0;
         int sumPass = 0;
@@ -153,6 +155,8 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
                 dto.getFreeKickPair().get(idx),sumPass,sumShooting,sumValidShooting,sumFoul,sumGoodDefense,avgGrade,matchResult,
                 teamLeagueRecord.getTeam().getRating()
         );
+
+        directorLeagueRecord.update(matchResult);
 
 
     }
