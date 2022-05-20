@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PlayerRepository extends JpaRepository<Player,Long> {
+public interface PlayerRepository extends JpaRepository<Player,Long> ,PlayerRepositoryQuerydsl{
 
     @Query("select p from Player p where p.name LIKE %:name%")
     List<Player> findByName(@Param("name") String name);
@@ -18,4 +18,5 @@ public interface PlayerRepository extends JpaRepository<Player,Long> {
     List<Player> findByTeam(@Param("team") Team team);
     @Query(value = "select P FROM Player P JOIN P.team T ON T.id = :teamId")
     List<Player> findByTeamId(@Param("teamId")Long teamId);
+
 }

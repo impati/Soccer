@@ -27,7 +27,7 @@ public class DirectorLeagueRecord extends BaseEntity {
     private LeagueRound leagueRound;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "director_id")
     private Director director;
 

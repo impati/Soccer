@@ -37,6 +37,24 @@ public class DirectorController {
     }
 
 
+    /**
+     *  감독 목록 기능
+     */
+
+    @GetMapping("/director-list")
+    public String directorList(){
+        return "director/directorList";
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 }
