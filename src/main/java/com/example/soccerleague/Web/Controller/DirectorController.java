@@ -4,6 +4,7 @@ import com.example.soccerleague.RegisterService.DirectorRegister.DirectorRegiste
 import com.example.soccerleague.RegisterService.DirectorRegister.DirectorRegisterDto;
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearch;
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearchRequest;
+import com.example.soccerleague.domain.League;
 import com.example.soccerleague.springDataJpa.DirectorRepository;
 import com.example.soccerleague.springDataJpa.LeagueRepository;
 import com.example.soccerleague.springDataJpa.TeamRepository;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -48,10 +51,14 @@ public class DirectorController {
 
     @GetMapping("/director-list")
     public String directorList(@ModelAttribute DirectorSearchRequest directorSearchRequest,Model model){
-        model.addAttribute("leagueList",leagueRepository.findAll());
-        if(directorSearchRequest.getLeagueId() != null)
-            model.addAttribute("teams",teamRepository.findByLeagueId(directorSearchRequest.getLeagueId()));
+        List<League> leagueList = leagueRepository.findAll();
+        leagueList.add(new League(0L,"없음"));
 
+        model.addAttribute("leagueList",leagueList);
+
+        if(directorSearchRequest.getLeagueId() != null && directorSearchRequest.getLeagueId() != 0L)
+            model.addAttribute("teams",teamRepository.findByLeagueId(directorSearchRequest.getLeagueId()));
+        log.info("{}",directorSearchRequest);
         model.addAttribute("DirectorSearchResponse",directorSearch.searchResultList(directorSearchRequest));
         return "director/directorList";
     }

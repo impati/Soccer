@@ -9,29 +9,36 @@ import com.example.soccerleague.domain.director.QDirector;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Slf4j
 @RequiredArgsConstructor
 public class DirectorRepositoryQuerydslImpl implements DirectorRepositoryQuerydsl{
     private final JPAQueryFactory jpaQueryFactory;
     @Override
     public List<Director> directorList(DirectorSearchRequest req) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        if(req.getLeagueId() != null){
-            booleanBuilder.and(QLeague.league.id.eq(req.getLeagueId()));
+
+        if (req.getLeagueId() != null) {
+            if(req.getLeagueId() == 0L) {
+                booleanBuilder.and(QDirector.director.team.isNull());
+                log.info("{}",booleanBuilder);
+            }
+            else
+                booleanBuilder.and(QLeague.league.id.eq(req.getLeagueId()));
         }
-        if(req.getTeamId() != null){
+        if (req.getTeamId() != null) {
             booleanBuilder.and(QTeam.team.id.eq(req.getTeamId()));
         }
-        if(req.getName() != null){
+        if (req.getName() != null) {
             booleanBuilder.and(QDirector.director.name.contains(req.getName()));
         }
         return jpaQueryFactory
                 .selectFrom(QDirector.director)
-                .leftJoin(QDirector.director.team,QTeam.team)
-                .leftJoin(QTeam.team.league,QLeague.league)
+                .leftJoin(QDirector.director.team, QTeam.team)
+                .leftJoin(QTeam.team.league, QLeague.league)
                 .where(booleanBuilder)
                 .fetch();
     }

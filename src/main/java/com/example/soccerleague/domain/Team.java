@@ -23,7 +23,7 @@ public class Team extends BaseEntity{
     @JoinColumn(name ="league_id")
     private League league;
 
-    @OneToOne
+    @OneToOne(mappedBy = "team",fetch = FetchType.LAZY)
     @JoinColumn(name = "director_id")
     private Director director;
 

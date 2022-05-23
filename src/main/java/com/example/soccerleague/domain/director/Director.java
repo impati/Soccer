@@ -18,7 +18,7 @@ public class Director extends BaseEntity {
 
     private String name;
 
-    @OneToOne(mappedBy = "director",fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="team_Id")
     private Team team;
 

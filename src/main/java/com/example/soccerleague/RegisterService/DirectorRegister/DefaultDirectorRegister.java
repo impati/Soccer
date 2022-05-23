@@ -21,15 +21,20 @@ public class DefaultDirectorRegister implements DirectorRegister{
         return dataTransferObject instanceof DirectorRegisterDto;
     }
 
+    /**
+     * 감독 저장.
+     * 감독이 담당하는 팀이 없을 수가 있다.
+     *
+     */
 
     @Override
     public void register(DataTransferObject dataTransferObject) {
         DirectorRegisterDto directorRegisterDto = (DirectorRegisterDto) dataTransferObject;
         Director director = new Director(directorRegisterDto.getName());
-        director.setTeam(teamRepository.findById(directorRegisterDto.getTeamId()).orElse(null));
+        if(directorRegisterDto.getTeamId() != null)
+            director.setTeam(teamRepository.findById(directorRegisterDto.getTeamId()).orElse(null));
 
         directorRepository.save(director);
-
 
     }
 }

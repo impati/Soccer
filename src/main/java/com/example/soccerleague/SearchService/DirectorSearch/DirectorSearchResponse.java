@@ -13,4 +13,9 @@ public class DirectorSearchResponse extends DataTransferObject {
     private String directorName;
     private String teamName;
 
+    public DirectorSearchResponse(Long directorId, String directorName) {
+        this.directorId = directorId;
+        this.directorName = directorName;
+        this.teamName = "";
+    }
 }

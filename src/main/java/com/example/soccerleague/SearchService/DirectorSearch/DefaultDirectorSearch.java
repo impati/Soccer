@@ -28,7 +28,8 @@ public class DefaultDirectorSearch implements DirectorSearch {
         directorRepository.directorList(req)
                 .stream()
                 .forEach(ele->{
-                     resp.add(new DirectorSearchResponse(ele.getId(),ele.getName(),ele.getTeam().getName()));
+                    if(ele.getTeam() == null) resp.add(new DirectorSearchResponse(ele.getId(),ele.getName()));
+                    else resp.add(new DirectorSearchResponse(ele.getId(),ele.getName(),ele.getTeam().getName()));
                 });
         return resp;
     }

@@ -26,4 +26,9 @@ public class League extends BaseEntity{
     public League(String name){
         this.name = name;
     }
+
+    public League(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
