@@ -2,7 +2,10 @@ package com.example.soccerleague.Web.Controller;
 
 import com.example.soccerleague.RegisterService.DirectorRegister.DirectorRegister;
 import com.example.soccerleague.RegisterService.DirectorRegister.DirectorRegisterDto;
+import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearch;
+import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearchRequest;
 import com.example.soccerleague.springDataJpa.DirectorRepository;
+import com.example.soccerleague.springDataJpa.LeagueRepository;
 import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class DirectorController {
     private final DirectorRepository directorRepository;
+    private final LeagueRepository leagueRepository;
     private final TeamRepository teamRepository;
     private final DirectorRegister directorRegister;
+    private final DirectorSearch directorSearch;
     /**
      *  감독 등록 기능
      */
@@ -42,9 +47,18 @@ public class DirectorController {
      */
 
     @GetMapping("/director-list")
-    public String directorList(){
+    public String directorList(@ModelAttribute DirectorSearchRequest directorSearchRequest,Model model){
+        model.addAttribute("leagueList",leagueRepository.findAll());
+        if(directorSearchRequest.getLeagueId() != null)
+            model.addAttribute("teams",teamRepository.findByLeagueId(directorSearchRequest.getLeagueId()));
+
+        model.addAttribute("DirectorSearchResponse",directorSearch.searchResultList(directorSearchRequest));
         return "director/directorList";
     }
+
+
+
+
 
 
 

@@ -185,11 +185,11 @@
             <div class="row g-4">
                 <div class="col-xl-12 col-xl-6">
                     <div class="bg-light rounded h-100 p-4">
-                        <form th:action="@{/player/player-list}" th:object="${}" method="post">
+                        <form th:action="@{/director/director-list}" th:object="${directorSearchRequest}" method="GET">
 
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="floatingInput" th:field="*{name}" placeholder="name@example.com">
-                                <label for="floatingInput">선수 이름</label>
+                                <label for="floatingInput">감독 이름</label>
                             </div>
 
                             <div class="form-floating mb-3">
@@ -233,19 +233,17 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>이름</th>
-                                <th>팀</th>
-                                <th>포지션</th>
-                                <th>선수 수정</th>
+                                <th>감독 이름</th>
+                                <th>팀 이름</th>
+                                <th>감독 수정</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="player : ${playerSearchResponse}">
-                                <td th:text="${player.id}"></td>
-                                <td ><a th:text="${player.name}" th:href="@{|/player/${player.id}|}" ></a></td>
-                                <td  th:text="${player.teamName}"></td>
-                                <td th:text="${player.position}"></td>
-                                <td><a th:href="@{|/player/edit/${player.id}|}" th:text="|선수 수정|"></a></td>
+                            <tr th:each="director : ${DirectorSearchResponse}">
+                                <td th:text="${director.directorId}"></td>
+                                <td ><a th:text="${director.directorName}" th:href="@{|/director/${director.directorId}|}" ></a></td>
+                                <td  th:text="${director.teamName}"></td>
+                                <td><a th:href="@{|/director/edit/${director.directorId}|}" th:text="|감독 수정|"></a></td>
                             </tr>
                             </tbody>
                         </table>

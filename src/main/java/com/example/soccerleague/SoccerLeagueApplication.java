@@ -51,10 +51,7 @@ public class SoccerLeagueApplication {
 
 
     }
-    @Bean
-    public JPAQueryFactory jpaQueryFactory(EntityManager em){
-        return new JPAQueryFactory(em);
-    }
+
 
 
 }

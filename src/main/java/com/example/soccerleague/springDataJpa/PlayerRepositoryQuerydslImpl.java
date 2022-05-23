@@ -19,7 +19,6 @@ public class PlayerRepositoryQuerydslImpl implements PlayerRepositoryQuerydsl{
     private final JPAQueryFactory jpaQueryFactory;
     @Override
     public List<Player> playerList(PlayerSearchRequest req) {
-        log.info("req : [{}]",req);
         return jpaQueryFactory
                 .select(QPlayer.player)
                 .from(QPlayer.player)

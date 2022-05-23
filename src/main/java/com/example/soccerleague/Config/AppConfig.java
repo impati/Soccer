@@ -1,20 +1,15 @@
 package com.example.soccerleague.Config;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.persistence.EntityManager;
 
 @Configuration
 public class AppConfig {
-    /**
-     * playerSearchDto 구현체 . ->
-     *
-     */
-//    @Bean
-//    public SearchResult playerSearch(){
-//        return new PlayerSearch();
-//    }
-
-//    @Bean
-//    public SearchResult playerDisplay(){
-//        return new PlayerDisplay();
-//    }
+    @Bean
+    public JPAQueryFactory jpaQueryFactory(EntityManager em){
+        return new JPAQueryFactory(em);
+    }
 }

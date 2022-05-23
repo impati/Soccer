@@ -8,9 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface DirectorRepository extends JpaRepository<Director,Long> {
+public interface DirectorRepository extends JpaRepository<Director,Long> ,DirectorRepositoryQuerydsl{
     @Query("select d from Director d join d.team t on t.id = :teamId")
     Optional<Director> findByTeamId(@Param("teamId") Long teamId);
-
     Optional<Director> findByName(String name);
 }
