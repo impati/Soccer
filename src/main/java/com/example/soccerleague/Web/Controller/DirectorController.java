@@ -5,6 +5,8 @@ import com.example.soccerleague.RegisterService.DirectorRegister.DirectorRegiste
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearch;
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearchRequest;
 import com.example.soccerleague.domain.League;
+import com.example.soccerleague.domain.Team;
+import com.example.soccerleague.domain.director.Director;
 import com.example.soccerleague.springDataJpa.DirectorRepository;
 import com.example.soccerleague.springDataJpa.LeagueRepository;
 import com.example.soccerleague.springDataJpa.TeamRepository;
@@ -13,12 +15,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -58,11 +58,38 @@ public class DirectorController {
 
         if(directorSearchRequest.getLeagueId() != null && directorSearchRequest.getLeagueId() != 0L)
             model.addAttribute("teams",teamRepository.findByLeagueId(directorSearchRequest.getLeagueId()));
-        log.info("{}",directorSearchRequest);
         model.addAttribute("DirectorSearchResponse",directorSearch.searchResultList(directorSearchRequest));
         return "director/directorList";
     }
 
+
+
+    /**
+     *  감독 수정 기능.
+     *  기존 감독팀을 바꾸거나 없앨 수도 있음  팀 Id = 0 이라면 맡은 팀이 없다는 의미.
+     */
+
+    @GetMapping("/edit/{directorId}")
+    public String directorEditPage(@PathVariable Long directorId , Model model){
+        Director director = directorRepository.findById(directorId).orElse(null);
+        List<Team> teams = teamRepository.findAll();
+        Team temp = Team.createTeam(new League(null,"없음"),"없음");
+        temp.setId(0L);
+        teams.add(temp);
+
+        if(director.getTeam() != null)
+            model.addAttribute("directorRegisterDto",new DirectorRegisterDto(director.getName(),director.getTeam().getId()));
+        else
+            model.addAttribute("directorRegisterDto", new DirectorRegisterDto(director.getName()));
+
+        model.addAttribute("teams",teams);
+        return "director/edit";
+    }
+    @PostMapping("/edit/{directorId}")
+    public String directorEdit(@PathVariable Long directorId,@ModelAttribute DirectorRegisterDto directorRegisterDto){
+        directorRegister.register(directorId,directorRegisterDto);
+        return "redirect:/director/edit/" + directorId;
+    }
 
 
 

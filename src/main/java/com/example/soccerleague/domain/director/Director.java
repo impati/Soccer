@@ -2,8 +2,10 @@ package com.example.soccerleague.domain.director;
 
 import com.example.soccerleague.domain.BaseEntity;
 import com.example.soccerleague.domain.Team;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
@@ -24,11 +26,20 @@ public class Director extends BaseEntity {
 
     // 연관관계 편의 메서드
     public void setTeam(Team team){
-        team.setDirector(this);
+
+        if(this.team != null) this.team.setDirector(null);
         this.team = team;
+
+        if(team != null)
+            team.setDirector(this);
+
     }
 
     public Director(String name) {
         this.name = name;
+    }
+    public void edit(String name,Team team){
+        this.name =  name;
+        setTeam(team);
     }
 }

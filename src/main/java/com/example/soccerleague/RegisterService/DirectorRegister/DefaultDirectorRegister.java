@@ -31,10 +31,26 @@ public class DefaultDirectorRegister implements DirectorRegister{
     public void register(DataTransferObject dataTransferObject) {
         DirectorRegisterDto directorRegisterDto = (DirectorRegisterDto) dataTransferObject;
         Director director = new Director(directorRegisterDto.getName());
-        if(directorRegisterDto.getTeamId() != null)
-            director.setTeam(teamRepository.findById(directorRegisterDto.getTeamId()).orElse(null));
 
+
+        if (directorRegisterDto.getTeamId() != null)
+            director.setTeam(teamRepository.findById(directorRegisterDto.getTeamId()).orElse(null));
         directorRepository.save(director);
 
+    }
+
+    /**
+     * 감독 수정
+     * @param id
+     * @param dataTransferObject
+     */
+    @Override
+    public void register(Long id, DataTransferObject dataTransferObject) {
+        Director director = directorRepository.findById(id).orElse(null);
+        DirectorRegisterDto directorRegisterDto = (DirectorRegisterDto) dataTransferObject;
+        if(directorRegisterDto.getTeamId() == 0L)
+            director.edit(directorRegisterDto.getName(),null);
+        else
+            director.edit(directorRegisterDto.getName(),teamRepository.findById(directorRegisterDto.getTeamId()).orElse(null));
     }
 }
