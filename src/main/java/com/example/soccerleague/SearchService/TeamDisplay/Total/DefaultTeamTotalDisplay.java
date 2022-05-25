@@ -24,7 +24,6 @@ public class DefaultTeamTotalDisplay implements TeamTotalDisplay {
 
     /**
      *  리그 , 챔피언스리그 , 유로파 , 등등의 공통의 기능을 모아서 리턴
-     *
      * @return TeamTotalResponse
      */
     @Override

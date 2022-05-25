@@ -2,15 +2,19 @@ package com.example.soccerleague.Web.Controller;
 
 import com.example.soccerleague.RegisterService.DirectorRegister.DirectorRegister;
 import com.example.soccerleague.RegisterService.DirectorRegister.DirectorRegisterDto;
+import com.example.soccerleague.SearchService.DirectorDisplay.League.DirectorLeagueDisplay;
+import com.example.soccerleague.SearchService.DirectorDisplay.League.DirectorLeagueDisplayRequest;
+import com.example.soccerleague.SearchService.DirectorDisplay.Total.DirectorTotalDisplay;
+import com.example.soccerleague.SearchService.DirectorDisplay.Total.DirectorTotalDisplayRequest;
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearch;
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearchRequest;
 import com.example.soccerleague.domain.League;
+import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.director.Director;
 import com.example.soccerleague.springDataJpa.DirectorRepository;
 import com.example.soccerleague.springDataJpa.LeagueRepository;
 import com.example.soccerleague.springDataJpa.TeamRepository;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,7 +22,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -30,6 +33,8 @@ public class DirectorController {
     private final TeamRepository teamRepository;
     private final DirectorRegister directorRegister;
     private final DirectorSearch directorSearch;
+    private final DirectorLeagueDisplay directorLeagueDisplay;
+    private final DirectorTotalDisplay directorTotalDisplay;
     /**
      *  감독 등록 기능
      */
@@ -73,9 +78,6 @@ public class DirectorController {
     public String directorEditPage(@PathVariable Long directorId , Model model){
         Director director = directorRepository.findById(directorId).orElse(null);
         List<Team> teams = teamRepository.findAll();
-        Team temp = Team.createTeam(new League(null,"없음"),"없음");
-        temp.setId(0L);
-        teams.add(temp);
 
         if(director.getTeam() != null)
             model.addAttribute("directorRegisterDto",new DirectorRegisterDto(director.getName(),director.getTeam().getId()));
@@ -92,6 +94,41 @@ public class DirectorController {
     }
 
 
+    /**
+     *  감독 페이지
+     */
+    @GetMapping("/{directorId}")
+    public String directorPage(@PathVariable Long directorId ,@RequestParam(required = false) Integer season , Model model){
+        Director director = directorRepository.findById(directorId).orElse(null);
+
+        if(season == null) season =  Season.CURRENTSEASON;
+
+        // 시즌 정보
+        model.addAttribute("directorId",directorId);
+        model.addAttribute("Seasons", Season.CURRENTSEASON);
+
+
+        // 기본적인 팀정보.
+        model.addAttribute("name",director.getName());
+        if(director.getTeam() == null) model.addAttribute("teamName" ,"");
+        else model.addAttribute("teamName",director.getTeam().getName());
+
+
+
+        // 리그 정보 (승 무 패)
+        model.addAttribute("directorLeagueDisplayResponse",directorLeagueDisplay.searchResult(new DirectorLeagueDisplayRequest(directorId,season)).orElse(null));
+
+
+
+        // 전체 기록
+
+        model.addAttribute("directorTotalDisplayResponse",directorTotalDisplay.searchResult(new DirectorTotalDisplayRequest(directorId)).orElse(null));
+
+
+
+
+        return "director/page";
+    }
 
 
 
