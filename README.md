@@ -47,8 +47,8 @@
 - Data Posting 에 권한 부여
 
 ### ERROR 
-- 팀의 순위와 , 팀페이지의 순위가 안맞는 경우가 있음.
-- 
+- 순위 관련.
+
 ### Inaccurate , always modifiable
 - Auto game System
 - Grade Decision
