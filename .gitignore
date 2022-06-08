@@ -4,7 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+com.example.soccerleague.support.PostData
 ### STS ###
 .apt_generated
 .classpath

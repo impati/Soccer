@@ -37,7 +37,7 @@ public class PostData {
     private final PlayerRepository playerRepository;
     private final LeagueSeasonTable leagueSeasonTable;
     private final DirectorRepository directorRepository;
-    private String path = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\";
+    private String path = "/Users/jun-yeongchoe/Soccer/Soccer/src/main/java/com/example/soccerleague/support/";
 
     public void init() throws IOException {
         League league = (League)leagueRepository.findById(1L).orElse(null);
@@ -70,7 +70,7 @@ public class PostData {
 
     private void assignDirector() throws IOException{
 
-        String pathDirector = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\director.txt";
+        String pathDirector = "/Users/jun-yeongchoe/Soccer/Soccer/src/main/java/com/example/soccerleague/support/director.txt";
         BufferedReader cin = new BufferedReader(new FileReader(pathDirector));
         List<Team> teams = teamRepository.findAll();
         int pos = 0;
@@ -91,7 +91,7 @@ public class PostData {
 
     private void assignGoalKeeper() throws IOException{
 
-        String pathGoalKeeper = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\GoalKeeper.txt";
+        String pathGoalKeeper = "/Users/jun-yeongchoe/Soccer/Soccer/src/main/java/com/example/soccerleague/support/GoalKeeper.txt";
         BufferedReader cin = new BufferedReader(new FileReader(pathGoalKeeper));
         List<Team> teamList = teamRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList());
         int pos = 0;
@@ -113,7 +113,7 @@ public class PostData {
         cin.close();
     }
     private void assignDefender() throws IOException{
-        String pathDefender = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\DefenderList.txt";
+        String pathDefender = "/Users/jun-yeongchoe/Soccer/Soccer/src/main/java/com/example/soccerleague/support/DefenderList.txt";
         BufferedReader cin = new BufferedReader(new FileReader(pathDefender));
         Position positionList [] = {Position.LB ,Position.LWB,Position.CB,Position.RB,Position.RWB};
         List<Team> teamList = teamRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList());
@@ -145,7 +145,7 @@ public class PostData {
     }
 
     private void assignMidFielder() throws IOException{
-        String pathMidfielder = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\MidfielderPlayer.txt";
+        String pathMidfielder = "/Users/jun-yeongchoe/Soccer/Soccer/src/main/java/com/example/soccerleague/support/MidfielderPlayer.txt";
         BufferedReader cin = new BufferedReader(new FileReader(pathMidfielder));
         Position positionList [] = {Position.AM ,Position.CM,Position.DM,Position.LM,Position.RM};
         List<Team> teamList = teamRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList());
@@ -175,7 +175,7 @@ public class PostData {
         cin.close();
     }
     private void assignStriker() throws IOException {
-        String pathStriker = "C:\\Users\\User\\OneDrive\\바탕 화면\\SoccerLeague\\src\\main\\java\\com\\example\\soccerleague\\support\\StrikerPlayerList.txt";
+        String pathStriker = "/Users/jun-yeongchoe/Soccer/Soccer/src/main/java/com/example/soccerleague/support/StrikerPlayerList.txt";
         BufferedReader cin = new BufferedReader(new FileReader(pathStriker));
         Position positionList [] = {Position.CF ,Position.ST,Position.RF,Position.LF};
         List<Team> teamList = teamRepository.findAll().stream().map(ele->(Team)ele).collect(Collectors.toList());
