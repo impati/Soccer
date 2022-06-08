@@ -38,10 +38,6 @@ public class PostData {
     private final PlayerRepository playerRepository;
     private final LeagueSeasonTable leagueSeasonTable;
     private final DirectorRepository directorRepository;
-
-
-
-
     private String path = "/Users/jun-yeongchoe/Soccer/Soccer/src/main/java/com/example/soccerleague/support/";
 
     public void init() throws IOException {
