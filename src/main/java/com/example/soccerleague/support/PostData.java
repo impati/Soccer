@@ -12,19 +12,19 @@ import com.example.soccerleague.domain.director.Director;
 import com.example.soccerleague.springDataJpa.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Size;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+
 import java.util.stream.Collectors;
 // 기본적인 데이터 포스팅.
 @Component
