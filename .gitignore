@@ -16,7 +16,11 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-PostData.class
+**/src/**/PostData.java
+.PostData.java
+PostData.java
+/PostData/java
+src/**/PostData.java
 ### IntelliJ IDEA ###
 .idea
 *.iws
