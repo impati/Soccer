@@ -35,7 +35,7 @@ public class DefaultDirectorLeagueDisplay implements DirectorLeagueDisplay {
                         if(ele.getMathResult().equals(MatchResult.WIN)) resp.setWin(resp.getWin() + 1);
                         if(ele.getMathResult().equals(MatchResult.DRAW)) resp.setDraw(resp.getDraw() + 1);
                         if(ele.getMathResult().equals(MatchResult.LOSE))resp.setLose(resp.getLose() + 1);
-                        ele.setRank(ele.getRank());
+                        resp.setRank(ele.getRank());
                 });
 
         return Optional.ofNullable(resp);

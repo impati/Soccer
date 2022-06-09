@@ -124,9 +124,6 @@ public class DirectorController {
 
         model.addAttribute("directorTotalDisplayResponse",directorTotalDisplay.searchResult(new DirectorTotalDisplayRequest(directorId)).orElse(null));
 
-
-
-
         return "director/page";
     }
 

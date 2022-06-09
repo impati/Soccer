@@ -38,7 +38,7 @@ public class DefaultDirectorTotalDisplay implements DirectorTotalDisplay {
                     leagueDisplay.searchResult(new DirectorLeagueDisplayRequest(req.getDirectorId(), i)).orElse(null);
 
             resp.LeagueUpdate(temp.getWin(), temp.getDraw(),temp.getLose());
-            if((temp.getWin() + temp.getDraw() + temp.getLose()) == Season.LASTLEAGUEROUND){
+            if((temp.getWin() + temp.getDraw() + temp.getLose()) ==  Season.LASTLEAGUEROUND){
                 if(temp.getRank() == 1){
                     resp.setFirst(resp.getFirst() + 1);
                 }
