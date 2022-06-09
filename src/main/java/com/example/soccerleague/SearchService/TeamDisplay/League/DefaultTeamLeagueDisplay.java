@@ -28,9 +28,20 @@ public class DefaultTeamLeagueDisplay implements TeamLeagueDisplay{
     public DataTransferObject search(DataTransferObject dataTransferObject) {
         TeamLeagueDisplayRequest req = (TeamLeagueDisplayRequest)dataTransferObject;
         TeamLeagueDisplayResponse resp = new TeamLeagueDisplayResponse();
+
         teamLeagueRecordRepository.findBySeasonAndTeam(req.getTeamId(),req.getSeason(), RoundStatus.DONE)
                 .stream().map(ele->(TeamLeagueRecord)ele)
                 .forEach(ele->resp.update(ele));
+
+
+
+
+
+
+
+
+
+
         return resp;
     }
 }

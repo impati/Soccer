@@ -56,6 +56,8 @@ public class DefaultLeagueTeamRecord implements LeagueTeamRecord {
         }
         resp.sort(new com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordCmpByRank());
 
+
+
         return resp.stream().map(ele->(DataTransferObject)ele).collect(Collectors.toList());
 
     }

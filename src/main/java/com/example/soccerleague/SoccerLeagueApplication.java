@@ -42,7 +42,7 @@ public class SoccerLeagueApplication {
         ///////////////////////////////////////////////////////////
 
         NewGameResultTestData ref = ac.getBean("newGameResultTestData", NewGameResultTestData.class);
-        for(int i =0 ;i <3;i++)
+        for(int i =0 ;i <16;i++)
             ref.isNotDoneGame();
 
         log.info("=================================init end==========================================");

@@ -4,6 +4,7 @@ import com.example.soccerleague.RegisterService.EloRatingSystem;
 import com.example.soccerleague.RegisterService.LeagueSeasonTable;
 import com.example.soccerleague.RegisterService.LeagueSeasonTableDto;
 import com.example.soccerleague.RegisterService.LeagueRound.LeagueRoundSeasonResult;
+import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordResponse;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
@@ -17,9 +18,12 @@ import com.example.soccerleague.springDataJpa.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,8 +62,8 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
             duoRepository.save(duo);
         }
         leagueRound.setRoundStatus(RoundStatus.DONE);
-        rankMake(leagueRound);
 
+        rankMake(leagueRound);
 
         if(roundRepository.currentRoundIsDone(leagueRound.getRoundSt()) == 0L){
             Season.CURRENTLEAGUEROUND += 1;
@@ -76,46 +80,63 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
     }
 
     private void rankMake(Round round) {
-        // roundst보다 적은 결과만을 가져옴.
+
         List<Team> teamList = teamRepository.findByLeagueId(round.getLeagueId());
         List<LeagueRoundSeasonResult> ret = new ArrayList<>();
 
+        // 현 시즌에 경기가 끝난 결과들을 가져옴.
         for (var team : teamList) {
-            List<TeamLeagueRecord> teamRecord = teamLeagueRecordRepository.findBySeasonAndTeam(team.getId(),round.getSeason(),RoundStatus.DONE).stream().map(ele -> (TeamLeagueRecord) ele).collect(Collectors.toList());
+            List<TeamLeagueRecord> teamRecord = teamLeagueRecordRepository
+                    .findBySeasonAndTeam(team.getId(),round.getSeason(),RoundStatus.DONE)
+                    .stream().map(ele -> (TeamLeagueRecord) ele).collect(Collectors.toList());
+
             int win = 0, draw = 0, lose = 0, gain = 0, lost = 0;
             for (var record : teamRecord) {
-                if (record.getRound().getRoundStatus().equals(RoundStatus.DONE)) {
-                    if (record.getMatchResult().equals(MatchResult.WIN)) win++;
-                    if (record.getMatchResult().equals(MatchResult.DRAW)) draw++;
-                    else lose++;
-                    gain += record.getScore();
-                    lost += record.getOppositeScore();
-                }
+
+                if (record.getMatchResult().equals(MatchResult.WIN)) win++;
+                if (record.getMatchResult().equals(MatchResult.DRAW)) draw++;
+                else lose++;
+                gain += record.getScore();
+                lost += record.getOppositeScore();
+
             }
             ret.add(LeagueRoundSeasonResult.create(team, win, draw, lose, gain, lost));
         }
-        for (int i = 0; i < ret.size(); i++) {
+
+        // 가져온 결과로 순위를 메이킹.
+        for(int i = 0 ;i<ret.size();i++){
             int r = 1;
-            LeagueRoundSeasonResult temp = ret.get(i);
-            int myPoint = temp.getPoint();
-            int myDiff = temp.getDiff();
-            for (int k = 0; k < ret.size(); k++) {
+            LeagueRoundSeasonResult cur = ret.get(i);
+            for(int k =0;k<ret.size();k++){
                 LeagueRoundSeasonResult nxt = ret.get(k);
-                int youPoint = nxt.getPoint();
-                int youDiff = nxt.getDiff();
-                if (myPoint < youPoint) r++;
-                else if (myPoint == youPoint && myDiff < youDiff) r++;
+                if(cur.getPoint() < nxt.getPoint())r++;
+                else if(cur.getPoint() == nxt.getPoint() && cur.getDiff() < nxt.getDiff())r++;
+
             }
-            temp.setRank(r);
+            cur.setRank(r);
         }
 
+
+
         for (var element : ret) {
-            TeamLeagueRecord tlr =  teamLeagueRecordRepository.findByLastRecord(element.getTeam().getId(),round.getSeason(), PageRequest.of(0,1)).stream().findFirst().orElse(null);
-            DirectorLeagueRecord directorLeagueRecord = directorLeagueRecordRepository.findByRoundAndTeam(round.getId(), element.getTeam().getId()).orElse(null);
+
+            TeamLeagueRecord tlr =  teamLeagueRecordRepository
+                    .findByLastRecord(element.getTeam().getId(),round.getSeason(), PageRequest.of(0,1,Sort.by(Sort.Direction.DESC, "id")))
+                    .stream().findFirst().orElse(null);
+
+
+
+
+            DirectorLeagueRecord directorLeagueRecord = directorLeagueRecordRepository
+                            .findByLastRecord(element.getTeam().getId()).stream().findFirst().orElse(null);
+
             if(directorLeagueRecord == null)continue;
             if (tlr == null) continue;
+
             directorLeagueRecord.setRank(element.getRank());
             tlr.setRank(element.getRank());
+
+
 
             List<Player> playerList = playerRepository.findByTeam(element.getTeam());
             for (var player : playerList) {

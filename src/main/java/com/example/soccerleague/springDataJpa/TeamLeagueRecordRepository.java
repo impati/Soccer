@@ -12,9 +12,10 @@ import java.util.List;
 
 public interface TeamLeagueRecordRepository extends JpaRepository<TeamLeagueRecord,Long>{
 
-    @Query(" select tlr from TeamLeagueRecord tlr join tlr.team t on t.id = :teamId " +
-            " where tlr.season = :season and tlr.matchResult is not null " +
-            " order by tlr.id desc ")
+    @Query(" select tlr from TeamLeagueRecord tlr " +
+            " join tlr.team t on t.id = :teamId " +
+            " join tlr.round r on r.roundStatus = com.example.soccerleague.domain.Round.RoundStatus.DONE " +
+            " where tlr.season = :season ")
     List<TeamLeagueRecord> findByLastRecord(@Param("teamId") Long teamId, @Param("season") int season, Pageable pageable);
 
 
@@ -34,7 +35,8 @@ public interface TeamLeagueRecordRepository extends JpaRepository<TeamLeagueReco
     @Query(" select tlr from TeamLeagueRecord tlr " +
             " join tlr.team t on t.id =:teamId " +
             " join tlr.round r on r.roundStatus = :roundStatus " +
-            " where tlr .season = :season ")
+            " where tlr.season = :season " +
+            " order by tlr.id  ")
     List<TeamRecord> findBySeasonAndTeam(@Param("teamId") Long teamId,@Param("season") int season,@Param("roundStatus") RoundStatus roundStatus);
 
 

@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ *  league Game result data  register
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

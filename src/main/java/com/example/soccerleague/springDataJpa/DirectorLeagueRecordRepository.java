@@ -23,4 +23,15 @@ public interface DirectorLeagueRecordRepository extends JpaRepository<DirectorLe
             " order by dlr.createDate ")
     List<DirectorLeagueRecord> findBySeasonInfo(@Param("directorId") Long directorId ,@Param("season") int season);
 
+
+    /**
+     * 감독 기록을 저장한 시간 역순으로 리턴.
+     * @param teamId
+     * @return
+     */
+    @Query("select dlr from DirectorLeagueRecord  dlr " +
+            " join  dlr.team t on t.id = :teamId " +
+            " order by dlr.createDate desc ")
+    List<DirectorLeagueRecord> findByLastRecord(@Param("teamId") Long teamId);
+
 }
