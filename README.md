@@ -47,7 +47,7 @@
 - Data Posting 에 권한 부여
 
 ### ERROR 
-- 순위 관련.
+
 
 ### Inaccurate , always modifiable
 - Auto game System
