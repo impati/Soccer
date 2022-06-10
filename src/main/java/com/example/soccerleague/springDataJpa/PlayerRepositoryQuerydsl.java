@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PlayerRepositoryQuerydsl {
     List<Player> playerList(PlayerSearchRequest req);
+    Long totalQuery(PlayerSearchRequest req);
 }

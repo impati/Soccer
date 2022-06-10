@@ -29,7 +29,23 @@ public class PlayerRepositoryQuerydslImpl implements PlayerRepositoryQuerydsl{
                         nameEq(req.getName()),
                         positionEq(req.getPositions())
                         )
+                .offset(req.getOffset())
+                .limit(req.getSize())
                 .fetch();
+    }
+
+    @Override
+    public Long totalQuery(PlayerSearchRequest req) {
+        return jpaQueryFactory
+                .select(QPlayer.player)
+                .from(QPlayer.player)
+                .join(QPlayer.player.team,QTeam.team)
+                .join(QTeam.team.league, QLeague.league)
+                .where(leagueIdEq(req.getLeagueId()),
+                        teamIdEq(req.getTeamId()),
+                        nameEq(req.getName()),
+                        positionEq(req.getPositions())
+                ).fetch().stream().count();
     }
 
 

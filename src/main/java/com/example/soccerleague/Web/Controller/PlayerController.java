@@ -12,9 +12,11 @@ import com.example.soccerleague.SearchService.PlayerSearch.PlayerSearch;
 import com.example.soccerleague.SearchService.PlayerSearch.PlayerSearchRequest;
 import com.example.soccerleague.SearchService.playerEdit.PlayerEditSearch;
 import com.example.soccerleague.RegisterService.PlayerEdit.PlayerEditDto;
+import com.example.soccerleague.Web.support.CustomPage;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.springDataJpa.LeagueRepository;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
 import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,9 @@ public class PlayerController {
     private final PlayerDisplay playerDisplay;
     private final PlayerLeagueDisplay playerLeagueDisplay;
     private final PlayerTotal playerTotal;
+    private final PlayerRepository playerRepository;
+    private final int SIZE = 20; // 한페이지에 보여질 데이터 수
+    private final int gap =  10; // 한번에 보여질 버튼 수
     /**
      *
      * 선수 등록기능
@@ -56,23 +61,46 @@ public class PlayerController {
      * 선수 목록 기능
      */
     @GetMapping("/player-list")
-    public String playerList(@ModelAttribute PlayerSearchRequest playerSearchRequest, Model model){
+    public String playerList(@ModelAttribute PlayerSearchRequest playerSearchRequest, Model model,
+                             @RequestParam(name = "page",required = false) Integer page){
+
+
 
         model.addAttribute("PositionTypes",Position.values());
         model.addAttribute("leagueList",leagueRepository.findAll());
         if(playerSearchRequest.getLeagueId() != null)
             model.addAttribute("teams",teamRepository.findByLeagueId(playerSearchRequest.getLeagueId()));
 
+
+        if(page == null) page = 0;
+        playerSearchRequest.setOffset(page * SIZE);
+        playerSearchRequest.setSize(SIZE);
+
+        Long total = playerRepository.totalQuery(playerSearchRequest);
+        CustomPage customPage = new CustomPage(total.intValue(),page,SIZE,10);
+        model.addAttribute("customPage",customPage);
         model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
         return "player/playerList";
     }
 
     @PostMapping("/player-list")
-    public String playerListResult(@ModelAttribute PlayerSearchRequest playerSearchRequest,Model model){
+    public String playerListResult(@ModelAttribute PlayerSearchRequest playerSearchRequest,Model model,
+                                   @RequestParam(name = "page",required = false) Integer page){
+
+
+
         model.addAttribute("PositionTypes",Position.values());
         model.addAttribute("leagueList",leagueRepository.findAll());
         if(playerSearchRequest.getLeagueId() != null)
             model.addAttribute("teams",teamRepository.findByLeagueId(playerSearchRequest.getLeagueId()));
+
+        if(page == null) page = 0;
+        playerSearchRequest.setOffset(page * SIZE);
+        playerSearchRequest.setSize(SIZE);
+
+        Long total = playerRepository.totalQuery(playerSearchRequest);
+        CustomPage customPage = new CustomPage(total.intValue(),page,SIZE,10);
+        model.addAttribute("customPage",customPage);
         model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
         return "/player/playerList";
     }
