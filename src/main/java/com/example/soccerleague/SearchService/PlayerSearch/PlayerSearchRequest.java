@@ -18,10 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 public class PlayerSearchRequest extends DataTransferObject {
     //받아올 데이터
-    private int offset;
-    private int size;
     private Long leagueId;
     private Long teamId;
     private String name;
     private List<Position> positions = new ArrayList<>();
+    private int offset;
+    private int size;
 }

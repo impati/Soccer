@@ -66,6 +66,7 @@ public class PlayerController {
 
 
 
+
         model.addAttribute("PositionTypes",Position.values());
         model.addAttribute("leagueList",leagueRepository.findAll());
         if(playerSearchRequest.getLeagueId() != null)
@@ -79,6 +80,7 @@ public class PlayerController {
         Long total = playerRepository.totalQuery(playerSearchRequest);
         CustomPage customPage = new CustomPage(total.intValue(),page,SIZE,10);
         model.addAttribute("customPage",customPage);
+        model.addAttribute("curUrl" , getCurrentUrl(playerSearchRequest));
         model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
         return "player/playerList";
     }
@@ -88,7 +90,6 @@ public class PlayerController {
                                    @RequestParam(name = "page",required = false) Integer page){
 
 
-
         model.addAttribute("PositionTypes",Position.values());
         model.addAttribute("leagueList",leagueRepository.findAll());
         if(playerSearchRequest.getLeagueId() != null)
@@ -101,8 +102,26 @@ public class PlayerController {
         Long total = playerRepository.totalQuery(playerSearchRequest);
         CustomPage customPage = new CustomPage(total.intValue(),page,SIZE,10);
         model.addAttribute("customPage",customPage);
+        model.addAttribute("curUrl" , getCurrentUrl(playerSearchRequest));
         model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
         return "/player/playerList";
+    }
+
+
+    private String getCurrentUrl(PlayerSearchRequest playerSearchRequest){
+        String curUrl ="/player/player-list";
+        if(playerSearchRequest.getLeagueId()!=null)
+            curUrl += "?leagueId=" + playerSearchRequest.getLeagueId();
+        if(playerSearchRequest.getTeamId() != null)
+            curUrl += "&teamId=" + playerSearchRequest.getTeamId();
+        if(playerSearchRequest.getName() != null)
+            curUrl += "&name=" + playerSearchRequest.getName();
+        for(int i =0;i<playerSearchRequest.getPositions().size();i++){
+            curUrl += "&positions=" + playerSearchRequest.getPositions().get(i);
+            curUrl += "&_positions=on";
+        }
+        log.info("current URL : {} ", curUrl);
+        return curUrl;
     }
 
 
