@@ -12,4 +12,7 @@ public interface DirectorRepository extends JpaRepository<Director,Long> ,Direct
     @Query("select d from Director d join d.team t on t.id = :teamId")
     Optional<Director> findByTeamId(@Param("teamId") Long teamId);
     Optional<Director> findByName(String name);
+
+
+
 }

@@ -12,4 +12,6 @@ public class DirectorSearchRequest extends DataTransferObject {
     private String name;
     private Long teamId;
     private Long leagueId;
+    private int offset;
+    private int size;
 }

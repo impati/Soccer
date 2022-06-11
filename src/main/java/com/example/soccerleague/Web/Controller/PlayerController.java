@@ -40,7 +40,7 @@ public class PlayerController {
     private final PlayerTotal playerTotal;
     private final PlayerRepository playerRepository;
     private final int SIZE = 20; // 한페이지에 보여질 데이터 수
-    private final int gap =  10; // 한번에 보여질 버튼 수
+    private final int GAP =  10; // 한번에 보여질 버튼 수
     /**
      *
      * 선수 등록기능
@@ -78,7 +78,7 @@ public class PlayerController {
         playerSearchRequest.setSize(SIZE);
 
         Long total = playerRepository.totalQuery(playerSearchRequest);
-        CustomPage customPage = new CustomPage(total.intValue(),page,SIZE,10);
+        CustomPage customPage = new CustomPage(total.intValue(),page,SIZE,GAP);
         model.addAttribute("customPage",customPage);
         model.addAttribute("curUrl" , getCurrentUrl(playerSearchRequest));
         model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
@@ -100,7 +100,7 @@ public class PlayerController {
         playerSearchRequest.setSize(SIZE);
 
         Long total = playerRepository.totalQuery(playerSearchRequest);
-        CustomPage customPage = new CustomPage(total.intValue(),page,SIZE,10);
+        CustomPage customPage = new CustomPage(total.intValue(),page,SIZE,GAP);
         model.addAttribute("customPage",customPage);
         model.addAttribute("curUrl" , getCurrentUrl(playerSearchRequest));
         model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
@@ -110,15 +110,37 @@ public class PlayerController {
 
     private String getCurrentUrl(PlayerSearchRequest playerSearchRequest){
         String curUrl ="/player/player-list";
-        if(playerSearchRequest.getLeagueId()!=null)
-            curUrl += "?leagueId=" + playerSearchRequest.getLeagueId();
-        if(playerSearchRequest.getTeamId() != null)
-            curUrl += "&teamId=" + playerSearchRequest.getTeamId();
-        if(playerSearchRequest.getName() != null)
-            curUrl += "&name=" + playerSearchRequest.getName();
+        boolean flag = false;
+        if(playerSearchRequest.getLeagueId()!=null){
+            if(!flag) {
+                curUrl += "?leagueId=" + playerSearchRequest.getLeagueId();
+                flag = true;
+            }
+            else  curUrl += "&leagueId=" + playerSearchRequest.getLeagueId();
+        }
+        if(playerSearchRequest.getTeamId() != null){
+            if(!flag){
+                curUrl += "?teamId=" + playerSearchRequest.getTeamId();
+                flag = true;
+            }
+            else curUrl += "&teamId=" + playerSearchRequest.getTeamId();
+        }
+        if(playerSearchRequest.getName() != null){
+            if(!flag){
+                curUrl += "?name=" + playerSearchRequest.getName();
+                flag = true;
+            }
+            else curUrl += "&name=" + playerSearchRequest.getName();
+        }
         for(int i =0;i<playerSearchRequest.getPositions().size();i++){
-            curUrl += "&positions=" + playerSearchRequest.getPositions().get(i);
+            if(!flag) {
+                curUrl += "?positions=" + playerSearchRequest.getPositions().get(i);
+                flag = true;
+            }
+            else
+                curUrl += "&positions=" + playerSearchRequest.getPositions().get(i);
             curUrl += "&_positions=on";
+
         }
         log.info("current URL : {} ", curUrl);
         return curUrl;

@@ -260,7 +260,7 @@
 
         <div class="row-cols-1">
             <div>
-                <form th:action="@{/player/player-list}" th:object="${playerSearchRequest}" method="post">
+
                 <button type="button" class="btn btn-outline-link m-2" th:text="| <- |" th:unless="${customPage.getStart() == 0}"   th:onclick="|location.href='@{${curUrl} (page=${customPage.getCurPage() - 1})}'|"></button>
 
                     <span   th:each ="n : ${#numbers.sequence(customPage.getStart(),customPage.getEnd())}">
@@ -269,7 +269,7 @@
                     </span>
 
                 <button type="button" class="btn btn-outline-link m-2"th:text="| -> |" th:unless="${customPage.getEnd() == customPage.getLastPage()}"  th:onclick="|location.href='@{${curUrl} (page=${customPage.getCurPage() + 1})}'|"></button>
-                </form>
+
             </div>
         </div>
 
