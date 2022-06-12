@@ -18,6 +18,6 @@ class PlayerRepositoryTest {
     TeamEntityRepository teamEntityRepository;
     @Test
     void test(){
-        System.out.println(playerRepository.countAllBy());
+
     }
 }

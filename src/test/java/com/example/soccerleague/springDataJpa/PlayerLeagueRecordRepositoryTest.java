@@ -3,6 +3,7 @@ package com.example.soccerleague.springDataJpa;
 import com.example.soccerleague.EntityRepository.PlayerLeagueRecordEntityRepository;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamPlayerDto;
 import com.example.soccerleague.domain.Round.Round;
+import com.example.soccerleague.domain.SortType;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -76,5 +77,12 @@ class PlayerLeagueRecordRepositoryTest {
 
 
 
+
+
+
+    @Test
+    void playerLeagueRecordTest(){
+        playerLeagueRecordRepository.playerLeagueRecordQuery(1L,0).stream().forEach(ele-> System.out.println(ele));
+    }
 
 }

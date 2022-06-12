@@ -13,5 +13,7 @@ public class LeaguePlayerRecordRequest extends DataTransferObject {
     private Long leagueId;
     private SortType sortType;
     private Direction direction;
+    private int offset;
+    private int size;
 
 }
