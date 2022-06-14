@@ -13,6 +13,7 @@ import com.example.soccerleague.SearchService.PlayerSearch.PlayerSearchRequest;
 import com.example.soccerleague.SearchService.playerEdit.PlayerEditSearch;
 import com.example.soccerleague.RegisterService.PlayerEdit.PlayerEditDto;
 import com.example.soccerleague.Web.support.CustomPage;
+import com.example.soccerleague.Web.support.CustomPagingService;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.springDataJpa.LeagueRepository;
@@ -23,6 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -39,8 +45,7 @@ public class PlayerController {
     private final PlayerLeagueDisplay playerLeagueDisplay;
     private final PlayerTotal playerTotal;
     private final PlayerRepository playerRepository;
-    private final int SIZE = 20; // 한페이지에 보여질 데이터 수
-    private final int GAP =  10; // 한번에 보여질 버튼 수
+    private final CustomPagingService customPagingService;
     /**
      *
      * 선수 등록기능
@@ -65,8 +70,6 @@ public class PlayerController {
                              @RequestParam(name = "page",required = false) Integer page){
 
 
-
-
         model.addAttribute("PositionTypes",Position.values());
         model.addAttribute("leagueList",leagueRepository.findAll());
         if(playerSearchRequest.getLeagueId() != null)
@@ -74,39 +77,16 @@ public class PlayerController {
 
 
         if(page == null) page = 0;
-        playerSearchRequest.setOffset(page * SIZE);
-        playerSearchRequest.setSize(SIZE);
+        playerSearchRequest.setOffset(customPagingService.getOffset(page));
+        playerSearchRequest.setSize(customPagingService.getCount());
 
         Long total = playerRepository.totalQuery(playerSearchRequest);
-        CustomPage customPage = new CustomPage(total.intValue(),page,SIZE,GAP);
-        model.addAttribute("customPage",customPage);
+
+        model.addAttribute("customPage",customPagingService.paging(total.intValue(),page));
         model.addAttribute("curUrl" , getCurrentUrl(playerSearchRequest));
         model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
         return "player/playerList";
     }
-
-    @PostMapping("/player-list")
-    public String playerListResult(@ModelAttribute PlayerSearchRequest playerSearchRequest,Model model,
-                                   @RequestParam(name = "page",required = false) Integer page){
-
-
-        model.addAttribute("PositionTypes",Position.values());
-        model.addAttribute("leagueList",leagueRepository.findAll());
-        if(playerSearchRequest.getLeagueId() != null)
-            model.addAttribute("teams",teamRepository.findByLeagueId(playerSearchRequest.getLeagueId()));
-
-        if(page == null) page = 0;
-        playerSearchRequest.setOffset(page * SIZE);
-        playerSearchRequest.setSize(SIZE);
-
-        Long total = playerRepository.totalQuery(playerSearchRequest);
-        CustomPage customPage = new CustomPage(total.intValue(),page,SIZE,GAP);
-        model.addAttribute("customPage",customPage);
-        model.addAttribute("curUrl" , getCurrentUrl(playerSearchRequest));
-        model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
-        return "/player/playerList";
-    }
-
 
     private String getCurrentUrl(PlayerSearchRequest playerSearchRequest){
         String curUrl ="/player/player-list";
@@ -145,7 +125,6 @@ public class PlayerController {
         log.info("current URL : {} ", curUrl);
         return curUrl;
     }
-
 
     /**
      * 선수 수정 기능.

@@ -9,6 +9,7 @@ import com.example.soccerleague.SearchService.DirectorDisplay.Total.DirectorTota
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearch;
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearchRequest;
 import com.example.soccerleague.Web.support.CustomPage;
+import com.example.soccerleague.Web.support.CustomPagingService;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
@@ -37,8 +38,7 @@ public class DirectorController {
     private final DirectorSearch directorSearch;
     private final DirectorLeagueDisplay directorLeagueDisplay;
     private final DirectorTotalDisplay directorTotalDisplay;
-    private final int SIZE = 20;
-    private final int GAP = 10;
+    private final CustomPagingService customPagingService;
     /**
      *  감독 등록 기능
      */
@@ -73,12 +73,11 @@ public class DirectorController {
 
 
         if(page == null) page = 0;
-        directorSearchRequest.setOffset(page*SIZE);
-        directorSearchRequest.setSize(SIZE);
+        directorSearchRequest.setOffset(customPagingService.getOffset(page));
+        directorSearchRequest.setSize(customPagingService.getCount());
         Long totalCount = directorRepository.totalQuery(directorSearchRequest);
-        CustomPage customPage = new CustomPage(totalCount.intValue(),page,SIZE,GAP);
+        model.addAttribute("customPage",customPagingService.paging(totalCount.intValue(),page));
 
-        model.addAttribute("customPage",customPage);
         model.addAttribute("curUrl",getCurrentUrl(directorSearchRequest));
         model.addAttribute("DirectorSearchResponse",directorSearch.searchResultList(directorSearchRequest));
         return "director/directorList";

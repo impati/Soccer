@@ -11,7 +11,7 @@ public class CustomPage {
     private int end;
     private int curPage;
     private int lastPage;
-
+    private String curUrl;
     // size: 한 페이지의 튜플 개수 , gap :한번에 보여질 버튼 수
     public CustomPage(int totalCount, int curPage,int size , int  gap) {
 
