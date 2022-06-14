@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface DirectorRepositoryQuerydsl {
     List<Director> directorList(DirectorSearchRequest directorSearchRequest);
+    Long totalQuery(DirectorSearchRequest directorSearchRequest);
 }

@@ -12,15 +12,23 @@ import com.example.soccerleague.SearchService.PlayerSearch.PlayerSearch;
 import com.example.soccerleague.SearchService.PlayerSearch.PlayerSearchRequest;
 import com.example.soccerleague.SearchService.playerEdit.PlayerEditSearch;
 import com.example.soccerleague.RegisterService.PlayerEdit.PlayerEditDto;
+import com.example.soccerleague.Web.support.CustomPage;
+import com.example.soccerleague.Web.support.CustomPagingService;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.springDataJpa.LeagueRepository;
+import com.example.soccerleague.springDataJpa.PlayerRepository;
 import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -36,6 +44,8 @@ public class PlayerController {
     private final PlayerDisplay playerDisplay;
     private final PlayerLeagueDisplay playerLeagueDisplay;
     private final PlayerTotal playerTotal;
+    private final PlayerRepository playerRepository;
+    private final CustomPagingService customPagingService;
     /**
      *
      * 선수 등록기능
@@ -56,27 +66,65 @@ public class PlayerController {
      * 선수 목록 기능
      */
     @GetMapping("/player-list")
-    public String playerList(@ModelAttribute PlayerSearchRequest playerSearchRequest, Model model){
+    public String playerList(@ModelAttribute PlayerSearchRequest playerSearchRequest, Model model,
+                             @RequestParam(name = "page",required = false) Integer page){
+
 
         model.addAttribute("PositionTypes",Position.values());
         model.addAttribute("leagueList",leagueRepository.findAll());
         if(playerSearchRequest.getLeagueId() != null)
             model.addAttribute("teams",teamRepository.findByLeagueId(playerSearchRequest.getLeagueId()));
 
+
+        if(page == null) page = 0;
+        playerSearchRequest.setOffset(customPagingService.getOffset(page));
+        playerSearchRequest.setSize(customPagingService.getCount());
+
+        Long total = playerRepository.totalQuery(playerSearchRequest);
+
+        model.addAttribute("customPage",customPagingService.paging(total.intValue(),page));
+        model.addAttribute("curUrl" , getCurrentUrl(playerSearchRequest));
         model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
         return "player/playerList";
     }
 
-    @PostMapping("/player-list")
-    public String playerListResult(@ModelAttribute PlayerSearchRequest playerSearchRequest,Model model){
-        model.addAttribute("PositionTypes",Position.values());
-        model.addAttribute("leagueList",leagueRepository.findAll());
-        if(playerSearchRequest.getLeagueId() != null)
-            model.addAttribute("teams",teamRepository.findByLeagueId(playerSearchRequest.getLeagueId()));
-        model.addAttribute("playerSearchResponse",playerSearch.searchList(playerSearchRequest));
-        return "/player/playerList";
-    }
+    private String getCurrentUrl(PlayerSearchRequest playerSearchRequest){
+        String curUrl ="/player/player-list";
+        boolean flag = false;
+        if(playerSearchRequest.getLeagueId()!=null){
+            if(!flag) {
+                curUrl += "?leagueId=" + playerSearchRequest.getLeagueId();
+                flag = true;
+            }
+            else  curUrl += "&leagueId=" + playerSearchRequest.getLeagueId();
+        }
+        if(playerSearchRequest.getTeamId() != null){
+            if(!flag){
+                curUrl += "?teamId=" + playerSearchRequest.getTeamId();
+                flag = true;
+            }
+            else curUrl += "&teamId=" + playerSearchRequest.getTeamId();
+        }
+        if(playerSearchRequest.getName() != null){
+            if(!flag){
+                curUrl += "?name=" + playerSearchRequest.getName();
+                flag = true;
+            }
+            else curUrl += "&name=" + playerSearchRequest.getName();
+        }
+        for(int i =0;i<playerSearchRequest.getPositions().size();i++){
+            if(!flag) {
+                curUrl += "?positions=" + playerSearchRequest.getPositions().get(i);
+                flag = true;
+            }
+            else
+                curUrl += "&positions=" + playerSearchRequest.getPositions().get(i);
+            curUrl += "&_positions=on";
 
+        }
+        log.info("current URL : {} ", curUrl);
+        return curUrl;
+    }
 
     /**
      * 선수 수정 기능.

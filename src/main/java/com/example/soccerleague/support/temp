@@ -1,0 +1,7 @@
+select p.name , t.name , sum(plr.goal) ,sum(plr.assist) ,  sum(plr.shooting) , sum(plr.VALID_SHOOTING) , sum(plr.foul) , sum(plr.pass) ,sum(plr.GOOD_DEFENSE)
+from PLAYER_LEAGUE_RECORD plr
+join player p on p.player_id = plr.player_id
+join Team t on t.team_id = plr.team_id
+where t.league_id = 1 and plr.season = 0
+group by p.player_id
+order by sum(plr.goal) desc

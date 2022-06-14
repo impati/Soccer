@@ -1,7 +1,9 @@
 package com.example.soccerleague.springDataJpa;
 
 import com.example.soccerleague.RegisterService.GameAvgDto;
+import com.example.soccerleague.SearchService.LeagueRecord.Player.LeaguePlayerRecordResponse;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamPlayerDto;
+import com.example.soccerleague.domain.SortType;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.PlayerRecord;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PlayerLeagueRecordRepository extends JpaRepository<PlayerLeagueRecord , Long>{
+public interface PlayerLeagueRecordRepository extends JpaRepository<PlayerLeagueRecord , Long> , PlayerLeagueRepositoryQuerydsl{
 
     //가장 최근의 경기 하나만을 가져온다.
     @Query("select plr from PlayerLeagueRecord plr join plr.player p on p.id = :playerId " +
@@ -59,6 +61,23 @@ public interface PlayerLeagueRecordRepository extends JpaRepository<PlayerLeague
 
     @Query("select plr from PlayerLeagueRecord plr where plr.leagueRound.id = :roundId order by plr.id")
     List<PlayerLeagueRecord> findByRoundId(@Param("roundId") Long roundId);
+
+
+
+    // query 로 선수 기록 결과를 한꺼번에 조회 + 페이징.
+    @Query(" select new com.example.soccerleague.SearchService.LeagueRecord.Player.LeaguePlayerRecordResponse(p.name ,t.name , sum(plr.goal), " +
+            " sum(plr.assist) ,sum(plr.shooting),sum(plr.validShooting),sum(plr.foul), sum(plr.pass) , sum(plr.goodDefense)) " +
+            " from PlayerLeagueRecord plr " +
+            " join plr.player p " +
+            " join plr.team t on t.league.id = :leagueId" +
+            " where plr.season = :season " +
+            " group by p.id " +
+            " order by sum(plr.goal) desc")
+    List<LeaguePlayerRecordResponse> playerLeagueRecordQuery(@Param("leagueId") Long leagueId , @Param("season") int season);
+
+
+
+
 
 
 

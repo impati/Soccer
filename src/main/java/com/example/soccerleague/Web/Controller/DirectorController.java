@@ -8,6 +8,8 @@ import com.example.soccerleague.SearchService.DirectorDisplay.Total.DirectorTota
 import com.example.soccerleague.SearchService.DirectorDisplay.Total.DirectorTotalDisplayRequest;
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearch;
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearchRequest;
+import com.example.soccerleague.Web.support.CustomPage;
+import com.example.soccerleague.Web.support.CustomPagingService;
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
@@ -17,6 +19,7 @@ import com.example.soccerleague.springDataJpa.LeagueRepository;
 import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +38,7 @@ public class DirectorController {
     private final DirectorSearch directorSearch;
     private final DirectorLeagueDisplay directorLeagueDisplay;
     private final DirectorTotalDisplay directorTotalDisplay;
+    private final CustomPagingService customPagingService;
     /**
      *  감독 등록 기능
      */
@@ -55,7 +59,10 @@ public class DirectorController {
      */
 
     @GetMapping("/director-list")
-    public String directorList(@ModelAttribute DirectorSearchRequest directorSearchRequest,Model model){
+    public String directorList(@ModelAttribute DirectorSearchRequest directorSearchRequest,Model model,
+                               @RequestParam(name ="page",required = false)Integer page){
+
+
         List<League> leagueList = leagueRepository.findAll();
         leagueList.add(new League(0L,"없음"));
 
@@ -63,9 +70,48 @@ public class DirectorController {
 
         if(directorSearchRequest.getLeagueId() != null && directorSearchRequest.getLeagueId() != 0L)
             model.addAttribute("teams",teamRepository.findByLeagueId(directorSearchRequest.getLeagueId()));
+
+
+        if(page == null) page = 0;
+        directorSearchRequest.setOffset(customPagingService.getOffset(page));
+        directorSearchRequest.setSize(customPagingService.getCount());
+        Long totalCount = directorRepository.totalQuery(directorSearchRequest);
+        model.addAttribute("customPage",customPagingService.paging(totalCount.intValue(),page));
+
+        model.addAttribute("curUrl",getCurrentUrl(directorSearchRequest));
         model.addAttribute("DirectorSearchResponse",directorSearch.searchResultList(directorSearchRequest));
         return "director/directorList";
     }
+
+    private String getCurrentUrl(DirectorSearchRequest req){
+        String curUrl = "/director/director-list";
+        boolean flag = false;
+        if(req.getLeagueId() != null) {
+            if (!flag) {
+                curUrl += "?leagueId=" + req.getLeagueId();
+                flag = true;
+            } else curUrl += "&leagueId=" + req.getLeagueId();
+        }
+        if(req.getTeamId() != null){
+            if(!flag){
+                curUrl += "?teamId=" + req.getTeamId();
+                flag = true;
+            }
+            else curUrl = "&teamId="+req.getTeamId();
+        }
+        if(req.getName() != null){
+            if(!flag){
+                curUrl +="?name=" + req.getName();
+                flag = true;
+            }
+            else curUrl += "&name=" + req.getName();
+        }
+        return curUrl;
+    }
+
+
+
+
 
 
 

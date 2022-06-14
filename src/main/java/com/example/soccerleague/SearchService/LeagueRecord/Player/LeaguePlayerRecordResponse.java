@@ -30,6 +30,35 @@ public class LeaguePlayerRecordResponse extends DataTransferObject {
         this.team = team;
     }
 
+
+    public LeaguePlayerRecordResponse(String name, String team, Long goal, Long assist,  Long shooting, Long validShooting, Long foul, Long pass, Long defense) {
+        this.name = name;
+        this.team = team;
+        this.goal = goal.intValue();
+        this.assist = assist.intValue();
+        this.attackPoint = this.goal + this.assist;
+        this.shooting = shooting.intValue();
+        this.validShooting = validShooting.intValue();
+        this.foul = foul.intValue();
+        this.pass = pass.intValue();
+        this.defense = defense.intValue();
+    }
+
+    public LeaguePlayerRecordResponse(String name, String team, Integer goal, Integer assist,  Integer shooting, Integer validShooting, Integer foul, Integer pass, Integer defense) {
+        this.name = name;
+        this.team = team;
+        this.goal = goal.intValue();
+        this.assist = assist.intValue();
+        this.attackPoint = this.goal + this.assist;
+        this.shooting = shooting.intValue();
+        this.validShooting = validShooting.intValue();
+        this.foul = foul.intValue();
+        this.pass = pass.intValue();
+        this.defense = defense.intValue();
+    }
+
+
+
     public void update(
             int goal,int assist,int shooting,
             int validShooting,int foul,int pass,int defense

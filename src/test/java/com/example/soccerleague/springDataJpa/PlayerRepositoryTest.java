@@ -18,7 +18,6 @@ class PlayerRepositoryTest {
     TeamEntityRepository teamEntityRepository;
     @Test
     void test(){
-        Team team = (Team)teamEntityRepository.findById(1L).orElse(null);
-        playerRepository.findByTeamId(1L).stream().forEach(ele-> System.out.println(ele.getName()));
+
     }
 }

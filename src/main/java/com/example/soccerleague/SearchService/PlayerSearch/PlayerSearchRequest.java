@@ -22,4 +22,6 @@ public class PlayerSearchRequest extends DataTransferObject {
     private Long teamId;
     private String name;
     private List<Position> positions = new ArrayList<>();
+    private int offset;
+    private int size;
 }
