@@ -81,8 +81,22 @@
                         <a href="typography.html" class="dropdown-item" th:href="@{/league/4}">세리에 A</a>
                     </div>
                 </div>
-                <a href="widget.html" class="nav-item nav-link" th:href="@{/league/round}"><i class="fa fa-th me-2"></i>경기일정/결과</a>
-                <a href="widget.html" class="nav-item nav-link" th:href="@{/record/team/league}"><i class="fa fa-th me-2"></i>경기기록/순위</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>경기일정/결과</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="widget.html" class="nav-item nav-link" th:href="@{/league/round}"><i class="fa fa-th me-2"></i>리그</a>
+                        <a href="widget.html" class="nav-item nav-link" th:href="@{/champions/round}"><i class="fa fa-th me-2"></i>챔피언스 리그</a>
+                        <a href="widget.html" class="nav-item nav-link" th:href="@{/uefa/round}"><i class="fa fa-th me-2"></i>유로파</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>경기기록/순위</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="widget.html" class="nav-item nav-link" th:href="@{/record/team/league}"><i class="fa fa-th me-2"></i>리그</a>
+                        <a href="widget.html" class="nav-item nav-link" th:href="@{/record/team/champions}"><i class="fa fa-th me-2"></i>챔피언스 리그</a>
+                        <a href="widget.html" class="nav-item nav-link" th:href="@{/record/team/uefa}"><i class="fa fa-th me-2"></i>유로파</a>
+                    </div>
+                </div>
 
             </div>
         </nav>
