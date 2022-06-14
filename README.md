@@ -46,6 +46,7 @@
 - 기본 데이터 재 설정 (support 폴더)
 - API 개발
 - Data Posting 에 권한 부여
+- 골 - 어시 듀오 기록 페이지
 
 ### ERROR 
 
