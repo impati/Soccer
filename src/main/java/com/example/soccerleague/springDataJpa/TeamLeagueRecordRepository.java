@@ -39,5 +39,8 @@ public interface TeamLeagueRecordRepository extends JpaRepository<TeamLeagueReco
             " order by tlr.id  ")
     List<TeamRecord> findBySeasonAndTeam(@Param("teamId") Long teamId,@Param("season") int season,@Param("roundStatus") RoundStatus roundStatus);
 
+    @Query("select tlr.id from TeamLeagueRecord  tlr where tlr.season =:season order by tlr.rank ")
+    List<Long> findTopRank(@Param("season") int season,Pageable pageable);
+
 
 }
