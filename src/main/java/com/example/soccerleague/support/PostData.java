@@ -1,10 +1,8 @@
 package com.example.soccerleague.support;
 
-import com.example.soccerleague.RegisterService.Champions.SeasonTable.ChampionsSeasonTable;
-import com.example.soccerleague.RegisterService.Champions.SeasonTable.ChampionsSeasonTableDto;
 import com.example.soccerleague.RegisterService.LeagueSeasonTable;
 import com.example.soccerleague.RegisterService.LeagueSeasonTableDto;
-import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordRequest;
+
 import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
@@ -20,8 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 
 import java.io.FileReader;
@@ -41,7 +37,6 @@ public class PostData {
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
     private final LeagueSeasonTable leagueSeasonTable;
-    private final ChampionsSeasonTable championsSeasonTable;
     private final DirectorRepository directorRepository;
     private String path = "src/main/java/com/example/soccerleague/support/";
     public void init() throws IOException {
@@ -61,7 +56,6 @@ public class PostData {
             leagueSeasonTable.register(new LeagueSeasonTableDto(3L,Season.CURRENTSEASON));
             leagueSeasonTable.register(new LeagueSeasonTableDto(4L,Season.CURRENTSEASON));
 
-            championsSeasonTable.register(new ChampionsSeasonTableDto(Season.CURRENTSEASON));
         }
         else{
             Season.CURRENTSEASON = league.getCurrentSeason();
