@@ -210,49 +210,15 @@
         </div>
         <!-- Navbar End -->
 
-
+        <!-- Blank Start -->
         <div class="container-fluid pt-4 px-4">
-            <div class="row g-2">
-                <div class="col-sm-12 col-xl-12">
-                    <div class="bg-light rounded h-100 p-4">
-                        <h6 class="mb-4">챔피언스리그</h6>
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-content-center">
-                                <thead class ="align-content-center">
-                                <tr>
-                                    <th>팀</th>
-                                    <th></th>
-                                    <th>VS</th>
-                                    <th></th>
-                                    <th>팀</th>
-                                </tr>
-                                </thead>
-                                <tbody class ="align-content-center">
-                                <tr th:each="round , i: ${ChampionsRoundInfo}"  th:onclick="'location.href=' + '\'' + @{/champions/round/{roundId}/line-up (roundId=${round.roundId})} + '\''">
-
-                                    <td th:text="${round.teamAName}"></td>
-                                    <td th:if="${round.isDone}" th:text="${round.scoreA}"></td>
-                                    <td th:unless="${round.isDone}"></td>
-                                    <td th:text="|  VS  |"></td>
-                                    <td th:if="${round.isDone}" th:text="${round.scoreB}"></td>
-                                    <td th:unless="${round.isDone}"></td>
-                                    <td th:text="${round.teamBName}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+            <div class="row vh-100 bg-light rounded align-items-center justify-content-center mx-0">
+                <div class="col-md-6 text-center">
+                    <h3>경기 시작 전입니다.</h3>
                 </div>
-
-
-
-
-
-
-
-
             </div>
         </div>
+        <!-- Blank End -->
 
 
         <!-- Footer Start -->

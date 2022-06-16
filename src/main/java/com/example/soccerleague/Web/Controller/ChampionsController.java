@@ -25,17 +25,21 @@ public class ChampionsController {
                             Model model){
         if(season == null) season = Season.CURRENTSEASON;
         if(roundSt == null) roundSt = Season.CURRENTCHAMPIONSROUND;
-
         model.addAttribute("Seasons",Season.CURRENTSEASON);
         model.addAttribute("season",season);
         model.addAttribute("roundSt",roundSt);
+
+        if(beforeGame(roundSt)) return "champions/beforeGame";
+
         model.addAttribute("ChampionsRoundInfo",championsRoundInfo.searchResultList(new ChampionsRoundInfoRequest(season,roundSt)));
         return "champions/round";
     }
 
 
 
-
+    private boolean beforeGame(Integer roundSt) {
+        return roundSt < Season.CURRENTCHAMPIONSROUND;
+    }
 
 
 }
