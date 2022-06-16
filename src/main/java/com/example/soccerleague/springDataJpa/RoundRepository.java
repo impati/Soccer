@@ -1,5 +1,6 @@
 package com.example.soccerleague.springDataJpa;
 
+import com.example.soccerleague.domain.Round.ChampionsLeagueRound;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,19 +16,27 @@ import java.util.List;
 
 public interface RoundRepository extends JpaRepository<Round,Long> {
 
-    @Query("select r from Round r where r.roundSt = :roundSt and r.leagueId = :leagueId and r.season =:season")
+    @Query("select r from LeagueRound r where r.roundSt = :roundSt and r.leagueId = :leagueId and r.season =:season")
     List<Round> findByLeagueAndSeasonAndRoundSt(
             @Param("leagueId") Long leagueId, @Param("season") int season,@Param("roundSt") int roundSt);
 
-    @Query(value = "select count(r) from Round r where r.roundSt = :roundSt and r.roundStatus <> com.example.soccerleague.domain.Round.RoundStatus.DONE")
+    @Query(value = "select count(r) from LeagueRound r where r.roundSt = :roundSt and r.roundStatus <> com.example.soccerleague.domain.Round.RoundStatus.DONE")
     Long currentRoundIsDone(@Param("roundSt") int roundSt);
 
-    @Query(value = "select count(r) from Round r where r.leagueId =:leagueId and r.season = :season")
+    @Query(value = "select count(r) from LeagueRound r where r.leagueId =:leagueId and r.season = :season")
     Long findByLeagueSeason(@Param("leagueId") Long leagueId ,@Param("season") int season);
 
-    @Query(value ="select r from Round r where r.season = :season and r.roundSt = :roundSt and r.roundStatus <> com.example.soccerleague.domain.Round.RoundStatus.DONE")
+    @Query(value ="select r from LeagueRound r where r.season = :season and r.roundSt = :roundSt and r.roundStatus <> com.example.soccerleague.domain.Round.RoundStatus.DONE")
     List<Round> findNotDoneGame (@Param("season")int season,@Param("roundSt") int roundSt);
 
+
+    /**
+     *  시즌 , 라운드 정보를 통해 round 정보를 가져옴
+     * @param season
+     * @return
+     */
+    @Query("select r from ChampionsLeagueRound r where  r.season =:season and r.roundSt =:roundSt")
+    List<ChampionsLeagueRound> findByChampionsSeason( @Param("season") int season, @Param("roundSt") int roundSt);
 
 
 }

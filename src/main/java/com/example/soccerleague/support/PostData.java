@@ -45,7 +45,7 @@ public class PostData {
     private final DirectorRepository directorRepository;
     private String path = "src/main/java/com/example/soccerleague/support/";
     public void init() throws IOException {
-        League league = (League)leagueRepository.findById(1L).orElse(null);
+        League league = leagueRepository.findById(1L).orElse(null);
         if(league == null){
             createLeague();
             createTeam();
@@ -60,7 +60,6 @@ public class PostData {
             leagueSeasonTable.register(new LeagueSeasonTableDto(2L,Season.CURRENTSEASON));
             leagueSeasonTable.register(new LeagueSeasonTableDto(3L,Season.CURRENTSEASON));
             leagueSeasonTable.register(new LeagueSeasonTableDto(4L,Season.CURRENTSEASON));
-
             championsSeasonTable.register(new ChampionsSeasonTableDto(Season.CURRENTSEASON));
         }
         else{

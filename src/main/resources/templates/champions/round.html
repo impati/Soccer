@@ -197,25 +197,25 @@
         <div class="row-cols-1">
             <div>
                 <span   th:each ="n : ${#numbers.sequence(0,Seasons)}">
-                <button type="button" class="btn btn-outline-info m-2" th:text="|Season  ${n}|" th:onclick="|location.href='@{/league/round (season=${n},roundSt=${roundSt})}'|"></button>
+                <button type="button" class="btn btn-outline-info m-2" th:text="|Season  ${n}|" th:onclick="|location.href='@{/champions/round (season=${n},roundSt=${roundSt})}'|"></button>
                 </span>
             </div>
             <hr>
             <div>
-                <button type="button" class="btn btn-outline-link m-2" th:text="| <- |" th:unless="${roundSt == 1}"  th:onclick="|location.href='@{/league/round (season=${season},roundSt=${roundSt-1})}'|"></button>
-                <button type="button" class="btn btn-outline-dark m-2" disabled th:text="|${roundSt} 라운드|"></button>
-                <button type="button" class="btn btn-outline-link m-2"th:text="| -> |" th:unless="${roundSt == LastRound}"  th:onclick="|location.href='@{/league/round (season=${season},roundSt=${roundSt+1})}'|"></button>
-                <button type="button" class="btn btn-primary m-2" th:text="|Auto|" th:if="${roundSt == currentRound && season == Seasons}" th:onclick="|location.href='@{/auto-game}'|"></button>
+                <button type="button" class="btn btn-outline-info m-2" th:text="|${16} 강|" th:onclick="|location.href='@{/champions/round (season=${season},roundSt=${16})}'|"></button>
+                <button type="button" class="btn btn-outline-info m-2" th:text="|${8} 강|" th:onclick="|location.href='@{/champions/round (season=${season},roundSt=${8})}'|"></button>
+                <button type="button" class="btn btn-outline-info m-2" th:text="|준결승|" th:onclick="|location.href='@{/champions/round (season=${season},roundSt=${4})}'|"></button>
+                <button type="button" class="btn btn-outline-info m-2" th:text="|결승|" th:onclick="|location.href='@{/champions/round (season=${season},roundSt=${2})}'|"></button>
             </div>
         </div>
         <div class="container-fluid pt-4 px-4">
-            <div class="row g-4">
-                <div class="col-sm-12 col-xl-6">
+            <div class="row g-2">
+                <div class="col-sm-12 col-xl-12">
                     <div class="bg-light rounded h-100 p-4">
-                        <h6 class="mb-4">분데스리가</h6>
+                        <h6 class="mb-4">챔피언스리그</h6>
                         <div class="table-responsive">
                             <table class="table table-bordered align-content-center">
-                                <thead>
+                                <thead class ="align-content-center">
                                 <tr>
                                     <th>팀</th>
                                     <th></th>
@@ -224,45 +224,16 @@
                                     <th>팀</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr th:each="round: ${GLeague}"  th:onclick="'location.href=' + '\'' + @{/league/round/{roundId}/line-up (roundId=${round.roundId})} + '\''">
-                                    <td th:text="${round.teamA}"></td>
-                                    <td th:if="${round.isDone}" th:text="${round.scoreA}"></td>
-                                    <td th:unless="${round.isDone}"></td>
-                                    <td th:text="|  VS  |"></td>
-                                    <td th:if="${round.isDone}" th:text="${round.scoreB}"></td>
-                                    <td th:unless="${round.isDone}"></td>
-                                    <td th:text="${round.teamB}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                                <tbody class ="align-content-center">
+                                <tr th:each="round , i: ${ChampionsRoundInfo}"  th:onclick="'location.href=' + '\'' + @{/champions/round/{roundId}/line-up (roundId=${round.roundId})} + '\''">
 
-                <div class="col-sm-12 col-xl-6">
-                    <div class="bg-light rounded h-100 p-4">
-                        <h6 class="mb-4">라리가</h6>
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-content-center">
-                                <thead>
-                                <tr>
-                                    <th>팀</th>
-                                    <th></th>
-                                    <th>VS</th>
-                                    <th></th>
-                                    <th>팀</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="round: ${LLeague}"  th:onclick="'location.href=' + '\'' + @{/league/round/{roundId}/line-up (roundId=${round.roundId})} + '\''">
-                                    <td th:text="${round.teamA}"></td>
+                                    <td th:text="${round.teamAName}"></td>
                                     <td th:if="${round.isDone}" th:text="${round.scoreA}"></td>
                                     <td th:unless="${round.isDone}"></td>
                                     <td th:text="|  VS  |"></td>
                                     <td th:if="${round.isDone}" th:text="${round.scoreB}"></td>
                                     <td th:unless="${round.isDone}"></td>
-                                    <td th:text="${round.teamB}"></td>
+                                    <td th:text="${round.teamBName}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -271,66 +242,12 @@
                 </div>
 
 
-                <div class="col-sm-12 col-xl-6">
-                    <div class="bg-light rounded h-100 p-4">
-                        <h6 class="mb-4">EPL</h6>
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-content-center">
-                                <thead>
-                                <tr>
-                                    <th>팀</th>
-                                    <th></th>
-                                    <th>VS</th>
-                                    <th></th>
-                                    <th>팀</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="round: ${ELeague}"  th:onclick="'location.href=' + '\'' + @{/league/round/{roundId}/line-up (roundId=${round.roundId})} + '\''">
-                                    <td th:text="${round.teamA}"></td>
-                                    <td th:if="${round.isDone}" th:text="${round.scoreA}"></td>
-                                    <td th:unless="${round.isDone}"></td>
-                                    <td th:text="|  VS  |"></td>
-                                    <td th:if="${round.isDone}" th:text="${round.scoreB}"></td>
-                                    <td th:unless="${round.isDone}"></td>
-                                    <td th:text="${round.teamB}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
 
 
-                <div class="col-sm-12 col-xl-6">
-                    <div class="bg-light rounded h-100 p-4">
-                        <h6 class="mb-4">세리에</h6>
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-content-center">
-                                <thead>
-                                <tr>
-                                    <th>팀</th>
-                                    <th></th>
-                                    <th>VS</th>
-                                    <th></th>
-                                    <th>팀</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="round: ${SLeague}"  th:onclick="'location.href=' + '\'' + @{/league/round/{roundId}/line-up (roundId=${round.roundId})} + '\''">
-                                    <td th:text="${round.teamA}"></td>
-                                    <td th:if="${round.isDone}" th:text="${round.scoreA}"></td>
-                                    <td th:unless="${round.isDone}"></td>
-                                    <td th:text="|  VS  |"></td>
-                                    <td th:if="${round.isDone}" th:text="${round.scoreB}"></td>
-                                    <td th:unless="${round.isDone}"></td>
-                                    <td th:text="${round.teamB}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+
+
+
+
             </div>
         </div>
 
