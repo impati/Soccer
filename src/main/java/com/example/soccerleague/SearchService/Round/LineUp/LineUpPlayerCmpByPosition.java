@@ -1,4 +1,4 @@
-package com.example.soccerleague.SearchService.LeagueRound.LineUp;
+package com.example.soccerleague.SearchService.Round.LineUp;
 
 import java.util.Comparator;
 

@@ -1,25 +1,23 @@
 package com.example.soccerleague.support.testData;
 
 
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpRegister;
+import com.example.soccerleague.RegisterService.LeagueRound.LineUp.RoundLineUpRegister;
 
 import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameRequest;
 import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
 import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameSearch;
-import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpRequest;
-import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpResponse;
-import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpSearch;
+import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpRequest;
+import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpResponse;
+import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpSearch;
 
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpDto;
+import com.example.soccerleague.RegisterService.LeagueRound.LineUp.RoundLineUpDto;
 import com.example.soccerleague.domain.Round.Round;
-import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.springDataJpa.RoundRepository;
 import com.example.soccerleague.support.testData.LineUp.LineUpDataPosting;
 import com.example.soccerleague.support.testData.game.GameDataPosting;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,9 +27,9 @@ import java.util.List;
 @Component
 public class NewGameResultTestData {
     private final RoundRepository roundEntityRepository;
-    private final LeagueRoundLineUpRegister leagueLineUpRegister;
+    private final RoundLineUpRegister leagueLineUpRegister;
     private final LeagueRoundGameSearch leagueRoundGameSearch;
-    private final LeagueRoundLineUpSearch leagueRoundLineUpSearch;;
+    private final RoundLineUpSearch roundLineUpSearch;;
     private final LineUpDataPosting lineUpDataPosting;
     private final GameDataPosting gameDataPosting;
 
@@ -41,10 +39,10 @@ public class NewGameResultTestData {
 
         // 라인업을 저장
         for(int i = 0;i<rounds.size() ; i ++ ){
-            LeagueRoundLineUpResponse resp = (LeagueRoundLineUpResponse) leagueRoundLineUpSearch.search(new LeagueRoundLineUpRequest(rounds.get(i).getId())).orElse(null);
+            RoundLineUpResponse resp = (RoundLineUpResponse) roundLineUpSearch.search(new RoundLineUpRequest(rounds.get(i).getId())).orElse(null);
 
             //====데이터 채우기====
-            LeagueRoundLineUpDto lineUpDto = lineUpDataPosting.calculation(rounds.get(i).getId(),resp);
+            RoundLineUpDto lineUpDto = lineUpDataPosting.calculation(rounds.get(i).getId(),resp);
             //===================
             leagueLineUpRegister.register(lineUpDto);
 

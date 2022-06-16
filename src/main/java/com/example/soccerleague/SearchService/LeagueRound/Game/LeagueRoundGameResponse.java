@@ -1,6 +1,6 @@
 package com.example.soccerleague.SearchService.LeagueRound.Game;
 
-import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
+import com.example.soccerleague.SearchService.Round.LineUp.LineUpPlayer;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.RoundStatus;

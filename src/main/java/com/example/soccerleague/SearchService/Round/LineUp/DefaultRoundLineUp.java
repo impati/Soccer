@@ -1,4 +1,4 @@
-package com.example.soccerleague.SearchService.LeagueRound.LineUp;
+package com.example.soccerleague.SearchService.Round.LineUp;
 
 
 import com.example.soccerleague.domain.DataTransferObject;
@@ -20,20 +20,20 @@ import java.util.Optional;
 @Service(value ="LeagueRoundLineUpSearch")
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class DefaultLeagueRoundLineUp implements LeagueRoundLineUpSearch {
+public class DefaultRoundLineUp implements RoundLineUpSearch {
     private final RoundRepository roundRepository;
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
     private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
-        return dto instanceof LeagueRoundLineUpRequest;
+        return dto instanceof RoundLineUpRequest;
     }
 
 
     @Override
     public Optional<DataTransferObject> search(DataTransferObject dataTransferObject) {
-        LeagueRoundLineUpRequest req = (LeagueRoundLineUpRequest)  dataTransferObject;
+        RoundLineUpRequest req = (RoundLineUpRequest)  dataTransferObject;
 
 
 
@@ -42,7 +42,7 @@ public class DefaultLeagueRoundLineUp implements LeagueRoundLineUpSearch {
         Team teamB = teamRepository.findById(round.getAwayTeamId()).orElse(null);
 
 
-        LeagueRoundLineUpResponse resp = new LeagueRoundLineUpResponse(teamA.getName(),teamB.getName());
+        RoundLineUpResponse resp = new RoundLineUpResponse(teamA.getName(),teamB.getName());
 
         if(round.getRoundStatus().equals(RoundStatus.YET)){
             resp.setLineUpDone(false);

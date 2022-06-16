@@ -4,9 +4,7 @@ import com.example.soccerleague.RegisterService.EloRatingSystem;
 import com.example.soccerleague.RegisterService.LeagueSeasonTable;
 import com.example.soccerleague.RegisterService.LeagueSeasonTableDto;
 import com.example.soccerleague.RegisterService.LeagueRound.LeagueRoundSeasonResult;
-import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordResponse;
 import com.example.soccerleague.domain.DataTransferObject;
-import com.example.soccerleague.domain.League;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.Round;
@@ -22,8 +20,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +38,7 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
     private final PlayerRepository playerRepository;
     private final TeamRepository teamRepository;
     private final EloRatingSystem eloRatingSystem;
-    private final DirectorLeagueRecordRepository directorLeagueRecordRepository;
+    private final DirectorRecordRepository directorRecordRepository;
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
         return dataTransferObject instanceof DuoRecordDto;
@@ -127,13 +123,13 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
 
 
 
-            DirectorLeagueRecord directorLeagueRecord = directorLeagueRecordRepository
+            DirectorRecord directorRecord = directorRecordRepository
                             .findByLastRecord(element.getTeam().getId()).stream().findFirst().orElse(null);
 
-            if(directorLeagueRecord == null)continue;
+            if(directorRecord == null)continue;
             if (tlr == null) continue;
 
-            directorLeagueRecord.setRank(element.getRank());
+            directorRecord.setRank(element.getRank());
             tlr.setRank(element.getRank());
 
 

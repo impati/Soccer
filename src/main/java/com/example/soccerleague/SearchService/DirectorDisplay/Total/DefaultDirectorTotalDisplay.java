@@ -5,7 +5,7 @@ import com.example.soccerleague.SearchService.DirectorDisplay.League.DirectorLea
 import com.example.soccerleague.SearchService.DirectorDisplay.League.DirectorLeagueDisplayResponse;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Season;
-import com.example.soccerleague.springDataJpa.DirectorLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.DirectorRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DefaultDirectorTotalDisplay implements DirectorTotalDisplay {
-    private final DirectorLeagueRecordRepository directorLeagueRecordRepository;
+    private final DirectorRecordRepository directorRecordRepository;
     private final DirectorLeagueDisplay leagueDisplay;
     @Override
     public boolean supports(DataTransferObject dto) {

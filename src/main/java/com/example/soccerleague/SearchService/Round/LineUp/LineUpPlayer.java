@@ -1,4 +1,4 @@
-package com.example.soccerleague.SearchService.LeagueRound.LineUp;
+package com.example.soccerleague.SearchService.Round.LineUp;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;

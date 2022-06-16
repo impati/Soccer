@@ -4,7 +4,7 @@ package com.example.soccerleague.SearchService.DirectorDisplay.League;
 import com.example.soccerleague.SearchService.DirectorSearch.DirectorSearchRequest;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.record.MatchResult;
-import com.example.soccerleague.springDataJpa.DirectorLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.DirectorRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DefaultDirectorLeagueDisplay implements DirectorLeagueDisplay {
-    private final DirectorLeagueRecordRepository directorLeagueRecordRepository;
+    private final DirectorRecordRepository directorRecordRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
         return dto instanceof DirectorSearchRequest;
@@ -28,7 +28,7 @@ public class DefaultDirectorLeagueDisplay implements DirectorLeagueDisplay {
         DirectorLeagueDisplayRequest req = (DirectorLeagueDisplayRequest)dto;
         DirectorLeagueDisplayResponse resp = new DirectorLeagueDisplayResponse();
 
-        directorLeagueRecordRepository.findBySeasonInfo(req.getDirectorId(),req.getSeason())
+        directorRecordRepository.findBySeasonInfo(req.getDirectorId(),req.getSeason())
                 .stream()
                 .forEach(ele->{
 

@@ -1,4 +1,4 @@
-package com.example.soccerleague.SearchService.LeagueRound.LineUp;
+package com.example.soccerleague.SearchService.Round.LineUp;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LeagueRoundLineUpResponse extends DataTransferObject {
+public class RoundLineUpResponse extends DataTransferObject {
     private boolean lineUpDone;
     private String teamA;
     private String teamB;
@@ -21,7 +21,7 @@ public class LeagueRoundLineUpResponse extends DataTransferObject {
 
     private List<Long> joinPlayer = new ArrayList<>();
     private List<Position> joinPosition = new ArrayList<>();
-    public LeagueRoundLineUpResponse(String teamA, String teamB) {
+    public RoundLineUpResponse(String teamA, String teamB) {
         this.teamA = teamA;
         this.teamB = teamB;
     }

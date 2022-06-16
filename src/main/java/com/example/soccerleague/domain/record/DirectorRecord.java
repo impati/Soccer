@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DirectorLeagueRecord extends BaseEntity {
+public class DirectorRecord extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "director_league_record_id")
@@ -24,7 +24,7 @@ public class DirectorLeagueRecord extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="round_id")
-    private LeagueRound leagueRound;
+    private Round round;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,12 +43,12 @@ public class DirectorLeagueRecord extends BaseEntity {
     private int rank;
 
 
-    public static DirectorLeagueRecord create(LeagueRound round ,Director director){
-        DirectorLeagueRecord directorLeagueRecord = new DirectorLeagueRecord();
-        directorLeagueRecord.setLeagueRound(round);
-        directorLeagueRecord.setTeam(director.getTeam());
-        directorLeagueRecord.setDirector(director);
-        return directorLeagueRecord;
+    public static DirectorRecord create(LeagueRound round , Director director){
+        DirectorRecord directorRecord = new DirectorRecord();
+        directorRecord.setRound(round);
+        directorRecord.setTeam(director.getTeam());
+        directorRecord.setDirector(director);
+        return directorRecord;
     }
     public void update(MatchResult mathResult){
         this.mathResult = mathResult;

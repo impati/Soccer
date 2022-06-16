@@ -1,8 +1,8 @@
 package com.example.soccerleague.support.testData.LineUp;
 
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpDto;
-import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpResponse;
+import com.example.soccerleague.RegisterService.LeagueRound.LineUp.RoundLineUpDto;
+import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpResponse;
 
 public interface LineUpDataPosting {
-    LeagueRoundLineUpDto calculation(Long roundId , LeagueRoundLineUpResponse resp);
+    RoundLineUpDto calculation(Long roundId , RoundLineUpResponse resp);
 }

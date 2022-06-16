@@ -4,8 +4,8 @@ package com.example.soccerleague.Web.Controller;
 import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
 import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
 import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameRegister;
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpDto;
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.LeagueRoundLineUpRegister;
+import com.example.soccerleague.RegisterService.LeagueRound.LineUp.RoundLineUpDto;
+import com.example.soccerleague.RegisterService.LeagueRound.LineUp.RoundLineUpRegister;
 import com.example.soccerleague.SearchService.LeagueRound.Duo.DuoRecordResult;
 import com.example.soccerleague.SearchService.LeagueRound.Duo.DuoRecordResultRequest;
 import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameRequest;
@@ -17,10 +17,10 @@ import com.example.soccerleague.SearchService.LeagueRound.GameResult.LeagueRound
 import com.example.soccerleague.SearchService.LeagueRound.GameResult.LeagueRoundGameResultTeamResponse;
 import com.example.soccerleague.SearchService.LeagueRound.LeagueRoundInfo;
 import com.example.soccerleague.SearchService.LeagueRound.LeagueRoundInfoRequest;
-import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpRequest;
-import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpResponse;
-import com.example.soccerleague.SearchService.LeagueRound.LineUp.LeagueRoundLineUpSearch;
-import com.example.soccerleague.SearchService.LeagueRound.LineUp.LineUpPlayer;
+import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpRequest;
+import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpResponse;
+import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpSearch;
+import com.example.soccerleague.SearchService.Round.LineUp.LineUpPlayer;
 import com.example.soccerleague.SearchService.LeagueRound.strategy.*;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplay;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplayRequest;
@@ -30,7 +30,6 @@ import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.record.GoalType;
-import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.springDataJpa.LeagueRepository;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
 import com.example.soccerleague.springDataJpa.RoundRepository;
@@ -57,8 +56,8 @@ public class  LeagueController {
     private final TeamDisplay teamDisplay;
     private final LeagueRepository leagueRepository;
     private final LeagueRoundInfo leagueRoundInfo;
-    private final LeagueRoundLineUpSearch leagueRoundLineUpSearch;
-    private final LeagueRoundLineUpRegister leagueRoundLineUpRegister;
+    private final RoundLineUpSearch roundLineUpSearch;
+    private final RoundLineUpRegister roundLineUpRegister;
     private final RoundRepository roundRepository;
     private final LeagueRoundGameSearch leagueRoundGameSearch;
     private final LeagueRoundGameRegister leagueRoundGameRegister;
@@ -114,7 +113,7 @@ public class  LeagueController {
     @GetMapping("/round/{roundId}/line-up")
     public String gameLineUpPage(@PathVariable Long roundId,Model model){
 
-        model.addAttribute("leagueRoundLineUpResponse",leagueRoundLineUpSearch.search(new LeagueRoundLineUpRequest(roundId)).orElse(null));
+        model.addAttribute("roundLineUpResponse", roundLineUpSearch.search(new RoundLineUpRequest(roundId)).orElse(null));
         model.addAttribute("round",roundRepository.findById(roundId).orElse(null));
         model.addAttribute("positionList", Position.values());
         return "league/lineup";
@@ -124,11 +123,11 @@ public class  LeagueController {
      * 라인업을 저장하는 메서드.
      */
     @PostMapping("/round/{roundId}/line-up")
-    public String gameLineUpSave(@PathVariable Long roundId,@ModelAttribute LeagueRoundLineUpResponse leagueRoundLineUpResponse){
-        LeagueRoundLineUpDto lineUpDto = new LeagueRoundLineUpDto(roundId);
-        lineUpDto.setJoinPlayer(leagueRoundLineUpResponse.getJoinPlayer());
-        lineUpDto.setJoinPosition(leagueRoundLineUpResponse.getJoinPosition());
-        leagueRoundLineUpRegister.register(lineUpDto);
+    public String gameLineUpSave(@PathVariable Long roundId,@ModelAttribute RoundLineUpResponse roundLineUpResponse){
+        RoundLineUpDto lineUpDto = new RoundLineUpDto(roundId);
+        lineUpDto.setJoinPlayer(roundLineUpResponse.getJoinPlayer());
+        lineUpDto.setJoinPosition(roundLineUpResponse.getJoinPosition());
+        roundLineUpRegister.register(lineUpDto);
         return "redirect:/league/round/" + roundId  + "/line-up";
     }
 

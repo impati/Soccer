@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PlayerLeagueRecordRepository extends JpaRepository<PlayerLeagueRecord , Long> , PlayerLeagueRepositoryQuerydsl{
+public interface PlayerLeagueRecordRepository extends JpaRepository<PlayerLeagueRecord , Long> , PlayerLeagueRepositoryQuerydsl ,PlayerRecordRepository{
 
     //가장 최근의 경기 하나만을 가져온다.
     @Query("select plr from PlayerLeagueRecord plr join plr.player p on p.id = :playerId " +

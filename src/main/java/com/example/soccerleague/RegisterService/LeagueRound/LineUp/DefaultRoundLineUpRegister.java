@@ -7,7 +7,7 @@ import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.director.Director;
-import com.example.soccerleague.domain.record.DirectorLeagueRecord;
+import com.example.soccerleague.domain.record.DirectorRecord;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;
 import com.example.soccerleague.springDataJpa.*;
@@ -16,31 +16,33 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Service(value ="LeagueRoundLineUpRegister")
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegister{
+public class DefaultRoundLineUpRegister implements RoundLineUpRegister {
     private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
     private final TeamLeagueRecordRepository teamLeagueRecordRepository;
+
     private final RoundRepository roundRepository;
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
     private final DirectorRepository directorRepository;
-    private final DirectorLeagueRecordRepository directorLeagueRecordRepository;
+    private final DirectorRecordRepository directorRecordRepository;
 
     @Override
     public boolean supports(DataTransferObject dataTransferObject) {
-        return dataTransferObject instanceof LeagueRoundLineUpDto;
+        return dataTransferObject instanceof RoundLineUpDto;
     }
 
     @Override
     public void register(DataTransferObject dataTransferObject) {
-        LeagueRoundLineUpDto lineUpDto = (LeagueRoundLineUpDto) dataTransferObject;
+        RoundLineUpDto lineUpDto = (RoundLineUpDto) dataTransferObject;
         LeagueRound round = (LeagueRound)roundRepository.findById(lineUpDto.getRoundId()).orElse(null);
+
+
         Team teamA = teamRepository.findById(round.getHomeTeamId()).orElse(null);
         Director directorA = directorRepository.findByTeamId(teamA.getId()).orElse(null);
         List<Player> playerListA = playerRepository.findByTeam(teamA);
@@ -59,9 +61,9 @@ public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegist
                 }
             }
         }
-        DirectorLeagueRecord directorLeagueRecordA = DirectorLeagueRecord.create(round,directorA);
+        DirectorRecord directorRecordA = DirectorRecord.create(round,directorA);
         TeamLeagueRecord teamLeagueRecordA = TeamLeagueRecord.create(round,teamA);
-        directorLeagueRecordRepository.save(directorLeagueRecordA);
+        directorRecordRepository.save(directorRecordA);
         teamLeagueRecordRepository.save(teamLeagueRecordA);
 
 
@@ -85,9 +87,9 @@ public class DefaultLeagueRoundLineUpRegister implements LeagueRoundLineUpRegist
                 }
             }
         }
-        DirectorLeagueRecord directorLeagueRecordB = DirectorLeagueRecord.create(round,directorB);
+        DirectorRecord directorRecordB = DirectorRecord.create(round,directorB);
         TeamLeagueRecord teamLeagueRecordB = TeamLeagueRecord.create(round,teamB);
-        directorLeagueRecordRepository.save(directorLeagueRecordB);
+        directorRecordRepository.save(directorRecordB);
         teamLeagueRecordRepository.save(teamLeagueRecordB);
 
 
