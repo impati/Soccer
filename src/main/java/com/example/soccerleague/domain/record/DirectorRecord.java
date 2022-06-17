@@ -43,7 +43,7 @@ public class DirectorRecord extends BaseEntity {
     private int rank;
 
 
-    public static DirectorRecord create(LeagueRound round , Director director){
+    public static DirectorRecord create(Round round , Director director){
         DirectorRecord directorRecord = new DirectorRecord();
         directorRecord.setRound(round);
         directorRecord.setTeam(director.getTeam());

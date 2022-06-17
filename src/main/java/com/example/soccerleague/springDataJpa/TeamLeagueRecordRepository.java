@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
-public interface TeamLeagueRecordRepository extends JpaRepository<TeamLeagueRecord,Long>{
+public interface TeamLeagueRecordRepository extends TeamRecordRepository{
 
     @Query(" select tlr from TeamLeagueRecord tlr " +
             " join tlr.team t on t.id = :teamId " +

@@ -1,5 +1,6 @@
 package com.example.soccerleague.domain.record;
 
+import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Team;
 import lombok.AccessLevel;
@@ -16,15 +17,10 @@ import static java.time.LocalDateTime.now;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class TeamLeagueRecord extends TeamRecord{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_league_record_id")
-    private Long id;
 
-
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "round_id")
-    private Round round;
+    private LeagueRound round;
 
     /**
      *
@@ -36,7 +32,7 @@ public class TeamLeagueRecord extends TeamRecord{
 
     public static TeamLeagueRecord create(Round round, Team team){
         TeamLeagueRecord teamLeagueRecord = new TeamLeagueRecord();
-        teamLeagueRecord.setRound(round);
+        teamLeagueRecord.setRound((LeagueRound)round);
         teamLeagueRecord.setTeam(team);
         teamLeagueRecord.setSeason(round.getSeason());
         return teamLeagueRecord;

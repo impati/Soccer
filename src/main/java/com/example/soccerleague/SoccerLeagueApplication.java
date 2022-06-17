@@ -31,7 +31,9 @@ public class SoccerLeagueApplication {
     }
     private static void post() throws IOException {
         ApplicationContext ac = ApplicationContextProvider.getApplicationContext();
-
+        for(var ele  :  ac.getBeanDefinitionNames()){
+            log.info("{}" ,ele);
+        }
         PostData sm = ac.getBean("postData",PostData.class);
         sm.init();
         ///////////////////////////////////////////////////////////

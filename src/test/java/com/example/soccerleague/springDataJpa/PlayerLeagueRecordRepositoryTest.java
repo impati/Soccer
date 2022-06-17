@@ -27,6 +27,9 @@ class PlayerLeagueRecordRepositoryTest {
     PlayerLeagueRecordRepository playerLeagueRecordRepository;
 
 
+    @Autowired
+    PlayerRecordRepository playerRecordRepository;
+
 
 
     @Autowired
@@ -84,5 +87,9 @@ class PlayerLeagueRecordRepositoryTest {
     void playerLeagueRecordTest(){
         playerLeagueRecordRepository.playerLeagueRecordQuery(1L,0).stream().forEach(ele-> System.out.println(ele));
     }
+
+
+
+
 
 }

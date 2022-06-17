@@ -3,13 +3,13 @@ package com.example.soccerleague.RegisterService.LeagueRound.LineUp;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
+import com.example.soccerleague.domain.Round.ChampionsLeagueRound;
 import com.example.soccerleague.domain.Round.LeagueRound;
+import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.director.Director;
-import com.example.soccerleague.domain.record.DirectorRecord;
-import com.example.soccerleague.domain.record.PlayerLeagueRecord;
-import com.example.soccerleague.domain.record.TeamLeagueRecord;
+import com.example.soccerleague.domain.record.*;
 import com.example.soccerleague.springDataJpa.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
+
+/**
+ * TODO : 6. 17  ->PlayerChampionsRecordReposiory , and team ...
+ */
 @Service(value ="LeagueRoundLineUpRegister")
 @Slf4j
 @RequiredArgsConstructor
@@ -25,7 +30,8 @@ import java.util.List;
 public class DefaultRoundLineUpRegister implements RoundLineUpRegister {
     private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
     private final TeamLeagueRecordRepository teamLeagueRecordRepository;
-
+    private final PlayerChampionsRecordRepository playerChampionsRecordRepository;
+    private final TeamChampionsRecordRepository teamChampionsRecordRepository;
     private final RoundRepository roundRepository;
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
@@ -40,8 +46,21 @@ public class DefaultRoundLineUpRegister implements RoundLineUpRegister {
     @Override
     public void register(DataTransferObject dataTransferObject) {
         RoundLineUpDto lineUpDto = (RoundLineUpDto) dataTransferObject;
-        LeagueRound round = (LeagueRound)roundRepository.findById(lineUpDto.getRoundId()).orElse(null);
+        Round round = roundRepository.findById(lineUpDto.getRoundId()).orElse(null);
 
+        if(round instanceof LeagueRound) {
+            lineUpSave(lineUpDto, round , playerLeagueRecordRepository,teamLeagueRecordRepository);
+        }
+        else if(round instanceof ChampionsLeagueRound) {
+            lineUpSave(lineUpDto, round , playerChampionsRecordRepository,teamChampionsRecordRepository);
+        }
+
+
+
+
+    }
+
+    private void lineUpSave(RoundLineUpDto lineUpDto, Round round ,PlayerRecordRepository playerRecordRepository , TeamRecordRepository teamRecordRepository) {
 
         Team teamA = teamRepository.findById(round.getHomeTeamId()).orElse(null);
         Director directorA = directorRepository.findByTeamId(teamA.getId()).orElse(null);
@@ -57,15 +76,29 @@ public class DefaultRoundLineUpRegister implements RoundLineUpRegister {
                 Long jId = lineUpDto.getJoinPlayer().get(i);
                 if (player.getId().equals(jId)) {
                     Position position = lineUpDto.getJoinPosition().get(pos);
-                    playerLeagueRecordRepository.save(PlayerLeagueRecord.create(player, position, teamA, round));
+                    if(round instanceof  LeagueRound){
+                        playerRecordRepository.save(PlayerLeagueRecord.create(player, position, teamA, (LeagueRound) round));
+                    }
+                    else if(round instanceof  ChampionsLeagueRound){
+                        playerRecordRepository.save(PlayerChampionsLeagueRecord.create(player, position, teamA, (ChampionsLeagueRound) round));
+                    }
+                    // TODO 유로파
+
+
                 }
             }
         }
         DirectorRecord directorRecordA = DirectorRecord.create(round,directorA);
-        TeamLeagueRecord teamLeagueRecordA = TeamLeagueRecord.create(round,teamA);
-        directorRecordRepository.save(directorRecordA);
-        teamLeagueRecordRepository.save(teamLeagueRecordA);
 
+        TeamRecord teamRecordA = null;
+        if(round instanceof  LeagueRound)
+            teamRecordA = TeamLeagueRecord.create(round,teamA);
+        else if(round instanceof ChampionsLeagueRound){
+            teamRecordA = TeamChampionsRecord.create(round,teamA);
+        }
+        // TODO 유로파
+        directorRecordRepository.save(directorRecordA);
+        teamRecordRepository.save(teamRecordA);
 
 
         int sz = playerListA.size();
@@ -83,20 +116,30 @@ public class DefaultRoundLineUpRegister implements RoundLineUpRegister {
                 Long jId = lineUpDto.getJoinPlayer().get(i);
                 if (player.getId().equals(jId)) {
                     Position position = lineUpDto.getJoinPosition().get(pos + sz);
-                    playerLeagueRecordRepository.save(PlayerLeagueRecord.create(player, position, teamB, round));
+                    if(round instanceof  LeagueRound){
+                        playerRecordRepository.save(PlayerLeagueRecord.create(player, position, teamB, (LeagueRound) round));
+                    }
+                    else if(round instanceof  ChampionsLeagueRound){
+                        playerRecordRepository.save(PlayerChampionsLeagueRecord.create(player, position, teamB, (ChampionsLeagueRound) round));
+                    }
+
                 }
             }
         }
         DirectorRecord directorRecordB = DirectorRecord.create(round,directorB);
-        TeamLeagueRecord teamLeagueRecordB = TeamLeagueRecord.create(round,teamB);
+        TeamRecord teamRecordB = null;
+        if(round instanceof  LeagueRound)
+            teamRecordB = TeamLeagueRecord.create(round,teamB);
+        else if(round instanceof ChampionsLeagueRound){
+            teamRecordB = TeamChampionsRecord.create(round,teamB);
+        }
+        // TODO 유로파
         directorRecordRepository.save(directorRecordB);
-        teamLeagueRecordRepository.save(teamLeagueRecordB);
+        teamRecordRepository.save(teamRecordB);
 
 
         round.setRoundStatus(RoundStatus.ING);
-
     }
-
 
 
 }

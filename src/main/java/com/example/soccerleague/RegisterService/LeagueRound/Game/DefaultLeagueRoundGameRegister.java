@@ -100,11 +100,13 @@ public class DefaultLeagueRoundGameRegister implements LeagueRoundGameRegister {
 
 
 
-
         int sz = playerRecordsA.size();
+
 
         recordSave(0,sz,0,bestGrade,matchResultA,playerRecordsA,leagueRoundGameDto,teams.get(0), directorRecordA);
         recordSave(sz,sz + playerRecordsB.size(),1,bestGrade,matchResultB,playerRecordsB,leagueRoundGameDto,teams.get(1), directorRecordB);
+
+
 
 
         gradeDecision.LeagueGradeDecision(playerRecordsA);

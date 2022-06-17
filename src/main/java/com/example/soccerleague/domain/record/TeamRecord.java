@@ -8,8 +8,14 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@MappedSuperclass
+@Entity
 public abstract class TeamRecord extends Record{
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "team_record_id")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name ="team_id")

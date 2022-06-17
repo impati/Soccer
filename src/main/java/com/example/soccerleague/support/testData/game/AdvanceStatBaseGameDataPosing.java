@@ -13,7 +13,6 @@ import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
-import com.example.soccerleague.springDataJpa.PlayerRepository;
 import com.example.soccerleague.springDataJpa.RoundRepository;
 import com.example.soccerleague.support.testData.game.Dto.*;
 import com.example.soccerleague.support.testData.game.Repository.GameAvgDto;
@@ -36,7 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
     private final DuoRecordRegister duoRecordRegister;
     private final LeagueRoundGameRegister leagueRoundGameRegister;
-    private final PlayerRepository playerEntityRepository;
     private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
     private final RoundRepository roundEntityRepository;
     private final DefenseReturn defenseReturn;

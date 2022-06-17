@@ -2,13 +2,12 @@ package com.example.soccerleague.SearchService.Round.LineUp;
 
 
 import com.example.soccerleague.domain.DataTransferObject;
+import com.example.soccerleague.domain.Round.ChampionsLeagueRound;
+import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
-import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
-import com.example.soccerleague.springDataJpa.PlayerRepository;
-import com.example.soccerleague.springDataJpa.RoundRepository;
-import com.example.soccerleague.springDataJpa.TeamRepository;
+import com.example.soccerleague.springDataJpa.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,8 @@ public class DefaultRoundLineUp implements RoundLineUpSearch {
     private final RoundRepository roundRepository;
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
+    private final PlayerChampionsRecordRepository playerChampionsRecordRepository ;
     private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
-    @Override
     public boolean supports(DataTransferObject dto) {
         return dto instanceof RoundLineUpRequest;
     }
@@ -60,12 +59,20 @@ public class DefaultRoundLineUp implements RoundLineUpSearch {
         }
         else{
             resp.setLineUpDone(true);
-            playerLeagueRecordRepository.findByRoundAndTeam(req.getRoundId(),teamA.getId()).stream()
-                    .forEach(ele->resp.getPlayerListA().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
+            if(round instanceof LeagueRound){
+                playerLeagueRecordRepository.findByRoundAndTeam(req.getRoundId(), teamA.getId()).stream()
+                        .forEach(ele-> resp.getPlayerListA().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
+                playerLeagueRecordRepository.findByRoundAndTeam(req.getRoundId(), teamB.getId()).stream()
+                        .forEach(ele-> resp.getPlayerListB().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
+            }
+            else if(round instanceof ChampionsLeagueRound){
+                playerChampionsRecordRepository.findByRoundAndTeam(req.getRoundId(), teamA.getId()).stream()
+                        .forEach(ele-> resp.getPlayerListA().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
+                playerChampionsRecordRepository.findByRoundAndTeam(req.getRoundId(), teamB.getId()).stream()
+                        .forEach(ele-> resp.getPlayerListB().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
+            }
 
 
-            playerLeagueRecordRepository.findByRoundAndTeam(req.getRoundId(),teamB.getId()).stream()
-                    .forEach(ele->resp.getPlayerListB().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
         }
 
         resp.getPlayerListA().sort(new LineUpPlayerCmpByPosition());
@@ -73,5 +80,7 @@ public class DefaultRoundLineUp implements RoundLineUpSearch {
 
         return Optional.ofNullable(resp);
     }
+
+
 }
 

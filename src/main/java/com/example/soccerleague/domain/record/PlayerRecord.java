@@ -11,11 +11,16 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@MappedSuperclass
 public abstract class PlayerRecord extends Record{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "player_record_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="player_id")

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface DirectorRecordRepository extends JpaRepository<DirectorRecord,Long> {
     @Query("select dlr from DirectorRecord  dlr " +
-            " join dlr.leagueRound lr on lr.id = :roundId " +
+            " join dlr.round r on r.id = :roundId " +
             " join dlr.team t on t.id = :teamId " )
     Optional<DirectorRecord>  findByRoundAndTeam(@Param("roundId") Long roundId, @Param("teamId") Long teamId);
 
@@ -18,7 +18,7 @@ public interface DirectorRecordRepository extends JpaRepository<DirectorRecord,L
      *  감독의 시즌 정보를 전부 내려줌.
      */
     @Query("select dlr from DirectorRecord  dlr " +
-            " join dlr.leagueRound lr on lr.season = :season " +
+            " join dlr.round r on r.season = :season " +
             " join dlr.director d on d.id = :directorId " +
             " order by dlr.createDate ")
     List<DirectorRecord> findBySeasonInfo(@Param("directorId") Long directorId , @Param("season") int season);

@@ -210,7 +210,7 @@
 
 
         <div th:unless="${roundLineUpResponse.lineUpDone}" class="container-fluid pt-4 px-4" th:object="${roundLineUpResponse}">
-            <form th:action="@{/champions/round/{st}/line-up/(st=${round.id})}" class="form-inline" method="post">
+            <form  class="form-inline" method="post">
                 <div class="row g-4">
 
                     <div class="col-sm-12 col-xl-6">
@@ -268,7 +268,7 @@
 
 
         <div th:if="${roundLineUpResponse.lineUpDone}" class="container-fluid pt-4 px-4" th:object="${roundLineUpResponse}" disabled>
-            <form th:action="@{/champions/round/{st}/line-up/(st=${round.id})}" class="form-inline" method="post" disabled>
+            <form  class="form-inline" method="post" disabled>
                 <div class="row g-4">
 
                     <div class="col-sm-12 col-xl-6">

@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue("League")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LeagueRound extends Round{
+
     public static LeagueRound createLeagueRound(Long league,Long teamA,Long teamB,int season,int roundSt){
         LeagueRound leagueRound = new LeagueRound();
         leagueRound.setLeagueId(league);

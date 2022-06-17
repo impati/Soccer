@@ -67,10 +67,11 @@ public class ChampionsController {
     @PostMapping("/round/{roundId}/line-up")
     public String gameLineUpSave(@PathVariable Long roundId,@ModelAttribute RoundLineUpResponse roundLineUpResponse){
         RoundLineUpDto lineUpDto = new RoundLineUpDto(roundId);
+
         lineUpDto.setJoinPlayer(roundLineUpResponse.getJoinPlayer());
         lineUpDto.setJoinPosition(roundLineUpResponse.getJoinPosition());
         roundLineUpRegister.register(lineUpDto);
-        return "redirect:/league/round/" + roundId  + "/line-up";
+        return "redirect:/champions/round/" + roundId  + "/line-up";
     }
 
 

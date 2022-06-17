@@ -7,11 +7,13 @@ import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DefaultGradeDecision implements GradeDecision{
     private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
     @Override
@@ -21,7 +23,6 @@ public class DefaultGradeDecision implements GradeDecision{
         mappedDefenser(avg.getPassAvg(),avg.getShootingAvg(),avg.getDefenseAvg(),plr);
         mappedStriker(avg.getPassAvg(),avg.getShootingAvg(),avg.getDefenseAvg(),plr);
         mappedGoalKeeper(plr);
-
     }
 
     private void  mappedDefenser(double passAvg,double shootingAvg,double defenseAvg, List<PlayerLeagueRecord> plr){
@@ -177,7 +178,6 @@ public class DefaultGradeDecision implements GradeDecision{
 
     private void mappedMid(double passAvg,double shootingAvg,double defenseAvg,List<PlayerLeagueRecord> plr){
 
-
         plr.stream().filter(ele->ele.getGrade() == 0).forEach(ele-> {
             Position position = ele.getPosition();
             if(position.equals(Position.AM )|| position.equals(Position.LM) ||
@@ -227,8 +227,10 @@ public class DefaultGradeDecision implements GradeDecision{
                 if(ele.getMathResult().equals(MatchResult.WIN)) ret += 40;
                 if(ele.getMathResult().equals(MatchResult.DRAW)) ret += 20;
                 ele.setGrade((int)(ret / 10));
+
             }
         });
+
 
     }
 }

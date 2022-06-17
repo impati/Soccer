@@ -19,12 +19,7 @@ import static java.time.LocalDateTime.now;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerLeagueRecord extends PlayerRecord{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "player_league_record_id")
-    private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="round_id")
     private LeagueRound leagueRound;
 
@@ -82,6 +77,7 @@ public class PlayerLeagueRecord extends PlayerRecord{
                 ", player=" + player.getName() +
                 ", team=" + team.getName() +
                 ", season=" + position +
+                ", mathResult = "+ mathResult +
                 '}';
     }
 }
