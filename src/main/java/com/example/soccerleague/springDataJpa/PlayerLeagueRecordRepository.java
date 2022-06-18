@@ -23,13 +23,13 @@ public interface PlayerLeagueRecordRepository extends  PlayerRecordRepository , 
     List<PlayerLeagueRecord> findFirstByLast(@Param("playerId") Long playerId, @Param("season") int season, Pageable pageable);
 
 
-    @Query("select plr from PlayerLeagueRecord plr where plr.leagueRound.id = :roundId and plr.team.id =:teamId")
+    @Query("select plr from PlayerLeagueRecord plr where plr.round.id = :roundId and plr.team.id =:teamId")
     List<PlayerLeagueRecord>  findByRoundAndTeam(@Param("roundId") Long roundId, @Param("teamId") Long teamId);
 
 
     @Query(" select plr from PlayerLeagueRecord plr" +
             " join  plr.player p on p.id =:playerId " +
-            " join  plr.leagueRound lr on lr.roundSt < :roundSt where plr.season = :season ")
+            " join  plr.round lr on lr.roundSt < :roundSt where plr.season = :season ")
     List<PlayerLeagueRecord> findBySeasonAndPlayer(@Param("season") int season,@Param("roundSt") int roundSt,@Param("playerId") Long playerId);
 
 
@@ -51,17 +51,15 @@ public interface PlayerLeagueRecordRepository extends  PlayerRecordRepository , 
 
     @Query(" Select plr from PlayerLeagueRecord plr " +
             " join plr.player p on p.id = :playerId " +
-            " join plr.leagueRound lr on lr.roundSt < :roundSt where plr.season = :season")
+            " join plr.round lr on lr.roundSt < :roundSt where plr.season = :season")
     List<PlayerLeagueRecord> findBySeasonAndPlayer(@Param("playerId") Long playerId ,@Param("season") int season,@Param("roundSt") int roundSt);
 
 
-    @Query("Select plr from PlayerLeagueRecord plr join plr.leagueRound lr on lr.season = :season join plr.player p on p.id = :playerId")
+    @Query("Select plr from PlayerLeagueRecord plr join plr.round lr on lr.season = :season join plr.player p on p.id = :playerId")
     List<PlayerLeagueRecord> findBySeasonAndPlayer(@Param("playerId") Long playerId,@Param("season") int season);
 
 
 
-    @Query("select plr from PlayerLeagueRecord plr where plr.leagueRound.id = :roundId order by plr.id")
-    List<PlayerLeagueRecord> findByRoundId(@Param("roundId") Long roundId);
 
 
 

@@ -13,24 +13,5 @@ import javax.persistence.*;
 @Setter
 @Entity
 public class TeamChampionsRecord extends TeamRecord{
-    @ManyToOne
-    @JoinColumn(name = "round_id")
-    private ChampionsLeagueRound championsLeagueRound;
-    /**
-     *
-     * line-up을 구축할때 호출
-     * @param round
-     * @param team
-     * @return
-     */
-
-    public static TeamChampionsRecord create(Round round, Team team){
-        TeamChampionsRecord teamChampionsRecord = new TeamChampionsRecord();
-        teamChampionsRecord.setChampionsLeagueRound((ChampionsLeagueRound)round);
-        teamChampionsRecord.setTeam(team);
-        teamChampionsRecord.setSeason(round.getSeason());
-        return teamChampionsRecord;
-    }
-
 }
 

@@ -1,4 +1,4 @@
-package com.example.soccerleague.RegisterService.LeagueRound.LineUp;
+package com.example.soccerleague.RegisterService.round.LineUp;
 
 import com.example.soccerleague.RegisterService.RegisterData;
 

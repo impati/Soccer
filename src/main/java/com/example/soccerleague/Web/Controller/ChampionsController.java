@@ -1,7 +1,7 @@
 package com.example.soccerleague.Web.Controller;
 
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.RoundLineUpDto;
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.RoundLineUpRegister;
+import com.example.soccerleague.RegisterService.round.LineUp.RoundLineUpDto;
+import com.example.soccerleague.RegisterService.round.LineUp.RoundLineUpRegister;
 import com.example.soccerleague.SearchService.ChampionsRound.ChampionsRoundInfo;
 import com.example.soccerleague.SearchService.ChampionsRound.ChampionsRoundInfoRequest;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpRequest;
@@ -53,6 +53,8 @@ public class ChampionsController {
     }
 
 
+
+
     @GetMapping("/round/{roundId}/line-up")
     public String gameLineUpPage(@PathVariable Long roundId , Model model){
         model.addAttribute("roundLineUpResponse", roundLineUpSearch.search(new RoundLineUpRequest(roundId)).orElse(null));
@@ -67,7 +69,6 @@ public class ChampionsController {
     @PostMapping("/round/{roundId}/line-up")
     public String gameLineUpSave(@PathVariable Long roundId,@ModelAttribute RoundLineUpResponse roundLineUpResponse){
         RoundLineUpDto lineUpDto = new RoundLineUpDto(roundId);
-
         lineUpDto.setJoinPlayer(roundLineUpResponse.getJoinPlayer());
         lineUpDto.setJoinPosition(roundLineUpResponse.getJoinPosition());
         roundLineUpRegister.register(lineUpDto);

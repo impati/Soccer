@@ -1,7 +1,7 @@
 package com.example.soccerleague.support.testData;
 
 
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.RoundLineUpRegister;
+import com.example.soccerleague.RegisterService.round.LineUp.RoundLineUpRegister;
 
 import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameRequest;
 import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
@@ -10,7 +10,7 @@ import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpRequest;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpResponse;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpSearch;
 
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.RoundLineUpDto;
+import com.example.soccerleague.RegisterService.round.LineUp.RoundLineUpDto;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.springDataJpa.RoundRepository;

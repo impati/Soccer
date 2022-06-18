@@ -7,6 +7,7 @@ import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.Team;
+import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.springDataJpa.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,7 @@ public class DefaultRoundLineUp implements RoundLineUpSearch {
     private final RoundRepository roundRepository;
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
-    private final PlayerChampionsRecordRepository playerChampionsRecordRepository ;
-    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
+    private final PlayerRecordRepository playerRecordRepository;
     public boolean supports(DataTransferObject dto) {
         return dto instanceof RoundLineUpRequest;
     }
@@ -59,19 +59,12 @@ public class DefaultRoundLineUp implements RoundLineUpSearch {
         }
         else{
             resp.setLineUpDone(true);
-            if(round instanceof LeagueRound){
-                playerLeagueRecordRepository.findByRoundAndTeam(req.getRoundId(), teamA.getId()).stream()
-                        .forEach(ele-> resp.getPlayerListA().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
-                playerLeagueRecordRepository.findByRoundAndTeam(req.getRoundId(), teamB.getId()).stream()
-                        .forEach(ele-> resp.getPlayerListB().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
-            }
-            else if(round instanceof ChampionsLeagueRound){
-                playerChampionsRecordRepository.findByRoundAndTeam(req.getRoundId(), teamA.getId()).stream()
-                        .forEach(ele-> resp.getPlayerListA().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
-                playerChampionsRecordRepository.findByRoundAndTeam(req.getRoundId(), teamB.getId()).stream()
-                        .forEach(ele-> resp.getPlayerListB().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
-            }
 
+
+            playerRecordRepository.TfindByRoundAndTeam(req.getRoundId(), teamA.getId()).stream()
+                        .forEach(ele-> resp.getPlayerListA().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
+            playerRecordRepository.TfindByRoundAndTeam(req.getRoundId(), teamB.getId()).stream()
+                        .forEach(ele-> resp.getPlayerListB().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
 
         }
 

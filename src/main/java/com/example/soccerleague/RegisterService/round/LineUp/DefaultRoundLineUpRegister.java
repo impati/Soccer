@@ -1,4 +1,4 @@
-package com.example.soccerleague.RegisterService.LeagueRound.LineUp;
+package com.example.soccerleague.RegisterService.round.LineUp;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -28,10 +27,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class DefaultRoundLineUpRegister implements RoundLineUpRegister {
-    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
-    private final TeamLeagueRecordRepository teamLeagueRecordRepository;
-    private final PlayerChampionsRecordRepository playerChampionsRecordRepository;
-    private final TeamChampionsRecordRepository teamChampionsRecordRepository;
+    private final PlayerRecordRepository playerRecordRepository;
+    private final TeamRecordRepository teamRecordRepository;
     private final RoundRepository roundRepository;
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
@@ -48,20 +45,6 @@ public class DefaultRoundLineUpRegister implements RoundLineUpRegister {
         RoundLineUpDto lineUpDto = (RoundLineUpDto) dataTransferObject;
         Round round = roundRepository.findById(lineUpDto.getRoundId()).orElse(null);
 
-        if(round instanceof LeagueRound) {
-            lineUpSave(lineUpDto, round , playerLeagueRecordRepository,teamLeagueRecordRepository);
-        }
-        else if(round instanceof ChampionsLeagueRound) {
-            lineUpSave(lineUpDto, round , playerChampionsRecordRepository,teamChampionsRecordRepository);
-        }
-
-
-
-
-    }
-
-    private void lineUpSave(RoundLineUpDto lineUpDto, Round round ,PlayerRecordRepository playerRecordRepository , TeamRecordRepository teamRecordRepository) {
-
         Team teamA = teamRepository.findById(round.getHomeTeamId()).orElse(null);
         Director directorA = directorRepository.findByTeamId(teamA.getId()).orElse(null);
         List<Player> playerListA = playerRepository.findByTeam(teamA);
@@ -76,27 +59,13 @@ public class DefaultRoundLineUpRegister implements RoundLineUpRegister {
                 Long jId = lineUpDto.getJoinPlayer().get(i);
                 if (player.getId().equals(jId)) {
                     Position position = lineUpDto.getJoinPosition().get(pos);
-                    if(round instanceof  LeagueRound){
-                        playerRecordRepository.save(PlayerLeagueRecord.create(player, position, teamA, (LeagueRound) round));
-                    }
-                    else if(round instanceof  ChampionsLeagueRound){
-                        playerRecordRepository.save(PlayerChampionsLeagueRecord.create(player, position, teamA, (ChampionsLeagueRound) round));
-                    }
-                    // TODO 유로파
-
-
+                    playerRecordRepository.save(PlayerRecord.create(player, position, teamA, round));
                 }
             }
         }
         DirectorRecord directorRecordA = DirectorRecord.create(round,directorA);
 
-        TeamRecord teamRecordA = null;
-        if(round instanceof  LeagueRound)
-            teamRecordA = TeamLeagueRecord.create(round,teamA);
-        else if(round instanceof ChampionsLeagueRound){
-            teamRecordA = TeamChampionsRecord.create(round,teamA);
-        }
-        // TODO 유로파
+        TeamRecord teamRecordA = TeamRecord.create(round,teamA);
         directorRecordRepository.save(directorRecordA);
         teamRecordRepository.save(teamRecordA);
 
@@ -116,30 +85,24 @@ public class DefaultRoundLineUpRegister implements RoundLineUpRegister {
                 Long jId = lineUpDto.getJoinPlayer().get(i);
                 if (player.getId().equals(jId)) {
                     Position position = lineUpDto.getJoinPosition().get(pos + sz);
-                    if(round instanceof  LeagueRound){
-                        playerRecordRepository.save(PlayerLeagueRecord.create(player, position, teamB, (LeagueRound) round));
-                    }
-                    else if(round instanceof  ChampionsLeagueRound){
-                        playerRecordRepository.save(PlayerChampionsLeagueRecord.create(player, position, teamB, (ChampionsLeagueRound) round));
-                    }
-
+                    playerRecordRepository.save(PlayerRecord.create(player, position, teamB,  round));
                 }
             }
         }
         DirectorRecord directorRecordB = DirectorRecord.create(round,directorB);
-        TeamRecord teamRecordB = null;
-        if(round instanceof  LeagueRound)
-            teamRecordB = TeamLeagueRecord.create(round,teamB);
-        else if(round instanceof ChampionsLeagueRound){
-            teamRecordB = TeamChampionsRecord.create(round,teamB);
-        }
-        // TODO 유로파
+
+
+        TeamRecord teamRecordB = TeamChampionsRecord.create(round,teamB);
         directorRecordRepository.save(directorRecordB);
         teamRecordRepository.save(teamRecordB);
 
 
         round.setRoundStatus(RoundStatus.ING);
+
+
+
     }
+
 
 
 }

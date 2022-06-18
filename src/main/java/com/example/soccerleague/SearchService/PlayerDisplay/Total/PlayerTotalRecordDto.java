@@ -117,7 +117,7 @@ public class PlayerTotalRecordDto extends DataTransferObject {
 
         if(playerRecord instanceof PlayerLeagueRecord){
             PlayerLeagueRecord ref = (PlayerLeagueRecord) playerRecord;
-            if(ref.getLeagueRound().getRoundSt() == Season.LASTLEAGUEROUND){
+            if(ref.getRound().getRoundSt() == Season.LASTLEAGUEROUND){
                 leagueRankRecordUpdate(ref.getRank());
             }
         }

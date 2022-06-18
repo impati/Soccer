@@ -1,6 +1,6 @@
 package com.example.soccerleague.support.testData.LineUp;
 
-import com.example.soccerleague.RegisterService.LeagueRound.LineUp.RoundLineUpDto;
+import com.example.soccerleague.RegisterService.round.LineUp.RoundLineUpDto;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

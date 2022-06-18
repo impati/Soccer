@@ -10,6 +10,5 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 public interface PlayerChampionsRecordRepository extends PlayerRecordRepository {
-    @Query("select plr from PlayerChampionsLeagueRecord plr where plr.championsLeagueRound.id = :roundId and plr.team.id =:teamId")
-    List<PlayerChampionsLeagueRecord> findByRoundAndTeam(@Param("roundId") Long roundId, @Param("teamId") Long teamId);
+
 }

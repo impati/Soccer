@@ -20,27 +20,4 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerChampionsLeagueRecord extends PlayerRecord{
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="round_id")
-    private ChampionsLeagueRound championsLeagueRound;
-    /***
-     *
-     *  라인업 저장시 호출됨.
-     * @param player
-     * @param position
-     * @param team
-     * @param championsLeagueRound
-     * @return
-     */
-    public static PlayerChampionsLeagueRecord create(Player player, Position position, Team team, ChampionsLeagueRound championsLeagueRound){
-        PlayerChampionsLeagueRecord playerChampionsLeagueRecord = new PlayerChampionsLeagueRecord();
-        playerChampionsLeagueRecord.setPlayer(player);
-        playerChampionsLeagueRecord.setChampionsLeagueRound(championsLeagueRound);
-        playerChampionsLeagueRecord.setPosition(position);
-        playerChampionsLeagueRecord.setSeason(championsLeagueRound.getSeason());
-        playerChampionsLeagueRecord.setTeam(team);
-        return playerChampionsLeagueRecord;
-    }
-
-
 }
