@@ -61,9 +61,9 @@ public class DefaultRoundLineUp implements RoundLineUpSearch {
             resp.setLineUpDone(true);
 
 
-            playerRecordRepository.TfindByRoundAndTeam(req.getRoundId(), teamA.getId()).stream()
+            playerRecordRepository.findByRoundAndTeam(req.getRoundId(), teamA.getId()).stream()
                         .forEach(ele-> resp.getPlayerListA().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
-            playerRecordRepository.TfindByRoundAndTeam(req.getRoundId(), teamB.getId()).stream()
+            playerRecordRepository.findByRoundAndTeam(req.getRoundId(), teamB.getId()).stream()
                         .forEach(ele-> resp.getPlayerListB().add(LineUpPlayer.create(ele.getPlayer().getId(),ele.getPlayer().getName(),ele.getPosition())));
 
         }

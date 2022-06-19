@@ -1,19 +1,19 @@
-package com.example.soccerleague.SearchService.LeagueRound.Game;
+package com.example.soccerleague.SearchService.Round.Game;
 
 import com.example.soccerleague.SearchService.Round.LineUp.LineUpPlayer;
-
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LeagueRoundGameResponse extends DataTransferObject {
+public class RoundGameResponse extends DataTransferObject {
     private RoundStatus roundStatus;
     private String teamA;
     private String teamB;
@@ -38,7 +38,7 @@ public class LeagueRoundGameResponse extends DataTransferObject {
     private List<Integer> goodDefenseList = new ArrayList<>();//*
     private List<Integer> gradeList = new ArrayList<>(); // 100점 만점.
 
-    public LeagueRoundGameResponse(RoundStatus roundStatus, String teamA, String teamB) {
+    public RoundGameResponse(RoundStatus roundStatus, String teamA, String teamB) {
         this.roundStatus = roundStatus;
         this.teamA = teamA;
         this.teamB = teamB;

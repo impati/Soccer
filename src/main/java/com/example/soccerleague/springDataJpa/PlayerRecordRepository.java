@@ -18,6 +18,6 @@ public interface PlayerRecordRepository extends JpaRepository<PlayerRecord,Long>
     List<PlayerRecord> findByRoundId(@Param("roundId") Long roundId);
 
     @Query("select pr from PlayerRecord pr where pr.round.id = :roundId and pr.team.id =:teamId")
-    List<PlayerRecord>  TfindByRoundAndTeam(@Param("roundId") Long roundId, @Param("teamId") Long teamId);
+    List<PlayerRecord>  findByRoundAndTeam(@Param("roundId") Long roundId, @Param("teamId") Long teamId);
 
 }

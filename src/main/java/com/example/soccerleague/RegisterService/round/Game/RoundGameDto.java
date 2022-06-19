@@ -1,6 +1,6 @@
-package com.example.soccerleague.RegisterService.LeagueRound.Game;
+package com.example.soccerleague.RegisterService.round.Game;
 
-import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
+import com.example.soccerleague.SearchService.Round.Game.RoundGameResponse;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class LeagueRoundGameDto extends DataTransferObject {
+public class RoundGameDto extends DataTransferObject {
     private Long roundId;
     private RoundStatus roundStatus;
 
@@ -35,11 +35,11 @@ public class LeagueRoundGameDto extends DataTransferObject {
     private List<Integer> goodDefenseList = new ArrayList<>();
     private List<Integer> gradeList = new ArrayList<>();
 
-    public LeagueRoundGameDto(Long roundId) {
+    public RoundGameDto(Long roundId) {
         this.roundId = roundId;
     }
-    public static LeagueRoundGameDto of (LeagueRoundGameResponse resp){
-        LeagueRoundGameDto obj = new LeagueRoundGameDto();
+    public static RoundGameDto of (RoundGameResponse resp){
+        RoundGameDto obj = new RoundGameDto();
         obj.setScorePair(resp.getScorePair());
         obj.setSharePair(resp.getSharePair());
         obj.setCornerKickPair(resp.getCornerKickPair());

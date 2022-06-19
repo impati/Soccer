@@ -1,4 +1,4 @@
-package com.example.soccerleague.SearchService.LeagueRound.Duo;
+package com.example.soccerleague.SearchService.Round.Duo;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import lombok.AllArgsConstructor;

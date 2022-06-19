@@ -1,11 +1,13 @@
-package com.example.soccerleague.SearchService.LeagueRound.Game;
-import com.example.soccerleague.SearchService.Round.LineUp.LineUpPlayerCmpByPosition;
+package com.example.soccerleague.SearchService.Round.Game;
+
 import com.example.soccerleague.SearchService.Round.LineUp.LineUpPlayer;
+import com.example.soccerleague.SearchService.Round.LineUp.LineUpPlayerCmpByPosition;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.PlayerRecordRepository;
 import com.example.soccerleague.springDataJpa.RoundRepository;
 import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,31 +23,31 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class DefaultLeagueRoundGameSearch implements LeagueRoundGameSearch {
+public class DefaultRoundGameSearch implements RoundGameSearch {
     private final RoundRepository roundRepository;
     private final TeamRepository teamRepository;
-    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
+    private final PlayerRecordRepository playerRecordRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
-        return dto instanceof LeagueRoundGameRequest;
+        return dto instanceof RoundGameRequest;
     }
 
     @Override
     public Optional<DataTransferObject> search(DataTransferObject dataTransferObject) {
-        LeagueRoundGameRequest req = (LeagueRoundGameRequest) dataTransferObject;
+        RoundGameRequest req = (RoundGameRequest) dataTransferObject;
         Round round = roundRepository.findById(req.getRoundId()).orElse(null);
         Team teamA = teamRepository.findById(round.getHomeTeamId()).orElse(null);
         Team teamB = teamRepository.findById(round.getAwayTeamId()).orElse(null);
 
-        LeagueRoundGameResponse resp = new LeagueRoundGameResponse(round.getRoundStatus(),teamA.getName(),teamB.getName());
+        RoundGameResponse resp = new RoundGameResponse(round.getRoundStatus(),teamA.getName(),teamB.getName());
 
-        playerLeagueRecordRepository.findByRoundAndTeam(req.getRoundId(), teamA.getId())
+        playerRecordRepository.findByRoundAndTeam(req.getRoundId(), teamA.getId())
                 .stream()
                 .forEach(ele->{
                     Player player = ele.getPlayer();
                     resp.getPlayerListA().add(LineUpPlayer.create(player.getId(),player.getName(),ele.getPosition()));
                 });
-        playerLeagueRecordRepository.findByRoundAndTeam(req.getRoundId(), teamB.getId())
+        playerRecordRepository.findByRoundAndTeam(req.getRoundId(), teamB.getId())
                 .stream()
                 .forEach(ele->{
                     Player player = ele.getPlayer();

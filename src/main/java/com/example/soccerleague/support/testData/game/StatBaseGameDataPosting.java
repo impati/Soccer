@@ -1,10 +1,10 @@
 package com.example.soccerleague.support.testData.game;
 
-import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameRegister;
-import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
+import com.example.soccerleague.RegisterService.round.Duo.DuoRecordDto;
+import com.example.soccerleague.RegisterService.round.Duo.DuoRecordRegister;
+import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameDto;
+import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameRegister;
+import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameResponse;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Player.Stat;
@@ -14,11 +14,8 @@ import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
 import com.example.soccerleague.springDataJpa.PlayerRepository;
 import com.example.soccerleague.springDataJpa.RoundRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -34,13 +31,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class StatBaseGameDataPosting implements GameDataPosting{
     private final DuoRecordRegister duoRecordRegister;
-    private final LeagueRoundGameRegister leagueRoundGameRegister;
+    private final RoundGameRegister roundGameRegister;
     private final PlayerRepository playerEntityRepository;
     private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
     private final RoundRepository roundEntityRepository;
     private List<DuoInfo> goalAssist = new ArrayList<>();
     @Override
-    public void calculation(Long roundId, LeagueRoundGameResponse resp) {
+    public void calculation(Long roundId, RoundGameResponse resp) {
          int defenseAvgA = 0;
          int defenseAvgB = 0;
          int passSumA = 0;
@@ -210,10 +207,10 @@ public class StatBaseGameDataPosting implements GameDataPosting{
         resp.getGoodDefenseList().set(idx,superSaveB);
 
 
-        LeagueRoundGameDto leagueRoundGameDto = LeagueRoundGameDto.of(resp);
-        leagueRoundGameDto.setRoundId(roundId);
+        RoundGameDto roundGameDto = RoundGameDto.of(resp);
+        roundGameDto.setRoundId(roundId);
 
-        leagueRoundGameRegister.register(leagueRoundGameDto);
+        roundGameRegister.register(roundGameDto);
         duoRecordRegister.register(duoRecordDto);
 
 
@@ -235,7 +232,7 @@ public class StatBaseGameDataPosting implements GameDataPosting{
         if(ret > 600 && ret % 2 == 0) flag = true;
         return flag;
     }
-    private int Kick(List<Player>players ,Player player ,LeagueRoundGameResponse resp,int passSum,int defense,int goalKeeperAbility,double percent){
+    private int Kick(List<Player>players , Player player , RoundGameResponse resp, int passSum, int defense, int goalKeeperAbility, double percent){
         int shooting = 0;
         int validShooting =0 ;
         int superSave = 0;
@@ -360,7 +357,7 @@ public class StatBaseGameDataPosting implements GameDataPosting{
         return arr[rn];
     }
 
-    private void freeKickChance(List<Player> playerA,List<Player> playerB ,LeagueRoundGameResponse resp,double percent){
+    private void freeKickChance(List<Player> playerA, List<Player> playerB , RoundGameResponse resp, double percent){
         AtomicInteger foulSum = new AtomicInteger();
         playerA.stream()
                 .forEach(ele->{

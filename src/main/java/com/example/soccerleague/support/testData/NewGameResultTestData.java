@@ -3,9 +3,9 @@ package com.example.soccerleague.support.testData;
 
 import com.example.soccerleague.RegisterService.round.LineUp.RoundLineUpRegister;
 
-import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameRequest;
-import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
-import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameSearch;
+import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameRequest;
+import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameResponse;
+import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameSearch;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpRequest;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpResponse;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpSearch;
@@ -28,7 +28,7 @@ import java.util.List;
 public class NewGameResultTestData {
     private final RoundRepository roundEntityRepository;
     private final RoundLineUpRegister leagueLineUpRegister;
-    private final LeagueRoundGameSearch leagueRoundGameSearch;
+    private final RoundGameSearch roundGameSearch;
     private final RoundLineUpSearch roundLineUpSearch;;
     private final LineUpDataPosting lineUpDataPosting;
     private final GameDataPosting gameDataPosting;
@@ -47,8 +47,8 @@ public class NewGameResultTestData {
             leagueLineUpRegister.register(lineUpDto);
 
             // 게임 기록 저장.
-            LeagueRoundGameResponse leagueRoundGameResponse  =(LeagueRoundGameResponse) leagueRoundGameSearch.search(new LeagueRoundGameRequest(rounds.get(i).getId())).orElse(null);
-            gameDataPosting.calculation(rounds.get(i).getId(),leagueRoundGameResponse);
+            RoundGameResponse roundGameResponse =(RoundGameResponse) roundGameSearch.search(new RoundGameRequest(rounds.get(i).getId())).orElse(null);
+            gameDataPosting.calculation(rounds.get(i).getId(), roundGameResponse);
         }
 
 

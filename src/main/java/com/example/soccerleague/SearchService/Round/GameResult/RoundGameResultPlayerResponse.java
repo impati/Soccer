@@ -1,4 +1,4 @@
-package com.example.soccerleague.SearchService.LeagueRound.GameResult;
+package com.example.soccerleague.SearchService.Round.GameResult;
 
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Position;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LeagueRoundGameResultPlayerResponse extends DataTransferObject {
+public class RoundGameResultPlayerResponse extends DataTransferObject {
     private Position position;
     private String  name;
     private Integer goal;
@@ -22,13 +22,13 @@ public class LeagueRoundGameResultPlayerResponse extends DataTransferObject {
     private Integer grade;
     private Long teamId;
 
-    public static LeagueRoundGameResultPlayerResponse create(
+    public static RoundGameResultPlayerResponse create(
             Long teamId,Position position,String name,
             int goal,int assist,int pass,
             int shooting,int validShooting,int foul,
             int goodDefense,int grade
     ){
-        LeagueRoundGameResultPlayerResponse ret = new LeagueRoundGameResultPlayerResponse();
+        RoundGameResultPlayerResponse ret = new RoundGameResultPlayerResponse();
         ret.setPosition(position);
         ret.setName(name);
         ret.setTeamId(teamId);

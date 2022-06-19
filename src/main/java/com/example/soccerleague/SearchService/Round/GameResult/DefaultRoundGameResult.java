@@ -1,4 +1,4 @@
-package com.example.soccerleague.SearchService.LeagueRound.GameResult;
+package com.example.soccerleague.SearchService.Round.GameResult;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;
@@ -17,23 +17,23 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class DefaultLeagueRoundGameResult implements LeagueRoundGameResult {
+public class DefaultRoundGameResult implements RoundGameResult {
     private final TeamLeagueRecordRepository teamLeagueRecordRepository;
     private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
-        return dto instanceof LeagueRoundGameResultRequest;
+        return dto instanceof RoundGameResultRequest;
     }
 
     @Override
     public List<DataTransferObject> searchPlayerResult(DataTransferObject dataTransferObject) {
-        LeagueRoundGameResultRequest req = (LeagueRoundGameResultRequest) dataTransferObject;
-        List<LeagueRoundGameResultPlayerResponse> resp =  new ArrayList<>();
+        RoundGameResultRequest req = (RoundGameResultRequest) dataTransferObject;
+        List<RoundGameResultPlayerResponse> resp =  new ArrayList<>();
         playerLeagueRecordRepository.findByRoundId(req.getRoundId())
                 .stream()
                 .map(ele->(PlayerLeagueRecord)ele)
                 .filter(ele->ele.getTeam().getId().equals(req.getTeamId()))
-                .forEach(ele->resp.add(LeagueRoundGameResultPlayerResponse.create(
+                .forEach(ele->resp.add(RoundGameResultPlayerResponse.create(
                         ele.getTeam().getId(),ele.getPosition(),ele.getPlayer().getName(),
                         ele.getGoal(),ele.getAssist(),ele.getPass(),ele.getShooting(),
                         ele.getValidShooting(),ele.getFoul(),ele.getGoodDefense(),
@@ -50,12 +50,12 @@ public class DefaultLeagueRoundGameResult implements LeagueRoundGameResult {
 
     @Override
     public List<DataTransferObject> searchTeamResult(DataTransferObject dataTransferObject) {
-        LeagueRoundGameResultRequest req = (LeagueRoundGameResultRequest) dataTransferObject;
-        List<LeagueRoundGameResultTeamResponse> resp =  new ArrayList<>();
+        RoundGameResultRequest req = (RoundGameResultRequest) dataTransferObject;
+        List<RoundGameResultTeamResponse> resp =  new ArrayList<>();
         teamLeagueRecordRepository.findByRoundId(req.getRoundId())
                 .stream()
                 .map(ele->(TeamLeagueRecord)ele)
-                .forEach(ele->resp.add(LeagueRoundGameResultTeamResponse.create(
+                .forEach(ele->resp.add(RoundGameResultTeamResponse.create(
                         ele.getTeam().getName(),ele.getTeam().getId(),ele.getScore(),ele.getShare(),ele.getCornerKick(),
                         ele.getFreeKick())));
         return resp.stream().map(ele->(DataTransferObject)ele).collect(Collectors.toList());

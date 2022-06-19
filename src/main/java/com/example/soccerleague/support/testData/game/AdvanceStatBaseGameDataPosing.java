@@ -1,11 +1,11 @@
 package com.example.soccerleague.support.testData.game;
 
 
-import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameRegister;
-import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
+import com.example.soccerleague.RegisterService.round.Duo.DuoRecordDto;
+import com.example.soccerleague.RegisterService.round.Duo.DuoRecordRegister;
+import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameDto;
+import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameRegister;
+import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameResponse;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Player.Stat;
@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Transactional
 public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
     private final DuoRecordRegister duoRecordRegister;
-    private final LeagueRoundGameRegister leagueRoundGameRegister;
+    private final RoundGameRegister roundGameRegister;
     private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
     private final RoundRepository roundEntityRepository;
     private final DefenseReturn defenseReturn;
@@ -46,7 +46,7 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
     private final GameResultRepository gameResultRepository;
     private final GradeDecision gradeDecision;
     @Override
-    public void calculation(Long roundId, LeagueRoundGameResponse resp) {
+    public void calculation(Long roundId, RoundGameResponse resp) {
         // 공유 변수
 
          Map<Long , StatBaseGameDto> mappedPlayerA = new ConcurrentHashMap<>();
@@ -276,11 +276,11 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
 
 
 
-        LeagueRoundGameDto leagueRoundGameDto = LeagueRoundGameDto.of(resp);
-        leagueRoundGameDto.setRoundId(roundId);
+        RoundGameDto roundGameDto = RoundGameDto.of(resp);
+        roundGameDto.setRoundId(roundId);
 
 
-        leagueRoundGameRegister.register(leagueRoundGameDto);
+        roundGameRegister.register(roundGameDto);
         duoRecordRegister.register(duoRecordDto);
 
 

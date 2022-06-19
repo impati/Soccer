@@ -1,22 +1,22 @@
 package com.example.soccerleague.Web.Controller;
 
 
-import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameRegister;
+import com.example.soccerleague.RegisterService.round.Duo.DuoRecordRegister;
+import com.example.soccerleague.RegisterService.round.Game.RoundGameDto;
+import com.example.soccerleague.RegisterService.round.Game.RoundGameRegister;
 import com.example.soccerleague.RegisterService.round.LineUp.RoundLineUpDto;
 import com.example.soccerleague.RegisterService.round.LineUp.RoundLineUpRegister;
-import com.example.soccerleague.SearchService.LeagueRound.Duo.DuoRecordResult;
-import com.example.soccerleague.SearchService.LeagueRound.Duo.DuoRecordResultRequest;
-import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameRequest;
-import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
-import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameSearch;
-import com.example.soccerleague.SearchService.LeagueRound.GameResult.LeagueRoundGameResult;
-import com.example.soccerleague.SearchService.LeagueRound.GameResult.LeagueRoundGameResultPlayerResponse;
-import com.example.soccerleague.SearchService.LeagueRound.GameResult.LeagueRoundGameResultRequest;
-import com.example.soccerleague.SearchService.LeagueRound.GameResult.LeagueRoundGameResultTeamResponse;
+import com.example.soccerleague.SearchService.Round.Duo.DuoRecordResult;
+import com.example.soccerleague.SearchService.Round.Duo.DuoRecordResultRequest;
+import com.example.soccerleague.SearchService.Round.GameResult.RoundGameResult;
+import com.example.soccerleague.SearchService.Round.GameResult.RoundGameResultPlayerResponse;
+import com.example.soccerleague.SearchService.Round.GameResult.RoundGameResultRequest;
+import com.example.soccerleague.SearchService.Round.GameResult.RoundGameResultTeamResponse;
 import com.example.soccerleague.SearchService.LeagueRound.LeagueRoundInfo;
 import com.example.soccerleague.SearchService.LeagueRound.LeagueRoundInfoRequest;
+import com.example.soccerleague.SearchService.Round.Game.RoundGameRequest;
+import com.example.soccerleague.SearchService.Round.Game.RoundGameResponse;
+import com.example.soccerleague.SearchService.Round.Game.RoundGameSearch;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpRequest;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpResponse;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpSearch;
@@ -24,7 +24,7 @@ import com.example.soccerleague.SearchService.Round.LineUp.LineUpPlayer;
 import com.example.soccerleague.SearchService.LeagueRound.strategy.*;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplay;
 import com.example.soccerleague.SearchService.TeamDisplay.TeamDisplayRequest;
-import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
+import com.example.soccerleague.RegisterService.round.Duo.DuoRecordDto;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
@@ -59,9 +59,9 @@ public class  LeagueController {
     private final RoundLineUpSearch roundLineUpSearch;
     private final RoundLineUpRegister roundLineUpRegister;
     private final RoundRepository roundRepository;
-    private final LeagueRoundGameSearch leagueRoundGameSearch;
-    private final LeagueRoundGameRegister leagueRoundGameRegister;
-    private final LeagueRoundGameResult  leagueRoundGameResult;
+    private final RoundGameSearch roundGameSearch;
+    private final RoundGameRegister roundGameRegister;
+    private final RoundGameResult roundGameResult;
     private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
     private final DuoRecordRegister duoRecordRegister;
     private final DuoRecordResult duoRecordResult;
@@ -147,7 +147,7 @@ public class  LeagueController {
             return "/league/BeforeGame";
         }
         else if(round.getRoundStatus().equals(RoundStatus.ING)){
-            model.addAttribute("leagueRoundGameResponse",leagueRoundGameSearch.search(new LeagueRoundGameRequest(roundId)).orElse(null));
+            model.addAttribute("RoundGameResponse", roundGameSearch.search(new RoundGameRequest(roundId)).orElse(null));
             return "/league/game";
         }
         else if(round.getRoundStatus().equals(RoundStatus.RECORD)){
@@ -176,24 +176,24 @@ public class  LeagueController {
         }
     }
     private void gameResult(Round round ,Model model){
-        List<LeagueRoundGameResultPlayerResponse> playerAResp =
-                leagueRoundGameResult
-                        .searchPlayerResult(new LeagueRoundGameResultRequest(round.getId(),round.getHomeTeamId()))
+        List<RoundGameResultPlayerResponse> playerAResp =
+                roundGameResult
+                        .searchPlayerResult(new RoundGameResultRequest(round.getId(),round.getHomeTeamId()))
                         .stream()
-                        .map(ele->(LeagueRoundGameResultPlayerResponse)ele)
+                        .map(ele->(RoundGameResultPlayerResponse)ele)
                         .collect(Collectors.toList());
 
-        List<LeagueRoundGameResultPlayerResponse > playerBResp =
-                leagueRoundGameResult.searchPlayerResult(new LeagueRoundGameResultRequest(round.getId(),round.getAwayTeamId()))
+        List<RoundGameResultPlayerResponse> playerBResp =
+                roundGameResult.searchPlayerResult(new RoundGameResultRequest(round.getId(),round.getAwayTeamId()))
                         .stream()
-                        .map(ele->(LeagueRoundGameResultPlayerResponse)ele)
+                        .map(ele->(RoundGameResultPlayerResponse)ele)
                         .collect(Collectors.toList());
 
 
-        List<LeagueRoundGameResultTeamResponse> teamResp =
-                leagueRoundGameResult.searchTeamResult(new LeagueRoundGameResultRequest(round.getId()))
+        List<RoundGameResultTeamResponse> teamResp =
+                roundGameResult.searchTeamResult(new RoundGameResultRequest(round.getId()))
                         .stream()
-                        .map(ele->(LeagueRoundGameResultTeamResponse)ele)
+                        .map(ele->(RoundGameResultTeamResponse)ele)
                         .collect(Collectors.toList());
 
         model.addAttribute("teamA",teamResp.get(0));
@@ -207,11 +207,11 @@ public class  LeagueController {
 
      */
     @PostMapping("/round/{roundId}/game")
-    public String gameSave(@PathVariable Long roundId,@ModelAttribute LeagueRoundGameResponse leagueRoundGameResponse){
+    public String gameSave(@PathVariable Long roundId,@ModelAttribute RoundGameResponse roundGameResponse){
 
-        LeagueRoundGameDto leagueRoundGameDto = LeagueRoundGameDto.of(leagueRoundGameResponse);
-        leagueRoundGameDto.setRoundId(roundId);
-        leagueRoundGameRegister.register(leagueRoundGameDto);
+        RoundGameDto roundGameDto = RoundGameDto.of(roundGameResponse);
+        roundGameDto.setRoundId(roundId);
+        roundGameRegister.register(roundGameDto);
 
         return "redirect:/league/round/" + roundId  + "/game";
     }

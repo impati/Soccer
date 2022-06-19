@@ -1,26 +1,23 @@
 package com.example.soccerleague.support.testData.game;
 
-import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Duo.DuoRecordRegister;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.LeagueRoundGameRegister;
-import com.example.soccerleague.SearchService.LeagueRound.Game.LeagueRoundGameResponse;
+import com.example.soccerleague.RegisterService.round.Duo.DuoRecordDto;
+import com.example.soccerleague.RegisterService.round.Duo.DuoRecordRegister;
+import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameDto;
+import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameRegister;
+import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameResponse;
 import com.example.soccerleague.domain.record.GoalType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
 public class SimpleGameDataPosting implements GameDataPosting{
     private final DuoRecordRegister duoRecordRegister;
-    private final LeagueRoundGameRegister leagueRoundGameRegister;
+    private final RoundGameRegister roundGameRegister;
     @Override
-    public void calculation(Long roundId, LeagueRoundGameResponse resp) {
+    public void calculation(Long roundId, RoundGameResponse resp) {
         //resp 데이터셋팅
 
         int shareA = (int)(Math.random() * 40) + 30;
@@ -137,10 +134,10 @@ public class SimpleGameDataPosting implements GameDataPosting{
             resp.getAssistList().add(playerAssistB[i]);
         }
 
-        LeagueRoundGameDto leagueRoundGameDto = LeagueRoundGameDto.of(resp);
-        leagueRoundGameDto.setRoundId(roundId);
+        RoundGameDto roundGameDto = RoundGameDto.of(resp);
+        roundGameDto.setRoundId(roundId);
 
-        leagueRoundGameRegister.register(leagueRoundGameDto);
+        roundGameRegister.register(roundGameDto);
         duoRecordRegister.register(duoRecordDto);
     }
 }

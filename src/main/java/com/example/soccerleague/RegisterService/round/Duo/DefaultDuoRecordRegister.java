@@ -1,4 +1,4 @@
-package com.example.soccerleague.RegisterService.LeagueRound.Duo;
+package com.example.soccerleague.RegisterService.round.Duo;
 
 import com.example.soccerleague.RegisterService.EloRatingSystem;
 import com.example.soccerleague.RegisterService.LeagueSeasonTable;
