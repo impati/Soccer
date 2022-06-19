@@ -1,7 +1,6 @@
 package com.example.soccerleague.Web.Controller;
 
 import com.example.soccerleague.RegisterService.round.Duo.DuoRecordDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameDto;
 import com.example.soccerleague.RegisterService.round.Duo.DuoRecordRegister;
 import com.example.soccerleague.RegisterService.round.Game.RoundGameDto;
 import com.example.soccerleague.RegisterService.round.Game.RoundGameRegister;
@@ -117,11 +116,11 @@ public class ChampionsController {
         Round round = roundRepository.findById(roundId).orElse(null);
         model.addAttribute("round",roundId);
         if(round.getRoundStatus().equals(RoundStatus.YET)){
-            return "/league/BeforeGame";
+            return "/champions/beforeGame";
         }
         else if(round.getRoundStatus().equals(RoundStatus.ING)){
             model.addAttribute("RoundGameResponse", roundGameSearch.search(new RoundGameRequest(roundId)).orElse(null));
-            return "/league/game";
+            return "/champions/game";
         }
         else if(round.getRoundStatus().equals(RoundStatus.RECORD)){
 
@@ -139,13 +138,13 @@ public class ChampionsController {
             model.addAttribute("goalTypeList", GoalType.values());
             model.addAttribute("duoRecordDto",new DuoRecordDto());
 
-            return "/league/gameRecord";
+            return "/champions/gameRecord";
         }
         else{
 
             gameResult(round,model);
             model.addAttribute("duoResultResponse",duoRecordResult.searchList(new DuoRecordResultRequest(roundId)));
-            return "/league/gameResult";
+            return "/champions/gameResult";
         }
     }
     private void gameResult(Round round ,Model model){
@@ -188,7 +187,7 @@ public class ChampionsController {
         roundGameDto.setRoundId(roundId);
         roundGameRegister.register(roundGameDto);
 
-        return "redirect:/league/round/" + roundId  + "/game";
+        return "redirect:/champions/round/" + roundId  + "/game";
     }
 
     /**
@@ -199,7 +198,7 @@ public class ChampionsController {
     public String gameDuoSave(@PathVariable Long roundId,@ModelAttribute DuoRecordDto duoRecordDto){
         duoRecordDto.setRoundId(roundId);
         duoRecordRegister.register(duoRecordDto);
-        return "redirect:/league/round/" + roundId  + "/game";
+        return "redirect:/champions/round/" + roundId  + "/game";
     }
 
 

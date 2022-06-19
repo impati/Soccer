@@ -3,16 +3,18 @@ package com.example.soccerleague.support.testData.game;
 
 import com.example.soccerleague.RegisterService.round.Duo.DuoRecordDto;
 import com.example.soccerleague.RegisterService.round.Duo.DuoRecordRegister;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameRegister;
-import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameResponse;
+import com.example.soccerleague.RegisterService.round.Game.RoundGameDto;
+import com.example.soccerleague.RegisterService.round.Game.RoundGameRegister;
+import com.example.soccerleague.SearchService.Round.Game.RoundGameResponse;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Player.Stat;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.domain.record.PlayerRecord;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.PlayerRecordRepository;
 import com.example.soccerleague.springDataJpa.RoundRepository;
 import com.example.soccerleague.support.testData.game.Dto.*;
 import com.example.soccerleague.support.testData.game.Repository.GameAvgDto;
@@ -45,6 +47,7 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
     private final ShootGoal shootGoal;
     private final GameResultRepository gameResultRepository;
     private final GradeDecision gradeDecision;
+    private final PlayerRecordRepository playerRecordRepository;
     @Override
     public void calculation(Long roundId, RoundGameResponse resp) {
         // 공유 변수
@@ -73,9 +76,9 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
 
 
         // 라인업
-        List<PlayerLeagueRecord> plrA = playerLeagueRecordEntityRepository
+        List<PlayerRecord> plrA = playerRecordRepository
                 .findByRoundAndTeam(roundId,round.getHomeTeamId());
-        List<PlayerLeagueRecord> plrB = playerLeagueRecordEntityRepository
+        List<PlayerRecord> plrB = playerRecordRepository
                 .findByRoundAndTeam(roundId,round.getAwayTeamId());
 
         // 스탯 정보
@@ -371,7 +374,7 @@ public class AdvanceStatBaseGameDataPosing implements GameDataPosting{
         return ret / 5;
     }
 
-    private void mapped (List<PlayerLeagueRecord> plr , List<Player> players , Map<Long ,StatBaseGameDto> mappedPlayer){
+    private void mapped (List<PlayerRecord> plr , List<Player> players , Map<Long ,StatBaseGameDto> mappedPlayer){
         for(int i =0 ; i <players.size();i++){
             Player player =  players.get(i);
             Position position  = plr.get(i).getPosition();

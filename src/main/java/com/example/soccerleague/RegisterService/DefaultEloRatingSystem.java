@@ -6,10 +6,14 @@ import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecord
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
+import com.example.soccerleague.domain.Round.ChampionsLeagueRound;
+import com.example.soccerleague.domain.Round.LeagueRound;
+import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.domain.record.PlayerRecord;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
 import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +33,12 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
     private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
     private final TeamRepository teamEntityRepository;
     private final LeagueTeamRecord leagueTeamRecord;
-    private static Integer VI = 400;
-    private static Integer K = 20;
+    private final Integer VI = 400;
+    private  Integer K = 20;
     @Override
-    public void LeagueRatingCalc(List<PlayerLeagueRecord> plrA, List<PlayerLeagueRecord> plrB) {
+    public void ratingCalc(Round round , List<PlayerRecord> plrA, List<PlayerRecord> plrB) {
 
+        //TODO : 챔피언스리그 , 유로파의 경우 어떻게 처리를 해줄것인가
         double avgGrade = playerLeagueRecordEntityRepository.avgGrade();
         if(avgGrade == 0) avgGrade = 25;
 
@@ -76,10 +81,6 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
 
         teamB.setRating(r);
 
-
-
-
-
         calc(mappedDefenser(plrA),mappedDefenser(plrB),avgGrade);
         calc(mappedMid(plrA),mappedMid(plrB),avgGrade);
         calc(mappedStriker(plrA),mappedStriker(plrB),avgGrade);
@@ -87,32 +88,39 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
 
     }
 
+
     @Override
-    public void LeagueSeasonResultCalc(Long leagueId) {
+    public void seasonResultCalc(Round round ,Long leagueId) {
+        // TODO : 선수들은 어떻게 해줄 것인지.
+        if(round instanceof LeagueRound) {
 
-        int season = Season.CURRENTSEASON;
-        List<LeagueTeamRecordResponse> resp = leagueTeamRecord.searchList(new LeagueTeamRecordRequest(leagueId, season))
-                .stream()
-                .map(ele-> (LeagueTeamRecordResponse)ele)
-                .collect(Collectors.toList());
+            int season = Season.CURRENTSEASON;
+            List<LeagueTeamRecordResponse> resp = leagueTeamRecord.searchList(new LeagueTeamRecordRequest(leagueId, season))
+                    .stream()
+                    .map(ele -> (LeagueTeamRecordResponse) ele)
+                    .collect(Collectors.toList());
 
-        int value = 100;
-        for(int i= 0 ;i<6;i++){
-            Team team = teamEntityRepository.findById(resp.get(i).getTeamId()).orElse(null);
-            team.setRating(team.getRating() + value);
-            value /=2;
+            int value = 100;
+            for (int i = 0; i < 6; i++) {
+                Team team = teamEntityRepository.findById(resp.get(i).getTeamId()).orElse(null);
+                team.setRating(team.getRating() + value);
+                value /= 2;
+            }
+
+            value = -2;
+            for (int i = 10; i < resp.size(); i++) {
+                Team team = teamEntityRepository.findById(resp.get(i).getTeamId()).orElse(null);
+                team.setRating(team.getRating() + value);
+                value *= 2;
+            }
         }
-
-        value = -2;
-        for(int i =10;i<resp.size();i++){
-            Team team = teamEntityRepository.findById(resp.get(i).getTeamId()).orElse(null);
-            team.setRating(team.getRating() + value);
-            value *=2;
+        else if(round instanceof ChampionsLeagueRound){
+            // TODO : 챔피언스리그인 경우 우승레이팅 처리를 어떻게 해줄 것인지 .
         }
 
     }
 
-    private void calc(List<PlayerLeagueRecord> plrA, List<PlayerLeagueRecord>plrB,double avgGrade){
+    private void calc(List<PlayerRecord> plrA, List<PlayerRecord>plrB,double avgGrade){
 
         List<Player> playerA =  new ArrayList<>();
         List<Integer> gradeA = plrA.stream().map(ele->ele.getGrade()).collect(Collectors.toList());
@@ -182,9 +190,9 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
 
 
     }
-    private List<PlayerLeagueRecord> mappedDefenser(List<PlayerLeagueRecord> plr){
+    private List<PlayerRecord> mappedDefenser(List<PlayerRecord> plr){
 
-        List<PlayerLeagueRecord> ret = new ArrayList<>();
+        List<PlayerRecord> ret = new ArrayList<>();
         plr.stream().forEach(ele-> {
 
             Position position = ele.getPosition();
@@ -198,9 +206,9 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
         return ret;
     }
 
-    private List<PlayerLeagueRecord> mappedStriker(List<PlayerLeagueRecord> plr){
+    private List<PlayerRecord> mappedStriker(List<PlayerRecord> plr){
 
-        List<PlayerLeagueRecord> ret = new ArrayList<>();
+        List<PlayerRecord> ret = new ArrayList<>();
         plr.stream().forEach(ele-> {
             Position position = ele.getPosition();
             if(position.equals(Position.ST )|| position.equals(Position.LF) ||
@@ -213,9 +221,9 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
         return ret;
     }
 
-    private List<PlayerLeagueRecord> mappedGoalKeeper(List<PlayerLeagueRecord> plr){
+    private List<PlayerRecord> mappedGoalKeeper(List<PlayerRecord> plr){
 
-        List<PlayerLeagueRecord> ret = new ArrayList<>();
+        List<PlayerRecord> ret = new ArrayList<>();
         plr.stream().forEach(ele-> {
             Position position = ele.getPosition();
             if(position.equals(Position.GK)) {
@@ -226,9 +234,9 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
         return ret;
     }
 
-    private List<PlayerLeagueRecord> mappedMid(List<PlayerLeagueRecord> plr){
+    private List<PlayerRecord> mappedMid(List<PlayerRecord> plr){
 
-        List<PlayerLeagueRecord> ret = new ArrayList<>();
+        List<PlayerRecord> ret = new ArrayList<>();
         plr.stream().forEach(ele-> {
             Position position = ele.getPosition();
             if(position.equals(Position.AM )|| position.equals(Position.LM) ||

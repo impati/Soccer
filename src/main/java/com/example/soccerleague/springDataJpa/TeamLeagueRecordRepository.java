@@ -28,9 +28,6 @@ public interface TeamLeagueRecordRepository extends TeamRecordRepository{
                                           @Param("awayId") Long awayId);
 
 
-    @Query("select tlr from TeamLeagueRecord tlr where tlr.round.id =:roundId order by tlr.id")
-    List<TeamLeagueRecord> findByRoundId(@Param("roundId")Long roundId);
-
 
     @Query(" select tlr from TeamLeagueRecord tlr " +
             " join tlr.team t on t.id =:teamId " +

@@ -3,7 +3,9 @@ package com.example.soccerleague.RegisterService;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.record.MatchResult;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.domain.record.PlayerRecord;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.PlayerRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,20 +17,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class DefaultGradeDecision implements GradeDecision{
-    private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
+    private final PlayerRecordRepository playerRecordRepository;
     @Override
-    public void LeagueGradeDecision(List<PlayerLeagueRecord> plr) {
-        GameAvgDto avg = playerLeagueRecordEntityRepository.findByGameAvg();
+    public void gradeDecision(List<PlayerRecord> plr) {
+        GameAvgDto avg = playerRecordRepository.findByGameAvg();
         mappedMid(avg.getPassAvg(),avg.getShootingAvg(),avg.getDefenseAvg(),plr);
         mappedDefenser(avg.getPassAvg(),avg.getShootingAvg(),avg.getDefenseAvg(),plr);
         mappedStriker(avg.getPassAvg(),avg.getShootingAvg(),avg.getDefenseAvg(),plr);
         mappedGoalKeeper(plr);
     }
 
-    private void  mappedDefenser(double passAvg,double shootingAvg,double defenseAvg, List<PlayerLeagueRecord> plr){
+    private void  mappedDefenser(double passAvg,double shootingAvg,double defenseAvg, List<PlayerRecord> plr){
 
         plr.stream().filter(ele->ele.getGrade() == 0).forEach(ele-> {
-
             Position position = ele.getPosition();
             if (position.equals(Position.CB) || position.equals(Position.RB) ||
                     position.equals(Position.LB) || position.equals(Position.LWB) || position.equals(Position.RWB)
@@ -91,7 +92,7 @@ public class DefaultGradeDecision implements GradeDecision{
 
     }
 
-    private void mappedStriker(double passAvg,double shootingAvg,double defenseAvg,List<PlayerLeagueRecord> plr){
+    private void mappedStriker(double passAvg,double shootingAvg,double defenseAvg,List<PlayerRecord> plr){
 
         plr.stream().filter(ele->ele.getGrade() == 0).forEach(ele-> {
             Position position = ele.getPosition();
@@ -152,7 +153,7 @@ public class DefaultGradeDecision implements GradeDecision{
         });
     }
 
-    private void mappedGoalKeeper(List<PlayerLeagueRecord> plr){
+    private void mappedGoalKeeper(List<PlayerRecord> plr){
 
 
         plr.stream().filter(ele->ele.getGrade() == 0).forEach(ele-> {
@@ -176,7 +177,7 @@ public class DefaultGradeDecision implements GradeDecision{
 
     }
 
-    private void mappedMid(double passAvg,double shootingAvg,double defenseAvg,List<PlayerLeagueRecord> plr){
+    private void mappedMid(double passAvg,double shootingAvg,double defenseAvg,List<PlayerRecord> plr){
 
         plr.stream().filter(ele->ele.getGrade() == 0).forEach(ele-> {
             Position position = ele.getPosition();

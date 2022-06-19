@@ -49,7 +49,7 @@ public class DefaultLeagueRoundInfo implements LeagueRoundInfo {
                     Team teamB  = teamRepository.findById(ele.getAwayTeamId()).orElse(null);
                     LeagueRoundInfoResponse element = null;
                     if(ele.getRoundStatus().equals(RoundStatus.DONE)) {
-                        TeamLeagueRecord record = teamLeagueRecordRepository.findByRoundId(ele.getId()).stream().findFirst().orElse(null);
+                        TeamLeagueRecord record = (TeamLeagueRecord) teamLeagueRecordRepository.findByRoundId(ele.getId()).stream().findFirst().orElse(null);
                         if(record.getTeam().getId().equals(teamA.getId())) {
                              element = new LeagueRoundInfoResponse(ele.getId(), league.getName(),
                                 teamA.getName(), teamB.getName(), record.getScore(),record.getOppositeScore());

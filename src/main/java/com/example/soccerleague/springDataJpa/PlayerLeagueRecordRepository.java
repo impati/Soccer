@@ -23,9 +23,6 @@ public interface PlayerLeagueRecordRepository extends  PlayerRecordRepository , 
     List<PlayerLeagueRecord> findFirstByLast(@Param("playerId") Long playerId, @Param("season") int season, Pageable pageable);
 
 
-    @Query("select plr from PlayerLeagueRecord plr where plr.round.id = :roundId and plr.team.id =:teamId")
-    List<PlayerLeagueRecord>  findByRoundAndTeam(@Param("roundId") Long roundId, @Param("teamId") Long teamId);
-
 
     @Query(" select plr from PlayerLeagueRecord plr" +
             " join  plr.player p on p.id =:playerId " +
@@ -41,8 +38,7 @@ public interface PlayerLeagueRecordRepository extends  PlayerRecordRepository , 
             " group by p.name ")
     List<TeamPlayerDto> findSeasonAndTeamPlayer(@Param("teamId") Long teamId , @Param("season")int season);
 
-    @Query("select new com.example.soccerleague.RegisterService.GameAvgDto(avg(plr.pass) , avg(plr.shooting) , avg(plr.goodDefense)) from PlayerLeagueRecord  plr")
-    GameAvgDto findByGameAvg();
+
 
     @Query("select avg(plr.grade) from  PlayerLeagueRecord plr")
     Double avgGrade();

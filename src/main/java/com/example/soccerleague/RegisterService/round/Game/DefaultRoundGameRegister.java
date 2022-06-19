@@ -4,6 +4,7 @@ import com.example.soccerleague.RegisterService.EloRatingSystem;
 import com.example.soccerleague.RegisterService.GradeDecision;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Round.LeagueRound;
+import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
 import com.example.soccerleague.domain.record.*;
 import com.example.soccerleague.springDataJpa.*;
@@ -23,8 +24,6 @@ import java.util.List;
 @Transactional
 public class DefaultRoundGameRegister implements RoundGameRegister {
     private final RoundRepository roundRepository;
-    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
-    private final TeamLeagueRecordRepository teamLeagueRecordRepository;
     private final EloRatingSystem eloRatingSystem;
     private final GradeDecision gradeDecision;
     private final DirectorRecordRepository directorRecordRepository;
@@ -42,10 +41,10 @@ public class DefaultRoundGameRegister implements RoundGameRegister {
     public void register(DataTransferObject dataTransferObject) {
         RoundGameDto roundGameDto = (RoundGameDto)dataTransferObject;
 
-        LeagueRound leagueRound = (LeagueRound)roundRepository.findById(roundGameDto.getRoundId()).orElse(null);
+        Round round = roundRepository.findById(roundGameDto.getRoundId()).orElse(null);
 
         List<PlayerRecord> playerRecordsA = playerRecordRepository.
-                findByRoundAndTeam(leagueRound.getId(),leagueRound.getHomeTeamId());
+                findByRoundAndTeam(round.getId(),round.getHomeTeamId());
 
         playerRecordsA.sort((o1, o2) -> {
                 if(o1.getPosition().ordinal() > o2.getPosition().ordinal())return 1;
@@ -57,7 +56,7 @@ public class DefaultRoundGameRegister implements RoundGameRegister {
 
 
         List<PlayerRecord> playerRecordsB = playerRecordRepository.
-                findByRoundAndTeam(leagueRound.getId(),leagueRound.getAwayTeamId());
+                findByRoundAndTeam(round.getId(),round.getAwayTeamId());
 
         playerRecordsB.sort((o1, o2) -> {
             if(o1.getPosition().ordinal() > o2.getPosition().ordinal())return 1;
@@ -97,8 +96,8 @@ public class DefaultRoundGameRegister implements RoundGameRegister {
                 .findByRoundId(roundGameDto.getRoundId());
 
 
-        DirectorRecord directorRecordA = directorRecordRepository.findByRoundAndTeam(leagueRound.getId(),teams.get(0).getTeam().getId()).orElse(null);
-        DirectorRecord directorRecordB = directorRecordRepository.findByRoundAndTeam(leagueRound.getId(),teams.get(1).getTeam().getId()).orElse(null);
+        DirectorRecord directorRecordA = directorRecordRepository.findByRoundAndTeam(round.getId(),teams.get(0).getTeam().getId()).orElse(null);
+        DirectorRecord directorRecordB = directorRecordRepository.findByRoundAndTeam(round.getId(),teams.get(1).getTeam().getId()).orElse(null);
 
 
 
@@ -111,12 +110,12 @@ public class DefaultRoundGameRegister implements RoundGameRegister {
 
 
 
-        gradeDecision.LeagueGradeDecision(playerRecordsA);
-        gradeDecision.LeagueGradeDecision(playerRecordsB);
-        eloRatingSystem.LeagueRatingCalc(playerRecordsA,playerRecordsB);
+        gradeDecision.gradeDecision(playerRecordsA);
+        gradeDecision.gradeDecision(playerRecordsB);
+        eloRatingSystem.ratingCalc(round,playerRecordsA,playerRecordsB);
 
 
-        leagueRound.setRoundStatus(RoundStatus.RECORD);
+        round.setRoundStatus(RoundStatus.RECORD);
     }
 
     private void recordSave(int s, int e, int idx, int bestGrade, MatchResult matchResult, List<PlayerRecord> playerRecords,

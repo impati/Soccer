@@ -6,6 +6,7 @@ import com.example.soccerleague.RegisterService.LeagueSeasonTableDto;
 import com.example.soccerleague.RegisterService.LeagueRound.LeagueRoundSeasonResult;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
+import com.example.soccerleague.domain.Round.ChampionsLeagueRound;
 import com.example.soccerleague.domain.Round.LeagueRound;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Round.RoundStatus;
@@ -33,8 +34,10 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
     private final RoundRepository roundRepository;
     private final LeagueSeasonTable leagueSeasonTable;
     private final LeagueRepository leagueRepository;
+
     private final TeamLeagueRecordRepository teamLeagueRecordRepository;
     private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
+
     private final PlayerRepository playerRepository;
     private final TeamRepository teamRepository;
     private final EloRatingSystem eloRatingSystem;
@@ -48,32 +51,44 @@ public class DefaultDuoRecordRegister implements DuoRecordRegister{
     public void register(DataTransferObject dataTransferObject) {
 
         DuoRecordDto duoRecordDto = (DuoRecordDto)dataTransferObject;
-        LeagueRound leagueRound =  (LeagueRound) roundRepository.findById(duoRecordDto.getRoundId()).orElse(null);
+        Round round =   roundRepository.findById(duoRecordDto.getRoundId()).orElse(null);
         int sz = duoRecordDto.getScorer().size();
         for(int i = 0;i < sz; i++){
             Long scorer = duoRecordDto.getScorer().get(i);
             Long assistant = duoRecordDto.getAssistant().get(i);
             GoalType goalType = duoRecordDto.getGoalType().get(i);
-            Duo duo = Duo.create(scorer,assistant,goalType,leagueRound);
+            Duo duo = Duo.create(scorer,assistant,goalType,round);
             duoRepository.save(duo);
         }
-        leagueRound.setRoundStatus(RoundStatus.DONE);
+        round.setRoundStatus(RoundStatus.DONE);
 
-        rankMake(leagueRound);
 
-        if(roundRepository.currentRoundIsDone(leagueRound.getRoundSt()) == 0L){
-            Season.CURRENTLEAGUEROUND += 1;
-            if(Season.CURRENTLEAGUEROUND > Season.LASTLEAGUEROUND){
-                for(Long i = 1L ; i<=4L;i++){
-                    eloRatingSystem.LeagueSeasonResultCalc(i);
+        if(round instanceof LeagueRound) {
+            rankMake(round);
+            if (roundRepository.currentRoundIsDone(round.getRoundSt()) == 0L) {
+                Season.CURRENTLEAGUEROUND += 1;
+                if (Season.CURRENTLEAGUEROUND > Season.LASTLEAGUEROUND) {
+                    for (Long i = 1L; i <= 4L; i++) {
+                        eloRatingSystem.seasonResultCalc(round, i);
+                    }
+                    Season.CURRENTSEASON += 1;
+                    Season.CURRENTLEAGUEROUND = 1;
+                    leagueRepository.findAll().stream().forEach(ele -> leagueSeasonTable.register(new LeagueSeasonTableDto(ele.getId(), Season.CURRENTSEASON)));
                 }
-                Season.CURRENTSEASON += 1;
-                Season.CURRENTLEAGUEROUND = 1;
-                leagueRepository.findAll().stream().forEach(ele->leagueSeasonTable.register(new LeagueSeasonTableDto(ele.getId(),Season.CURRENTSEASON)));
+                leagueRepository.findAll().stream().forEach(ele -> {
+                    ele.setCurrentSeason(Season.CURRENTSEASON);
+                    ele.setCurrentRoundSt(Season.CURRENTLEAGUEROUND);
+                });
             }
-            leagueRepository.findAll().stream().forEach(ele->{ele.setCurrentSeason(Season.CURRENTSEASON); ele.setCurrentRoundSt(Season.CURRENTLEAGUEROUND);});
+        }
+        else if(round instanceof ChampionsLeagueRound){
+            //TODO : 16강이 끝났을 때 취해야되는 액션.
         }
     }
+
+
+
+
 
     private void rankMake(Round round) {
 

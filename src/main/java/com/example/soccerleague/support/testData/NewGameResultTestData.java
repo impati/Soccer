@@ -3,9 +3,9 @@ package com.example.soccerleague.support.testData;
 
 import com.example.soccerleague.RegisterService.round.LineUp.RoundLineUpRegister;
 
-import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameRequest;
-import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameResponse;
-import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameSearch;
+import com.example.soccerleague.SearchService.Round.Game.RoundGameRequest;
+import com.example.soccerleague.SearchService.Round.Game.RoundGameResponse;
+import com.example.soccerleague.SearchService.Round.Game.RoundGameSearch;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpRequest;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpResponse;
 import com.example.soccerleague.SearchService.Round.LineUp.RoundLineUpSearch;

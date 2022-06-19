@@ -2,16 +2,18 @@ package com.example.soccerleague.support.testData.game;
 
 import com.example.soccerleague.RegisterService.round.Duo.DuoRecordDto;
 import com.example.soccerleague.RegisterService.round.Duo.DuoRecordRegister;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameRegister;
-import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameResponse;
+import com.example.soccerleague.RegisterService.round.Game.RoundGameDto;
+import com.example.soccerleague.RegisterService.round.Game.RoundGameRegister;
+import com.example.soccerleague.SearchService.Round.Game.RoundGameResponse;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
 import com.example.soccerleague.domain.Player.Stat;
 import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.record.GoalType;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
+import com.example.soccerleague.domain.record.PlayerRecord;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.PlayerRecordRepository;
 import com.example.soccerleague.springDataJpa.PlayerRepository;
 import com.example.soccerleague.springDataJpa.RoundRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ public class StatBaseGameDataPosting implements GameDataPosting{
     private final PlayerRepository playerEntityRepository;
     private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
     private final RoundRepository roundEntityRepository;
+    private final PlayerRecordRepository playerRecordRepository;
     private List<DuoInfo> goalAssist = new ArrayList<>();
     @Override
     public void calculation(Long roundId, RoundGameResponse resp) {
@@ -58,9 +61,9 @@ public class StatBaseGameDataPosting implements GameDataPosting{
 
 
         // ********************* PlayerLeagueRecord *********************
-        List<PlayerLeagueRecord> plrA = playerLeagueRecordEntityRepository
+        List<PlayerRecord> plrA = playerRecordRepository
                 .findByRoundAndTeam(roundId,round.getHomeTeamId());
-        List<PlayerLeagueRecord> plrB = playerLeagueRecordEntityRepository
+        List<PlayerRecord> plrB = playerRecordRepository
                 .findByRoundAndTeam(roundId,round.getAwayTeamId());
 
         List<Player> playerA = new ArrayList<>();
@@ -424,7 +427,7 @@ public class StatBaseGameDataPosting implements GameDataPosting{
 
 
 
-    private void cornerKickChance(List<PlayerLeagueRecord> players ,double percent){
+    private void cornerKickChance(List<PlayerRecord> players ,double percent){
         List<Long> kicker = new ArrayList<>();
         players.stream().forEach(ele->{
             if(ele.getPosition().equals(Position.LM)

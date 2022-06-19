@@ -2,9 +2,9 @@ package com.example.soccerleague.support.testData.game;
 
 import com.example.soccerleague.RegisterService.round.Duo.DuoRecordDto;
 import com.example.soccerleague.RegisterService.round.Duo.DuoRecordRegister;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameDto;
-import com.example.soccerleague.RegisterService.LeagueRound.Game.RoundGameRegister;
-import com.example.soccerleague.SearchService.LeagueRound.Game.RoundGameResponse;
+import com.example.soccerleague.RegisterService.round.Game.RoundGameDto;
+import com.example.soccerleague.RegisterService.round.Game.RoundGameRegister;
+import com.example.soccerleague.SearchService.Round.Game.RoundGameResponse;
 import com.example.soccerleague.domain.record.GoalType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

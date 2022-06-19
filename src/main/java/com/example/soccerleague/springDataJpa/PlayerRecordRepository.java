@@ -20,4 +20,12 @@ public interface PlayerRecordRepository extends JpaRepository<PlayerRecord,Long>
     @Query("select pr from PlayerRecord pr where pr.round.id = :roundId and pr.team.id =:teamId")
     List<PlayerRecord>  findByRoundAndTeam(@Param("roundId") Long roundId, @Param("teamId") Long teamId);
 
+    @Query("select new com.example.soccerleague.RegisterService.GameAvgDto(avg(pr.pass) , avg(pr.shooting) , avg(pr.goodDefense)) from  PlayerRecord pr")
+    GameAvgDto findByGameAvg();
+
+
+
+
+
+
 }
