@@ -147,13 +147,12 @@ public class  LeagueController {
             return "/league/BeforeGame";
         }
         else if(round.getRoundStatus().equals(RoundStatus.ING)){
-            model.addAttribute("RoundGameResponse", roundGameSearch.search(new RoundGameRequest(roundId)).orElse(null));
+            model.addAttribute("roundGameResponse", roundGameSearch.search(new RoundGameRequest(roundId)).orElse(null));
             return "/league/game";
         }
         else if(round.getRoundStatus().equals(RoundStatus.RECORD)){
 
             gameResult(round,model);
-
             List<LineUpPlayer> playerList = new ArrayList<>();
             playerLeagueRecordRepository.findByRoundId(roundId)
                     .stream()

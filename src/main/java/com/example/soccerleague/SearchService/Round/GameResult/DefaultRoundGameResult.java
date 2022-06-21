@@ -3,7 +3,9 @@ import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.TeamLeagueRecord;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.PlayerRecordRepository;
 import com.example.soccerleague.springDataJpa.TeamLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.TeamRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,8 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DefaultRoundGameResult implements RoundGameResult {
-    private final TeamLeagueRecordRepository teamLeagueRecordRepository;
-    private final PlayerLeagueRecordRepository playerLeagueRecordRepository;
+    private final TeamRecordRepository teamRecordRepository;
+    private final PlayerRecordRepository playerRecordRepository;
     @Override
     public boolean supports(DataTransferObject dto) {
         return dto instanceof RoundGameResultRequest;
@@ -29,9 +31,8 @@ public class DefaultRoundGameResult implements RoundGameResult {
     public List<DataTransferObject> searchPlayerResult(DataTransferObject dataTransferObject) {
         RoundGameResultRequest req = (RoundGameResultRequest) dataTransferObject;
         List<RoundGameResultPlayerResponse> resp =  new ArrayList<>();
-        playerLeagueRecordRepository.findByRoundId(req.getRoundId())
+        playerRecordRepository.findByRoundId(req.getRoundId())
                 .stream()
-                .map(ele->(PlayerLeagueRecord)ele)
                 .filter(ele->ele.getTeam().getId().equals(req.getTeamId()))
                 .forEach(ele->resp.add(RoundGameResultPlayerResponse.create(
                         ele.getTeam().getId(),ele.getPosition(),ele.getPlayer().getName(),
@@ -52,9 +53,8 @@ public class DefaultRoundGameResult implements RoundGameResult {
     public List<DataTransferObject> searchTeamResult(DataTransferObject dataTransferObject) {
         RoundGameResultRequest req = (RoundGameResultRequest) dataTransferObject;
         List<RoundGameResultTeamResponse> resp =  new ArrayList<>();
-        teamLeagueRecordRepository.findByRoundId(req.getRoundId())
+        teamRecordRepository.findByRoundId(req.getRoundId())
                 .stream()
-                .map(ele->(TeamLeagueRecord)ele)
                 .forEach(ele->resp.add(RoundGameResultTeamResponse.create(
                         ele.getTeam().getName(),ele.getTeam().getId(),ele.getScore(),ele.getShare(),ele.getCornerKick(),
                         ele.getFreeKick())));

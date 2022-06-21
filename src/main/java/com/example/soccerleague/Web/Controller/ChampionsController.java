@@ -70,14 +70,16 @@ public class ChampionsController {
         model.addAttribute("season",season);
         model.addAttribute("roundSt",roundSt);
 
-        if(beforeGame(roundSt)) return "champions/beforeGame";
+        if(beforeGame(roundSt)) {
+            return "champions/beforeGame";
+        }
 
         model.addAttribute("ChampionsRoundInfo",championsRoundInfo.searchResultList(new ChampionsRoundInfoRequest(season,roundSt)));
         return "champions/round";
     }
 
     private boolean beforeGame(Integer roundSt) {
-        return roundSt < Season.CURRENTCHAMPIONSROUND;
+        return roundSt <  Season.CURRENTCHAMPIONSROUND;
     }
 
 
@@ -119,7 +121,7 @@ public class ChampionsController {
             return "/champions/beforeGame";
         }
         else if(round.getRoundStatus().equals(RoundStatus.ING)){
-            model.addAttribute("RoundGameResponse", roundGameSearch.search(new RoundGameRequest(roundId)).orElse(null));
+            model.addAttribute("roundGameResponse", roundGameSearch.search(new RoundGameRequest(roundId)).orElse(null));
             return "/champions/game";
         }
         else if(round.getRoundStatus().equals(RoundStatus.RECORD)){
