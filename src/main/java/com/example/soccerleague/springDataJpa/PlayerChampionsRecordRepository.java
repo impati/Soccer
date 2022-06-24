@@ -10,5 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 public interface PlayerChampionsRecordRepository extends PlayerRecordRepository {
+    @Query("select avg(pcr.grade) from  PlayerChampionsLeagueRecord pcr ")
+    Double avgGrade();
 
 }

@@ -3,6 +3,8 @@ package com.example.soccerleague.RegisterService;
 import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecord;
 import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordRequest;
 import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordResponse;
+import com.example.soccerleague.SearchService.Round.Common.CalculationRating.CalculationRatingResult;
+import com.example.soccerleague.SearchService.Round.Common.CalculationRating.CalculationRatingSupport;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
@@ -12,9 +14,10 @@ import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.Season;
 import com.example.soccerleague.domain.Team;
 import com.example.soccerleague.domain.record.MatchResult;
-import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import com.example.soccerleague.domain.record.PlayerRecord;
+import com.example.soccerleague.springDataJpa.PlayerChampionsRecordRepository;
 import com.example.soccerleague.springDataJpa.PlayerLeagueRecordRepository;
+import com.example.soccerleague.springDataJpa.RoundRepository;
 import com.example.soccerleague.springDataJpa.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,15 +34,32 @@ import java.util.stream.Collectors;
 @Transactional
 public class DefaultEloRatingSystem implements EloRatingSystem {
     private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
+    private final PlayerChampionsRecordRepository playerChampionsRecordRepository;
     private final TeamRepository teamEntityRepository;
     private final LeagueTeamRecord leagueTeamRecord;
+    private final CalculationRatingSupport calculationRatingSupport;
+    private final RoundRepository roundRepository;
     private final Integer VI = 400;
-    private  Integer K = 20;
+
+
+    private void teamRatingCalc(Team team ,double oppositeRating , MatchResult matchResult , Integer K){
+        double w = 0;
+        double a = 10;
+        double b = (oppositeRating - team.getRating()) / VI;
+        double we = 1 / (Math.pow(a,b) + 1);
+        if(matchResult.equals(MatchResult.WIN)) w = 1;
+        else if(matchResult.equals(MatchResult.DRAW)) w = 0.5;
+        double r = team.getRating() + K * (w - we);
+        r = Math.round(r * 100) / 100.0;
+        team.setRating(r);
+    }
+
     @Override
     public void ratingCalc(Round round , List<PlayerRecord> plrA, List<PlayerRecord> plrB) {
+        CalculationRatingResult calculationRatingResult = (CalculationRatingResult) calculationRatingSupport.commonFeature(round);
+        double avgGrade  = calculationRatingResult.getAvgGrade() ;
+        Integer K =  calculationRatingResult.getK();
 
-        //TODO : 챔피언스리그 , 유로파의 경우 어떻게 처리를 해줄것인가
-        double avgGrade = playerLeagueRecordEntityRepository.avgGrade();
         if(avgGrade == 0) avgGrade = 25;
 
         Team teamA = plrA.get(0).getTeam();
@@ -47,39 +67,10 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
         Team teamB = plrB.get(0).getTeam();
         if(teamB.getRating() == 0)teamB.setRating(1500);
 
-        double w = 0;
-        double a = 10;
-        double b = (teamB.getRating() - teamA.getRating()) / VI;
-        double we = 1 / (Math.pow(a,b) + 1);
-        MatchResult matchResult = plrA.get(0).getMathResult();
-        if(matchResult.equals(MatchResult.WIN)){
-            w = 1;
-        }
-        else if(matchResult.equals(MatchResult.DRAW)){
-            w = 0.5;
-        }
 
-        double r = teamA.getRating() + K * (w - we);
-        r = Math.round(r * 100) / 100.0;
 
-        teamA.setRating(r);
-
-         w = 0;
-         a = 10;
-         b = (teamA.getRating() - teamB.getRating()) / VI;
-         we = 1 / (Math.pow(a,b) + 1);
-         matchResult = plrB.get(0).getMathResult();
-        if(matchResult.equals(MatchResult.WIN)){
-            w = 1;
-        }
-        else if(matchResult.equals(MatchResult.DRAW)){
-            w = 0.5;
-        }
-
-         r = teamB.getRating() + K * (w - we);
-        r = Math.round(r * 100) / 100.0;
-
-        teamB.setRating(r);
+        teamRatingCalc(teamA,teamB.getRating(),plrA.get(0).getMathResult(),K);
+        teamRatingCalc(teamB,teamA.getRating(),plrB.get(0).getMathResult(),K);
 
         calc(mappedDefenser(plrA),mappedDefenser(plrB),avgGrade);
         calc(mappedMid(plrA),mappedMid(plrB),avgGrade);
@@ -119,6 +110,8 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
         }
 
     }
+
+
 
     private void calc(List<PlayerRecord> plrA, List<PlayerRecord>plrB,double avgGrade){
 
