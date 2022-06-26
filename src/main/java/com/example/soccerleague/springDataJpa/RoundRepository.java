@@ -21,7 +21,14 @@ public interface RoundRepository extends JpaRepository<Round,Long> {
             @Param("leagueId") Long leagueId, @Param("season") int season,@Param("roundSt") int roundSt);
 
     @Query(value = "select count(r) from LeagueRound r where r.roundSt = :roundSt and r.roundStatus <> com.example.soccerleague.domain.Round.RoundStatus.DONE")
-    Long currentRoundIsDone(@Param("roundSt") int roundSt);
+    Long currentLeagueRoundIsDone(@Param("roundSt") int roundSt);
+
+
+
+    @Query(value = "select count(r) from Round r where r.season =:season and r.roundStatus <> com.example.soccerleague.domain.Round.RoundStatus.DONE")
+    Long isSeasonDone(@Param("season") int season);
+
+
 
     @Query(value = "select count(r) from LeagueRound r where r.leagueId =:leagueId and r.season = :season")
     Long findByLeagueSeason(@Param("leagueId") Long leagueId ,@Param("season") int season);

@@ -5,6 +5,7 @@ import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecord
 import com.example.soccerleague.SearchService.LeagueRecord.team.LeagueTeamRecordResponse;
 import com.example.soccerleague.SearchService.Round.Common.CalculationRating.CalculationRatingResult;
 import com.example.soccerleague.SearchService.Round.Common.CalculationRating.CalculationRatingSupport;
+import com.example.soccerleague.SearchService.Round.Common.SeasonResultCalculationRating;
 import com.example.soccerleague.domain.DataTransferObject;
 import com.example.soccerleague.domain.Player.Player;
 import com.example.soccerleague.domain.Player.Position;
@@ -36,12 +37,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class DefaultEloRatingSystem implements EloRatingSystem {
-    private final PlayerLeagueRecordRepository playerLeagueRecordEntityRepository;
-    private final PlayerChampionsRecordRepository playerChampionsRecordRepository;
-    private final TeamRepository teamRepository;
-    private final LeagueTeamRecord leagueTeamRecord;
     private final CalculationRatingSupport calculationRatingSupport;
-    private final RoundRepository roundRepository;
+    private final SeasonResultCalculationRating seasonResultCalculationRating;
     private final Integer VI = 400;
 
 
@@ -60,7 +57,7 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
         public RatingInfo(List<PlayerRecord> playerRecords,Team team, double gradeAvg, int K) {
             this.playerRecords = playerRecords;
             this.gradeAvg = gradeAvg;
-            K = K;
+            this.K = K;
             this.team = team;
             matchResult =  this.playerRecords.get(0).getMathResult();
         }
@@ -147,38 +144,9 @@ public class DefaultEloRatingSystem implements EloRatingSystem {
         }
     }
 
-
     @Override
-    public void seasonResultCalc(Round round ,Long leagueId) {
-        // TODO : 선수들은 어떻게 해줄 것인지.
-        if(round instanceof LeagueRound) {
-
-            int season = Season.CURRENTSEASON;
-            List<LeagueTeamRecordResponse> resp = leagueTeamRecord.searchList(new LeagueTeamRecordRequest(leagueId, season))
-                    .stream()
-                    .map(ele -> (LeagueTeamRecordResponse) ele)
-                    .collect(Collectors.toList());
-
-            int value = 100;
-            for (int i = 0; i < 6; i++) {
-                Team team = teamRepository.findById(resp.get(i).getTeamId()).orElse(null);
-                team.setRating(team.getRating() + value);
-                value /= 2;
-            }
-
-            value = -2;
-            for (int i = 10; i < resp.size(); i++) {
-                Team team = teamRepository.findById(resp.get(i).getTeamId()).orElse(null);
-                team.setRating(team.getRating() + value);
-                value *= 2;
-            }
-        }
-        else if(round instanceof ChampionsLeagueRound){
-            // TODO : 챔피언스리그인 경우 우승레이팅 처리를 어떻게 해줄 것인지 .
-        }
-
+    public void seasonResultCalc(Round round) {
+        seasonResultCalculationRating.commonFeatureNoReturn(round);
     }
-
-
 
 }

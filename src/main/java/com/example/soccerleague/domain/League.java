@@ -21,6 +21,7 @@ public class League extends BaseEntity{
 
     private int currentSeason;
     private int currentRoundSt;
+    private int currentChampionsRoundSt;
 
 
     public League(String name){

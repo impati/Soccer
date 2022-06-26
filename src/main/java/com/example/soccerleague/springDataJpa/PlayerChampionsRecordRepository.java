@@ -1,5 +1,6 @@
 package com.example.soccerleague.springDataJpa;
 
+import com.example.soccerleague.domain.Round.Round;
 import com.example.soccerleague.domain.record.PlayerChampionsLeagueRecord;
 import com.example.soccerleague.domain.record.PlayerLeagueRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,7 @@ import java.util.List;
 public interface PlayerChampionsRecordRepository extends PlayerRecordRepository {
     @Query("select avg(pcr.grade) from  PlayerChampionsLeagueRecord pcr ")
     Double avgGrade();
+
+
 
 }

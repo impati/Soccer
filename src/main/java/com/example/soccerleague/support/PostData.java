@@ -17,6 +17,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,7 @@ public class PostData {
     private final ChampionsSeasonTable championsSeasonTable;
     private final DirectorRepository directorRepository;
     private String path = "src/main/java/com/example/soccerleague/support/";
+    @EventListener(ApplicationReadyEvent.class)
     public void init() throws IOException {
         League league = leagueRepository.findById(1L).orElse(null);
         if(league == null){
@@ -65,7 +68,7 @@ public class PostData {
         else{
             Season.CURRENTSEASON = league.getCurrentSeason();
             Season.CURRENTLEAGUEROUND = league.getCurrentRoundSt();
-            log.info("SEASOn {}, ROUNDST {}",Season.CURRENTSEASON, Season.CURRENTLEAGUEROUND);
+            Season.CURRENTCHAMPIONSROUND = league.getCurrentChampionsRoundSt();
         }
 
     }

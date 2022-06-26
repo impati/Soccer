@@ -9,14 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 @Data
 public class DuoRecordDto extends DataTransferObject {
-    //=============================== 삭제 예정 ===================
+
     private Long roundId;
-    //내려줄 데이터
-    private List<LineUpPlayer> playerList = new ArrayList<>();
-    private GoalType[] goalTypeList = GoalType.values();
-    //=============================== 삭제 예정 ===================
-
-
 
     //올려줄 데이타
     private List<Long> scorer = new ArrayList<>();

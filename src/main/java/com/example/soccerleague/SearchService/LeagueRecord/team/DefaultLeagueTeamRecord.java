@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ *  시즌 기옥을 순위 순으로 정렬 후 리턴
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
