@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChampionsSeasonTableDto extends DataTransferObject {
     private int season;
-
+    private int roundSt;
 }

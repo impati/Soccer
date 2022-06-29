@@ -63,7 +63,7 @@ public class PostData {
             leagueSeasonTable.register(new LeagueSeasonTableDto(2L,Season.CURRENTSEASON));
             leagueSeasonTable.register(new LeagueSeasonTableDto(3L,Season.CURRENTSEASON));
             leagueSeasonTable.register(new LeagueSeasonTableDto(4L,Season.CURRENTSEASON));
-            championsSeasonTable.register(new ChampionsSeasonTableDto(Season.CURRENTSEASON));
+            championsSeasonTable.register(new ChampionsSeasonTableDto(Season.CURRENTSEASON,Season.CURRENTCHAMPIONSROUND));
         }
         else{
             Season.CURRENTSEASON = league.getCurrentSeason();

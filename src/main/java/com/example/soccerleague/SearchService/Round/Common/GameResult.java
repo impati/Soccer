@@ -1,6 +1,7 @@
 package com.example.soccerleague.SearchService.Round.Common;
 
 import com.example.soccerleague.RegisterService.Champions.SeasonTable.ChampionsSeasonTable;
+import com.example.soccerleague.RegisterService.Champions.SeasonTable.ChampionsSeasonTableDto;
 import com.example.soccerleague.RegisterService.EloRatingSystem;
 import com.example.soccerleague.RegisterService.LeagueRound.LeagueRoundSeasonResult;
 import com.example.soccerleague.RegisterService.LeagueSeasonTable;
@@ -42,7 +43,7 @@ public class GameResult extends RoundCommon{
     private final RoundRepository roundRepository;
     private final LeagueRepository leagueRepository;
     private final LeagueSeasonTable leagueSeasonTable;
-    private final ChampionsSeasonTable championsSeasonTable;
+    private final ChampionsSeasonTable  championsSeasonTable;
     private final EloRatingSystem eloRatingSystem;
 
 
@@ -120,7 +121,7 @@ public class GameResult extends RoundCommon{
             leagueRepository.findAll().stream().forEach(ele -> {
                 leagueSeasonTable.register(new LeagueSeasonTableDto(ele.getId(), Season.CURRENTSEASON));
             });
-            championsSeasonTable.register(new ChampionsRoundInfoRequest(Season.CURRENTSEASON ,Season.CURRENTCHAMPIONSROUND));
+            championsSeasonTable.register(new ChampionsSeasonTableDto(Season.CURRENTSEASON ,Season.CURRENTCHAMPIONSROUND));
             //TODO :유로파
         }
         leagueRepository.findAll().stream().forEach(ele -> {
@@ -131,31 +132,17 @@ public class GameResult extends RoundCommon{
 
     }
 
-
-    private int getScore(ChampionsLeagueRound championsLeagueRound , Long teamId){
-        return  teamChampionsRecordRepository
-                .findTeamScoreByRound(championsLeagueRound.getId() - 1, championsLeagueRound.getId(),teamId)
-                .stream()
-                .mapToInt(ele -> ele.getScore())
-                .sum();
-    }
     @Override
     protected DataTransferObject championsFeature(Round round, Object... objects) {
 
         ChampionsLeagueRound championsLeagueRound = (ChampionsLeagueRound) round;
-        if(championsLeagueRound.getFirstAndSecond() == 2){
-            int scoreA = getScore(championsLeagueRound,championsLeagueRound.getHomeTeamId());
-            int scoreB = getScore(championsLeagueRound,championsLeagueRound.getAwayTeamId());
-            ChampionsLeagueRound newChampionsRound = new ChampionsLeagueRound();
-            if(scoreA <= scoreB){
-                if(championsLeagueRound.getRoundSt() != 2){
+        Long remain = roundRepository.isChampionsRoundDone(Season.CURRENTSEASON , Season.CURRENTCHAMPIONSROUND);
 
-                }
-            }
-            else{
-
-            }
+        if(remain.equals(0L)){
+            Season.CURRENTCHAMPIONSROUND /= 2;
+            championsSeasonTable.register(new ChampionsSeasonTableDto(Season.CURRENTSEASON ,Season.CURRENTCHAMPIONSROUND));
         }
+
 
         isSeasonDone(round);
 

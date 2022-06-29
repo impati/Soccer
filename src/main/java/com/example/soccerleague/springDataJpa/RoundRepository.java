@@ -38,12 +38,12 @@ public interface RoundRepository extends JpaRepository<Round,Long> {
 
 
     /**
-     *  시즌 , 라운드 정보를 통해 round 정보를 가져옴
+     *  시즌 , 라운드 정보를 통해 끝나지 않은 라운드 수를 반환
      * @param season
      * @return
      */
-    @Query("select r from ChampionsLeagueRound r where  r.season =:season and r.roundSt =:roundSt")
-    List<ChampionsLeagueRound> findByChampionsSeason( @Param("season") int season, @Param("roundSt") int roundSt);
+    @Query("select count(r) from ChampionsLeagueRound r where  r.season =:season and r.roundSt =:roundSt")
+    Long isChampionsRoundDone( @Param("season") int season, @Param("roundSt") int roundSt);
 
 
 }

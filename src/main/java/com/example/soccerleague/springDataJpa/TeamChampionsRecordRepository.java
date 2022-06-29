@@ -11,14 +11,8 @@ import java.util.List;
 
 public interface TeamChampionsRecordRepository extends TeamRecordRepository{
     /**
-     *  챔피언스리그 팀의 첫번째 라운드 ,두번째 라운드의 경기결과를 리턴
+     * 시즌 , 라운드
      */
-    @Query("select pcr from PlayerChampionsLeagueRecord pcr " +
-            " join pcr.round r " +
-            " join pcr.team t " +
-            " where  ( r.id = :firstRound or r.id =:secondRound ) and t.id = :teamId")
-    List<TeamChampionsRecord> findTeamScoreByRound(@Param("firstRound") Long firstRound ,
-                                                   @Param("secondRound") Long secondRound ,
-                                                   Long teamId);
+
 
 }
